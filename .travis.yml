@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+  - mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: swkkqt3OY0F+s01H82K2YFOKVmG1s92JlWMXISyc2OkGq1rVCKb2idAOZhxs73CNxRpmFVdaisvCbC9eN4xq0pRRjDUSHRIvr3YrByfHao0XB2ViSxH9ql1aHcS5+BEbu1QrpVwalJ3Fi0wur/1fFKFWlkJ1DocSzjwsBtwgJbr54U35zAGmS2fUa2O8xC7VOiwef6TPOJO+qVjuYf4rxQTBh0335VOcmG6t2ctJWjDKrf2jMxBkg/RPjyvYnfE6jgbj2oHIYpp0Zt8Mq7UBpePvhZtGAMqgolEMMfhw0kceJ8RRprkrI8PXEj/vEQaVoCV4hQgXGM9SYun+w/tFaQ7LxzJLhw2S02EUV/KkNVGwIiQnheQWBhIBLVVZ+ytMf3JGkM7KlS04ClK4a/2J76vMlCcsx5OqfE8ubrATsCm8cAYTU/aR2/7epce62Ftn8vte53wOMDM0MQESpkglf8wrTBRCB8D8KiV1R1Qgc5oeJz6AeLno/QN3/wHgecQdcwEcbRCgFvWnmhNAKZ0ENhEXSSuuUwjTsSImBzud5d+8GbVsewAsW9/e8MENFehGYlRiMuaHDWJRKBR7ATPpYSPK39QfUmTw0MJFfK9cdHFcBrw6QSCsryKd9u74RrI7IbTt4sEdFnvnB/tGh1qMaMBJ5EkUCAkAZ48FsetaDCA=
+  app: radiant-oasis-89709
+  on:
+    repo: sollertis8/MindStarter
