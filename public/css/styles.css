@@ -1,0 +1,27 @@
+nav logo {
+    text-align: left;
+    width: auto;
+}
+
+nav {
+    /* position: fixed; */
+    /* display: inline; */
+    
+}
+
+nav ul right {
+    /* position: relative; */
+    /* left: 200px; */
+    float: right;
+}
+
+nav ul left {
+    float: left;
+}
+
+nav li {
+    padding: 10px;
+    /* text-align: right; */
+    display: inline;
+}
+
