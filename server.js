@@ -52,12 +52,10 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 // });
 
 const home = require('./routes/index');
-
+const project = require('./projects/router');
 app.use('/', home);
-// app.get('/', (req, res) => {
-//   res.sendFile(__dirname + '/views/index.html');
-// });
 
+app.use('/project', project)
 
 app.use(express.static('public'));
 

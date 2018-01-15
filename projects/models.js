@@ -16,13 +16,13 @@ const ProjectSchema = mongoose.Schema({
     },
     relationship_type: {
         type: String,
-        required: true,
+        required: true
     },
-    sub_type: {
-        type: String,
-        required: true,
-        default: ''
-    },
+    // sub_type: {
+    //     type: String,
+    //     required: true,
+    //     default: ''
+    // },
     depth: {
         type: Number,
         required: true,
@@ -35,7 +35,7 @@ ProjectSchema.methods.serialize = function() {
       project_name: this.project_name || '',
       idea_word: this.idea_word || '',
       relationship_type: this.relationship_type || '',
-      sub_type: this.sub_type || '',
+    //   sub_type: this.sub_type || '',
       depth: this.depth || ''
     };
   };

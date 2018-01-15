@@ -4,35 +4,71 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const {Project} = require('./models');
-const {Words} = require('./models');
+const {
+    Project
+} = require('./models');
+const {
+    Words
+} = require('./models');
+
+// load a project
+// router.get('/project', (req, res) => {
+//     Project
+//     .findById(req.params.id)
+//     .then(project =>
+//         res.json(project.serialize()))
+//         .catch(
+//             err => {
+//                 console.error(err);
+//                 res.status(500).json({message: 'Internal server error'});
+//             });
+//     });
+
+router.get('/project', (req, res) => {
+    res.sendFile('/project.html', {
+        root: ('./views')
+    });
+});
 
 // create a new project
 router.post('/project', jsonParser, (req, res) => {
-    const requiredFields = ['project_name', 'idea_word', 'relationship_type', 'sub_type', 'depth'];
-    for (let i=0; i<requiredFields.length; i++) {
+    const requiredFields = ['project_name', 'idea_word', 'relationship_type', 'depth'];
+    for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
-    if (!(field in req.body)) {
-        const message = `${field}\` is required`
-        console.error(message);
-        return res.status(400).send(message);
+        if (!(field in req.body)) {
+            const message = `${field}\` is required in request body`
+            console.error(message);
+            return res.status(400).send(message);
         }
     }
-    // check if login credentials match and return (201) if they do 
-    // or (400) if they don't
-    item = Users.create(req.body.project_name, req.body.idea_word, req.body.relationship_type, req.body.sub_type, req.body.depth);
-    res.status(201).json(item);
-})
+    Project
+        .create({
+            project_name: req.body.project_name,
+            idea_word: req.body.idea_word,
+            relatiohship_type: req.body.relationship_type,
+            depth: req.body.depth
+        })
+        .then(
+            project => res.status(201).json(project.serialize()))
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({
+                message: 'Internal server error'
+            });
+        });
+});
+// item = Project.create(req.body.project_name, req.body.idea_word, req.body.relationship_type, req.body.depth);
+// res.status(201).json(item);
 
 // Add a new word
 router.put('/project/:id', jsonParser, (req, res) => {
-    const requiredFields = ['word','relationship_type', 'id'];
-    for (let i=0; i<requiredFields.length; i++) {
+    const requiredFields = ['word', 'relationship_type', 'id'];
+    for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
-    if (!(field in req.body)) {
-        const message = `${field}\` is required`
-        console.error(message);
-        return res.status(400).send(message);
+        if (!(field in req.body)) {
+            const message = `${field}\` is required`
+            console.error(message);
+            return res.status(400).send(message);
         }
     }
     if (req.params.id !== req.body.id) {

@@ -2,36 +2,80 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <link rel="stylesheet" type="text/css" href="css/float-grid.css" />
-        <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/float-grid.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="css/styles.css" /> -->
+    <link rel="stylesheet" type="text/css" href="css/project.css" />
 
-        <nav>
-                
-                        <ul>
-                            <left>
-                                <logo>Mindstarter</logo>
-                            </left>
-                            <right>
-                                <li>
-                                    <a href="/account">Account</a>
-                                </li>
-                            </right>
-                        </ul>
-                
-                    </nav>
+    <nav>
 
-        Project
-    </body>
+        <ul>
+            <left>
+                <logo>Mindstarter</logo>
+            </left>
+            <right>
+                <li>
+                    <a href="/account">Account</a>
+                </li>
+            </right>
+        </ul>
+
+    </nav>
+    <br>
+
+    <form class="project-form js-project-form" action="/project" method="post">
+        <fieldset>
+            <legend>New Project</legend>
+            <label for "project_name">Project Name</label>
+            <input type="text" name="project_name" id="project_name" placeholder="Enter a Project Name">
+            <label for "starter_word">Starter Word</label>
+            <input type="text" name="idea_word" id="idea_word" placeholder="Enter a Starting Word">
+            <label for "relationship_type">Relationship</label>
+            <select name="relationship_type">
+                <option value="synonym">Synonym</option>
+                <option value="antonym">Antonym</option>
+                <option value="homophone">Homophone</option>
+                <option value="related">Related</option>
+            </select>
+            <label for "depth">Depth</label>
+            <select name="depth">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option Value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <input type="submit" value="Save">
+        </fieldset>
+    </form>
+
+    
+    <script type="text/javascript" src="js/d3/d3.js"></script>
+    <script type="text/javascript" src="js/d3/d3.layout.js"></script>
+    <!-- <script src="projects/index.js"></script> -->
+</body>
+
 </html>

@@ -1,6 +1,10 @@
-$(docment).ready(function () {
-    displayProject();
-})
+// const {Project} = require('../../projects/router.js');
+
+module.exports = {Project};
+
+// $(document).ready(function () {
+//     displayProject();
+// })
 
 // gets relationship data from the api
 function getDataFromApi(word, relationship, depth, callback) {
@@ -34,7 +38,6 @@ function autoComplete(callback) {
    $.ajax(settings)
 }
 
-
 // displays user project
 function displayProject() {
 
@@ -54,6 +57,44 @@ function displayUserProject() {
 
 function generateBrainstorm() {
 
+}
+
+function createProject() {
+    Project
+.findOne()
+.then(project => res.json({
+    name: project.name,
+    cuisine: restaurant.cuisine
+}))
+.catch(err => {
+    console.error(err)
+    res.status(500).json({message: 'Something went wrong'})}
+);
+}
+
+function loadProject() {
+    Project
+    .findOne()
+    .then(project => res.json({
+        name: project.name,
+        id: project.id
+    }))
+    .catch(err => {
+        console.error(err)
+        res.status(500).json({message: 'Something went wrong'})}
+    );
+}
+
+
+function circleSize() {
+    var adjust_size = function(circle){
+        var size = circle.height()+10;
+        circle.width(size).height(size);
+    };
+    
+    $.each($('.circle'), function(index, circle){
+            adjust_size($(circle));
+    });
 }
 
 
