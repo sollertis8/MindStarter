@@ -1,6 +1,6 @@
 // const {Project} = require('../../projects/router.js');
 
-module.exports = {Project};
+// module.exports = {Project};
 
 // $(document).ready(function () {
 //     displayProject();
@@ -61,10 +61,9 @@ function generateBrainstorm() {
 
 function createProject() {
     Project
-.findOne()
 .then(project => res.json({
     name: project.name,
-    cuisine: restaurant.cuisine
+    size: restaurant.size
 }))
 .catch(err => {
     console.error(err)

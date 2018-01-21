@@ -24,13 +24,30 @@ $( document ).ready(function() {
 
 // router.use('/project', Project)
 
-function formDataToJson() {
-    $('.js-project-form').submit(event => {
-        event.preventDefault();
-        $('#result').text(JSON.stringify($('form').serializeObject()));
-       return false;
-    });
+function formDataToJson(callback) {
+    const settings = {
+        data: {
+            project_name: 'cars',
+            idea_word: 'cars',
+            relationship_type: 'antonym',
+            depth: '5'
+        },
+        url: 'http://localhost:8080/project',
+       dataType: 'json',
+       type: 'POST',
+       success: callback
+    };
+    $.ajax(settings)
 }
+
+
+$('.js-project-form').submit(event => {
+    event.preventDefault();
+    //  $('.result').text(JSON.stringify($('form').serializeObject()));
+    formDataToJson();
+    return false;
+    });
+
   
   
   // $(document).ready(function () {

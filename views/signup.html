@@ -40,7 +40,27 @@
         </ul>
 
     </nav>
-
+    <form action="/api/users" method="post">
+        <fieldset>
+            <legend>Signup:</legend>
+            <label for "firstname">First Name:</label>
+            <br>
+            <input type="text" name="firstName" id="firstName" value="Firstname">
+            <label for "lastname">Last Name:</label>
+            <br>
+            <input type="text" name="lastName" id="lastName" value="Lastname">
+            <label for "username">Username:</label>
+            <br>
+            <input type="text" name="username" id="username" value="Username">
+            <br> 
+            <label for "password"Password:></label>
+            <br>
+            <input type="password" name="password" id="password" value="Password">
+            <br>
+            <br>
+            <input type="submit" value="Submit">
+        </fieldset>
+    </form>
 </body>
 
 </html>

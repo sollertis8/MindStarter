@@ -26,8 +26,16 @@ const ProjectSchema = mongoose.Schema({
     depth: {
         type: Number,
         required: true,
+        default: '1',
+    },
+    size: {
+        type: Number,
+        required: true,
         default: '1'
+
     }
+    
+
 })
 
 ProjectSchema.methods.serialize = function() {
@@ -36,11 +44,12 @@ ProjectSchema.methods.serialize = function() {
       idea_word: this.idea_word || '',
       relationship_type: this.relationship_type || '',
     //   sub_type: this.sub_type || '',
-      depth: this.depth || ''
+      depth: this.depth || '',
+      size: this.size || ''
     };
   };
-
-  const Project = mongoose.model('Project', ProjectSchema);
+  const collection = "projects";
+  const Project = mongoose.model('Project', ProjectSchema, collection);
 
   module.exports = {Project};
 

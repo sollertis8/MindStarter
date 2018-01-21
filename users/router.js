@@ -6,9 +6,10 @@ const {User} = require('./models');
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
+const urlencodedParser = bodyParser.urlencoded({extended: true});
 
 // Post to register a new user
-router.post('/login', jsonParser, (req, res) => {
+router.post('/', urlencodedParser, jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -43,7 +44,7 @@ router.post('/login', jsonParser, (req, res) => {
   // We'll silently trim the other fields, because they aren't credentials used
   // to log in, so it's less of a problem.
   const explicitlyTrimmedFields = ['username', 'password'];
-  const nonTrimmedField = explicityTrimmedFields.find(
+  const nonTrimmedField = explicitlyTrimmedFields.find(
     field => req.body[field].trim() !== req.body[field]
   );
 
@@ -91,7 +92,7 @@ router.post('/login', jsonParser, (req, res) => {
     });
   }
 
-  let {username, password, firstName = '', lastName = ''} = req.body;
+  let {username, password, firstName, lastName} = req.body;
   // Username and password come in pre-trimmed, otherwise we throw an error
   // before this
   firstName = firstName.trim();

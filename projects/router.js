@@ -32,13 +32,16 @@ router.get('/project', (req, res) => {
 
 // create a new project
 router.post('/project', jsonParser, (req, res) => {
+    // req.setHeader('content-type', 'application/json');
     const requiredFields = ['project_name', 'idea_word', 'relationship_type', 'depth'];
+    console.log(req.body);
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
         if (!(field in req.body)) {
             const message = `${field}\` is required in request body`
             console.error(message);
-            return res.status(400).send(message);
+            return console.log(req.body); 
+            // res.status(400).send(message);
         }
     }
     Project
@@ -56,9 +59,10 @@ router.post('/project', jsonParser, (req, res) => {
                 message: 'Internal server error'
             });
         });
+        item = Project.create(req.body.project_name, req.body.idea_word, req.body.relationship_type, req.body.depth);
+res.status(201).json(item);
 });
-// item = Project.create(req.body.project_name, req.body.idea_word, req.body.relationship_type, req.body.depth);
-// res.status(201).json(item);
+
 
 // Add a new word
 router.put('/project/:id', jsonParser, (req, res) => {
