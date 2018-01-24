@@ -34,22 +34,23 @@ const ProjectSchema = mongoose.Schema({
         default: '1'
 
     }
-    
+
 
 })
 
-ProjectSchema.methods.serialize = function() {
+ProjectSchema.methods.serialize = function () {
     return {
-      project_name: this.project_name || '',
-      idea_word: this.idea_word || '',
-      relationship_type: this.relationship_type || '',
-    //   sub_type: this.sub_type || '',
-      depth: this.depth || '',
-      size: this.size || ''
+        project_name: this.project_name || '',
+        idea_word: this.idea_word || '',
+        relationship_type: this.relationship_type || '',
+        //   sub_type: this.sub_type || '',
+        depth: this.depth || '',
+        size: this.size || ''
     };
-  };
-  const collection = "projects";
-  const Project = mongoose.model('Project', ProjectSchema, collection);
+};
+const collection = "projects";
+const Project = mongoose.model('Project', ProjectSchema, collection);
 
-  module.exports = {Project};
-
+module.exports = {
+    Project
+};

@@ -24,4 +24,7 @@ nav li {
     /* text-align: right; */
     display: inline;
 }
+.project-response {
+    width: auto;
+}
 

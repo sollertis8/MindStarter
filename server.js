@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const morgan = require('morgan');
 
+// require('./public/js/index');
 
 // const passportConfig = require('./config/passport')
 // passportConfig(app, passport)
