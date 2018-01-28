@@ -5,6 +5,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser')
 
 // require('./public/js/index');
 
@@ -22,6 +23,9 @@ const app = express();
 
 // Logging
 app.use(morgan('common'));
+
+// Parse Cookies
+app.use(cookieParser());
 
 // CORS
 app.use(function (req, res, next) {

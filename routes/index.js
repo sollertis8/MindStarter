@@ -7,7 +7,11 @@ const urlencodedParser = bodyParser.urlencoded({
     extended: true
 });
 
-const jwtAuth = passport.authenticate('jwt', { session: true });
+// const authorizationHeader = require('authorization-header');
+
+const cookieParser = require('cookie-parser')
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
 ObjectID = require('mongodb').ObjectID;
 
 const {
@@ -50,63 +54,62 @@ router.get('/signup', function (req, res) {
 });
 
 router.get('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser, (req, res) => {
-    const authToken = res.headers.Authorization
-    console.log(authToken);
+    const authToken = req.header('Authorization');
+    const auth = 'Bearer ' + authToken;
+    console.log(auth);
     // const authToken = myHeader.Authorization;
     // get user's projects
     // Projects.find({
     //     userId: req.params.userId 
     // });
-    res.sendFile('/project.html', {
+    res.header('Authorization', auth);
+    res.cookie('access_token', authToken, {httpOnly: false}).status(301)
+    .sendFile('/profile.html', {
                 root: ('./views')
             });
     User
         .findOne({
             _id: ObjectID(req.params.userId)  
         })
-        .then(function(user){
-            const options = {
-                root: ('./views'),
-                headers: {
-                  'Authorization': 'Bearer ' + authToken
-                }
-              }
+        // .then(function(user){
+        //     const options = {
+        //         root: ('./views'),
+        //         headers: {
+        //           'Authorization': 'Bearer ' + authToken
+        //         }
+        //       }
             
-        });
+        // });
     });
   
 
 // create a new project
-router.post('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser, (req, res) => {
-    // res.setHeader('content-type', 'application/json');
-    // const size = "1";
-    const authToken = res.headers.Authorization;
-    console.log(authToken);
-    // const authToken = myHeader.Authorization;
+router.post('/user/:userId/project', (req, res) => {
+    
+    // const userId = req.user._id;
+    
+    // const authToken = createAuthToken(req.user);
+    // res.headers.authorization = ('Bearer ' + 'authToken');
     const requiredFields = ['project_name', 'idea_word', 'relationship_type', 'depth'];
 
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
         if (!(field in req.body)) {
             const message = `${field}\ is required in request body`
-            console.log(req.body);
+    
             console.error(message);
             return res.status(400).send(message);
         }
     }
+
+    
+
     const options = {
         root: ('./views'),
         headers: {
           'Authorization': 'Bearer ' + authToken
         }
       }
-    res.sendFile('/project.html', options
-                // headers: {
-                //     userId: req.user._id
-                // }
-            
-            )
-
     Project
         //   const pid = this.params.id
         .create({
@@ -117,7 +120,8 @@ router.post('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser, (req
             //   size: size
         })
         .then(
-            res.status(201).send()
+            // console.log(authToken);
+            res.sendfile('/project.html', options).status(201).send()
             
         )
         .catch(err => {
