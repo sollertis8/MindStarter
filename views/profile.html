@@ -17,12 +17,14 @@
 
 <body>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> 
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../../js/index.js"></script>
     <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    <link rel="stylesheet" type="text/css" href="../../css/float-grid.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="css/styles.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="../../css/float-grid.css" /> -->
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css" />
     <link rel="stylesheet" type="text/css" href="../../css/project.css" />
 
     <nav>
@@ -50,10 +52,14 @@
             <input class="idea js-idea" type="text" name="idea_word" id="idea_word" placeholder="Enter a Starting Word">
             <label for "relationship_type">Relationship</label>
             <select class="relationship js-relationship" name="relationship_type">
-                <option value="synonym">Synonym</option>
-                <option value="antonym">Antonym</option>
-                <option value="homophone">Homophone</option>
-                <option value="related">Related</option>
+                
+                <option value="ml">Means Like</option>
+                <option value="sel_hom">Sounds Like</option>
+                <option value="sp">Spelled Like</option>
+                <option value="rel_syn">Synonym</option>
+                <option value="rel_ant">Antonym</option>
+                <option value="rel_rhy">Rhymes With</option>
+
             </select>
             <label for "depth">Depth</label>
             <select class="depth js-depth" name="depth">
@@ -73,10 +79,12 @@
     </form>
 
     <div class="project-response js-project-response"></div>
-    <!-- <svg width="960" height="960"></svg> -->
-    <script type="text/javascript" src="../../js/d3/d3.js"></script>
-    <script type="text/javascript" src="../../js/d3/d3.layout.js"></script>
-    <script src="../../js/index.js"></script>
+    <p><svg width="960" height="960"></svg></p>
+    <!-- <script type="text/javascript" src="../../js/d3/d3.js"></script> -->
+   
+    <!-- <script type="text/javascript" src="../../js/d3/d3.layout.js"></script> -->
+    <!-- <script src="https://d3js.org/d3-scale-chromatic.v0.3.js"></script> -->
+    
 </body>
 
 </html>

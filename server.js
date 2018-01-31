@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser')
-
+const d3 = require("d3");
 // require('./public/js/index');
 
 // const passportConfig = require('./config/passport')

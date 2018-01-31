@@ -16,6 +16,7 @@
     "body-parser": "^1.15.2",
     "browserify": "^15.1.0",
     "cookie-parser": "^1.4.3",
+    "d3": "^4.13.0",
     "dotenv": "^4.0.0",
     "express": "^4.12.4",
     "file-system": "^2.2.2",

@@ -3,6 +3,7 @@ $(document).ready(function () {
     watchSubmit();
 
 });
+
 // const {Project} = require('./models');
 // const Project = require('./router');
 // const {router} = require('./router');
@@ -30,18 +31,49 @@ $(document).ready(function () {
 
 
 // gets relationship data from the api
-function getDataFromApi(word, depth, callback) {
+function getDataFromApi(relationship, word, depth, callback) {
+    let data = {};
+    switch (relationship) {
+        case "ml":
+            data = {
+                ml: `${word}`,
+                max: `${depth}`
+            };
+            break;
+        case "sel_hom":
+            data = {
+                sel: `${word}`,
+                max: `${depth}`
+            };
+            break;
+        case "sp":
+            data = {
+                sp: `${word}`,
+                max: `${depth}`
+            };
+            break;
+        case "rel_syn":
+            data = {
+                rel_syn: `${word}`,
+                max: `${depth}`
+            };
+            break;
+        case "rel_ant":
+            data = {
+                rel_ant: `${word}`,
+                max: `${depth}`
+            };
+            break;
+        case "rel_rhy":
+            data = {
+                rel_rhy: `${word}`,
+                max: `${depth}`
+            };
+            break;
+    }
+
     const settings = {
-        data: {
-            ml: `${word}`,
-            //    sl: `${soundsLike}`,
-            //    sp: `${spelledLike}`,
-            //    rl_jja: `${popularNounModified}`,
-            //    rl_syn: `${synonym}`,
-            //    rl_ant: `${antonym}`,
-            //    topics: `${topic}`,
-            max: `${depth}`
-        },
+        data: data,
         url: 'https://api.datamuse.com/words',
         dataType: 'json',
         type: 'GET',
@@ -78,49 +110,50 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
     $.ajax(settings)
 }
 
-function displayResponseData(idea_word, response) {
-    const results = JSON.stringify(response);
-
+function displayResponseData(response) {
+    
     const projectJson = {
-        project: [{
-            "name": idea_word
-        }]
-    };
 
-    for (var i = 0; i < results.word.length; i++) {
-        projectJson.project.push({
-            children: results.word[i].text
+        "name": idea_word,
+        "children": []
+
+    };
+    // const results = JSON.stringify(response);
+    for (var i = 0; i < response.length; i++) {
+        projectJson.children.push({
+            name: response[i].word,
+            size: "2000"
         });
     }
 
-    const json = JSON.stringify(projectJson);
-    const fs = require('fs');
 
-    fs.exists('project.json', (exists) => {
-        if (exists) {
-            console.log("file exists");
-            fs.readFile('project.json', function readFileCallBack(err, data) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    obj = JSON.parse(data);
-                    for (i = 0; i < data.length; i++) {
-                        obj.project.push(projectJson);
-                    }
-                    const json = JSON.stringify(obj);
-                    fs.writeFile('project.json', json);
+    // const fs = require('fs');
 
-                }
-            });
-        } else {
-            console.log("file does not exist")
-            for (i = 0; i < data.length; i++) {
-                obj.project.push(projectJson);
-            }
-            const json = JSON.stringify(obj);
-            fs.writeFile('project.json', json);
-        }
-    })
+    // fs.exists('project.json', (exists) => {
+    //     if (exists) {
+    //         console.log("file exists");
+    //         fs.readFile('project.json', function readFileCallBack(err, data) {
+    //             if (err) {
+    //                 console.log(err);
+    //             } else {
+    //                 obj = JSON.parse(data);
+    //                 for (i = 0; i < data.length; i++) {
+    //                     obj.project.push(projectJson);
+    //                 }
+    //                 const json = JSON.stringify(obj);
+    //                 fs.writeFile('project.json', json);
+
+    //             }
+    //         });
+    //     } else {
+    //         console.log("file does not exist")
+    //         for (i = 0; i < data.length; i++) {
+    //             obj.project.push(projectJson);
+    //         }
+    //         const json = JSON.stringify(obj);
+    //         fs.writeFile('project.json', json);
+    //     }
+    // })
 
 
     var svg = d3.select("svg"),
@@ -137,101 +170,112 @@ function displayResponseData(idea_word, response) {
         .size([diameter - margin, diameter - margin])
         .padding(2);
 
-    d3.json("project.json", function (error, root) {
-        if (error) throw error;
+    // d3.json("project.json", function (error, root) {
+    //     if (error) throw error;
+    var root = projectJson;
+    root = d3.hierarchy(root)
+        .sum(function (d) {
+            return d.size;
+        })
+        .sort(function (a, b) {
+            return b.value - a.value;
+        });
 
-        root = d3.hierarchy(root)
-            .sum(function (d) {
-                return d.size;
-            })
-            .sort(function (a, b) {
-                return b.value - a.value;
+    var focus = root,
+        nodes = pack(root).descendants(),
+        view;
+
+    var circle = g.selectAll("circle")
+        .data(nodes)
+        .enter().append("circle")
+        .attr("class", function (d) {
+            return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
+        })
+        .style("fill", function (d) {
+            return d.children ? color(d.depth) : null;
+        })
+        .on("click", function (d) {
+            if (focus !== d) zoom(d), d3.event.stopPropagation();
+        });
+
+    var text = g.selectAll("text")
+        .data(nodes)
+        .enter().append("text")
+        .attr("class", "label")
+        .style("fill-opacity", function (d) {
+            return d.parent === root ? 1 : 0;
+        })
+        .style("display", function (d) {
+            return d.parent === root ? "inline" : "none";
+        })
+        .text(function (d) {
+            return d.data.name;
+        });
+
+    var node = g.selectAll("circle,text");
+
+    svg
+        .style("background", color(-1))
+        .on("click", function () {
+            zoom(root);
+        });
+
+    zoomTo([root.x, root.y, root.r * 2 + margin]);
+
+    function zoom(d) {
+        var focus0 = focus;
+        focus = d;
+
+        var transition = d3.transition()
+            .duration(d3.event.altKey ? 7500 : 750)
+            .tween("zoom", function (d) {
+                var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                return function (t) {
+                    zoomTo(i(t));
+                };
             });
 
-        var focus = root,
-            nodes = pack(root).descendants(),
-            view;
-
-        var circle = g.selectAll("circle")
-            .data(nodes)
-            .enter().append("circle")
-            .attr("class", function (d) {
-                return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
+        transition.selectAll("text")
+            .filter(function (d) {
+                return d.parent === focus || this.style.display === "inline";
             })
-            .style("fill", function (d) {
-                return d.children ? color(d.depth) : null;
-            })
-            .on("click", function (d) {
-                if (focus !== d) zoom(d), d3.event.stopPropagation();
-            });
-
-        var text = g.selectAll("text")
-            .data(nodes)
-            .enter().append("text")
-            .attr("class", "label")
             .style("fill-opacity", function (d) {
-                return d.parent === root ? 1 : 0;
+                return d.parent === focus ? 1 : 0;
             })
-            .style("display", function (d) {
-                return d.parent === root ? "inline" : "none";
+            .on("start", function (d) {
+                if (d.parent === focus) this.style.display = "inline";
             })
-            .text(function (d) {
-                return d.data.name;
+            .on("end", function (d) {
+                if (d.parent !== focus) this.style.display = "none";
             });
+    }
 
-        var node = g.selectAll("circle,text");
+    function zoomTo(v) {
+        var k = diameter / v[2];
+        view = v;
+        node.attr("transform", function (d) {
+            return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")";
+        });
+        circle.attr("r", function (d) {
+            return d.r * k;
+        });
+    }
+    // });
 
-        svg
-            .style("background", color(-1))
-            .on("click", function () {
-                zoom(root);
-            });
 
-        zoomTo([root.x, root.y, root.r * 2 + margin]);
+    $('.js-project-response').html(root);
 
-        function zoom(d) {
-            var focus0 = focus;
-            focus = d;
+}
 
-            var transition = d3.transition()
-                .duration(d3.event.altKey ? 7500 : 750)
-                .tween("zoom", function (d) {
-                    var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
-                    return function (t) {
-                        zoomTo(i(t));
-                    };
-                });
+function circleSize() {
+    var adjust_size = function (circle) {
+        var size = circle.height() + 10;
+        circle.width(size).height(size);
+    };
 
-            transition.selectAll("text")
-                .filter(function (d) {
-                    return d.parent === focus || this.style.display === "inline";
-                })
-                .style("fill-opacity", function (d) {
-                    return d.parent === focus ? 1 : 0;
-                })
-                .on("start", function (d) {
-                    if (d.parent === focus) this.style.display = "inline";
-                })
-                .on("end", function (d) {
-                    if (d.parent !== focus) this.style.display = "none";
-                });
-        }
-
-        function zoomTo(v) {
-            var k = diameter / v[2];
-            view = v;
-            node.attr("transform", function (d) {
-                return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")";
-            });
-            circle.attr("r", function (d) {
-                return d.r * k;
-            });
-        }
+    $.each($('.circle'), function (index, circle) {
+        adjust_size($(circle));
     });
-
-
-    $('.js-project-response').html(results);
-
 }
 
 // function watchLoginSubmit() {
@@ -239,6 +283,8 @@ function displayResponseData(idea_word, response) {
 
 //     })
 // }
+
+let idea_word = "";
 
 function watchSubmit() {
     $('.js-project-form').submit(event => {
@@ -248,10 +294,10 @@ function watchSubmit() {
         const relationship_target = $(event.currentTarget).find('.js-relationship');
         const depth_target = $(event.currentTarget).find('.js-depth');
         const project_name = project_name_target.val();
-        const idea_word = idea_target.val();
+        idea_word = idea_target.val();
         const relationship_type = relationship_target.val();
         const depth = depth_target.val();
         //  $('.result').text(JSON.stringify($('form').serializeObject()));
-        getDataFromApi(idea_word, depth, displayResponseData(idea_word));
+        getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
     });
 }
