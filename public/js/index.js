@@ -109,9 +109,11 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
     };
     $.ajax(settings)
 }
-
+// will fix using global variable later
 function displayResponseData(response) {
-    
+    if(response != 0){
+
+     
     const projectJson = {
 
         "name": idea_word,
@@ -119,14 +121,22 @@ function displayResponseData(response) {
 
     };
     // const results = JSON.stringify(response);
+    
     for (var i = 0; i < response.length; i++) {
         projectJson.children.push({
             name: response[i].word,
             size: "2000"
         });
     }
-
-
+projectJson.children.splice(0, 0, {
+        name: "awesome",
+        children: [
+            {name: "amazing", size: "500"},
+            {name: "spectacular", size: "500"},
+            {name: "unbelievable", size: "500"},
+            {name: "fantastic", size: "500"}
+        ]
+    });
     // const fs = require('fs');
 
     // fs.exists('project.json', (exists) => {
@@ -191,6 +201,7 @@ function displayResponseData(response) {
         .attr("class", function (d) {
             return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
         })
+        .attr("id", (function(d){var a = 0; return function(){return a++}})())
         .style("fill", function (d) {
             return d.children ? color(d.depth) : null;
         })
@@ -264,19 +275,23 @@ function displayResponseData(response) {
 
 
     $('.js-project-response').html(root);
+} else {
+    const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
+    $('.js-project-response').html(no_results);
+}
 
 }
 
-function circleSize() {
-    var adjust_size = function (circle) {
-        var size = circle.height() + 10;
-        circle.width(size).height(size);
-    };
+// function circleSize() {
+//     var adjust_size = function (circle) {
+//         var size = circle.height() + 10;
+//         circle.width(size).height(size);
+//     };
 
-    $.each($('.circle'), function (index, circle) {
-        adjust_size($(circle));
-    });
-}
+//     $.each($('.circle'), function (index, circle) {
+//         adjust_size($(circle));
+//     });
+// }
 
 // function watchLoginSubmit() {
 //     $('.js-loginSubmit').submit(event=> {
@@ -301,3 +316,25 @@ function watchSubmit() {
         getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
     });
 }
+
+// function watchDoubleClick(){
+//     $( ".node node--leaf" ).dblclick(event => {
+//         // event.preventDefault();
+//         const project_name_target = $(event.currentTarget).find('.js-project');
+//         const idea_target = $(event.currentTarget).find('.js-idea');
+//         const relationship_target = $(event.currentTarget).find('.js-relationship');
+//         const depth_target = $(event.currentTarget).find('.js-depth');
+//         const project_name = project_name_target.val();
+//         idea_word = idea_target.val();
+//         const relationship_type = relationship_target.val();
+//         const depth = depth_target.val();
+//         //  $('.result').text(JSON.stringify($('form').serializeObject()));
+//         getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
+//         console.log( "Handler for .dblclick() called." );
+//       });
+      
+// }
+
+// function displayNodeUpdate(){
+    
+// }
