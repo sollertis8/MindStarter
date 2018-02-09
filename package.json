@@ -20,6 +20,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.12.4",
     "file-system": "^2.2.2",
+    "innersvg-polyfill": "0.0.2",
     "jsonwebtoken": "^8.1.0",
     "mongoose": "^4.13.9",
     "morgan": "^1.9.0",

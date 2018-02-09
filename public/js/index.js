@@ -4,6 +4,8 @@ $(document).ready(function () {
 
 });
 
+window.FontAwesomeConfig = { searchPseudoElements: true };
+
 // const {Project} = require('./models');
 // const Project = require('./router');
 // const {router} = require('./router');
@@ -113,7 +115,7 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
 function displayResponseData(response) {
     if(response != 0){
 
-     
+     const ellipsis = '\uf142';
     const projectJson = {
 
         "name": idea_word,
@@ -125,6 +127,7 @@ function displayResponseData(response) {
     for (var i = 0; i < response.length; i++) {
         projectJson.children.push({
             name: response[i].word,
+            icon: 'hello',
             size: "2000"
         });
     }
@@ -164,7 +167,12 @@ projectJson.children.splice(0, 0, {
     //         fs.writeFile('project.json', json);
     //     }
     // })
-
+    // var margin = {top: 20, right: 10, bottom: 20, left: 10};
+    // var width = 800 - margin.left - margin.right;
+    // var height = 480 - margin.top - margin.bottom;
+   
+    var width = 960;
+    var height = 960;
 
     var svg = d3.select("svg"),
         margin = 20,
@@ -195,19 +203,55 @@ projectJson.children.splice(0, 0, {
         nodes = pack(root).descendants(),
         view;
 
+    // var ellipsis = $('.node--leaf').html(`<i class="fa fa-cog fa-fw"></i>`)
+
+    var rectangle = svg.append('rect')
+    .attr({
+        'width': width * 0.8,
+        'height': height * 0.8,
+        'x': width * 0.1,
+        'y': height * 0.1,
+        'fill': '#F8F8F8'
+    });
+var foWidth = 100;
+var foHeight = 100;
+var anchor = {'w': width/3, 'h': height/3};
+var t = 50, k = 15;
+var tip = {'w': (3/4 * t), 'h': k};
+
+
     var circle = g.selectAll("circle")
         .data(nodes)
         .enter().append("circle")
         .attr("class", function (d) {
-            return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root";
+            return d.parent ? d.children ? "node" : "node node--leaf js-leaf" : "node node--root js-root";
         })
         .attr("id", (function(d){var a = 0; return function(){return a++}})())
+        
         .style("fill", function (d) {
             return d.children ? color(d.depth) : null;
         })
         .on("click", function (d) {
             if (focus !== d) zoom(d), d3.event.stopPropagation();
-        });
+        })
+
+        .on('mouseover', function() {
+            // Selection.html('&#xf040')
+            g.select("circle").selectAll("text")
+            .html('\uf142');
+
+            // .text(function () {
+            //     let icon = selection.html('&#xf040')
+            //     return icon;
+            // .text('&#xf040')
+            // });
+
+        })
+
+        // .on('mouseout', function() {
+        //     g.selectAll('text')
+        //     .remove();
+        // });
 
     var text = g.selectAll("text")
         .data(nodes)
@@ -221,7 +265,24 @@ projectJson.children.splice(0, 0, {
         })
         .text(function (d) {
             return d.data.name;
-        });
+        })
+        // .text(function (d) {
+        //     return '&#xf040';
+        // // .text('&#xf040')
+        // });
+//  var icon_ellipsis = g.selectAll('text')
+//         .data(nodes)
+//         .enter().append("text")
+//         .attr("class", "ellipsis")
+//         .style("fill-opacity", function() {
+//                 return d3.parent === root ? "block" : "none";
+//         })
+//         .style("display", function (d) {
+//             return d.parent === root ? "block" : "none";
+//         })
+//         .text(function(d){
+//             return d.data.icon;
+//         });
 
     var node = g.selectAll("circle,text");
 
@@ -238,6 +299,9 @@ projectJson.children.splice(0, 0, {
         focus = d;
 
         var transition = d3.transition()
+        // .attr("class", function (d) {
+        //     return d.children ? "i" :"fas fa-ellipsis-v";
+        // })
             .duration(d3.event.altKey ? 7500 : 750)
             .tween("zoom", function (d) {
                 var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
@@ -245,19 +309,24 @@ projectJson.children.splice(0, 0, {
                     zoomTo(i(t));
                 };
             });
-
+            
         transition.selectAll("text")
             .filter(function (d) {
                 return d.parent === focus || this.style.display === "inline";
             })
+            .filter(function (d) {
+                return d.parent === focus || this.style.display === "inline";
+            })
             .style("fill-opacity", function (d) {
-                return d.parent === focus ? 1 : 0;
+                return d.parent === focus ? 1 : 1;
             })
             .on("start", function (d) {
                 if (d.parent === focus) this.style.display = "inline";
+                
             })
             .on("end", function (d) {
-                if (d.parent !== focus) this.style.display = "none";
+                // if (d.parent !== focus) this.style.display = "none";
+                if (d.children === focus) this.style.diaplay = "inline";
             });
     }
 
@@ -271,9 +340,6 @@ projectJson.children.splice(0, 0, {
             return d.r * k;
         });
     }
-    // });
-
-
     $('.js-project-response').html(root);
 } else {
     const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
@@ -281,17 +347,6 @@ projectJson.children.splice(0, 0, {
 }
 
 }
-
-// function circleSize() {
-//     var adjust_size = function (circle) {
-//         var size = circle.height() + 10;
-//         circle.width(size).height(size);
-//     };
-
-//     $.each($('.circle'), function (index, circle) {
-//         adjust_size($(circle));
-//     });
-// }
 
 // function watchLoginSubmit() {
 //     $('.js-loginSubmit').submit(event=> {

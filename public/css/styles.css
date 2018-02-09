@@ -26,6 +26,7 @@ nav li {
 }
 .project-response {
     width: auto;
+    content: '\f142';
 }
 
 .node {
@@ -36,13 +37,54 @@ nav li {
     stroke: #000;
     stroke-width: 1.5px;
   }
+
+  .node:hover::before {
+    display: none;
+    /* font-family: 'Font Awesome 5 Light';  */
+    /* content: '\f142'; */
+  }
   
   .node--leaf {
     fill: white;
+    
   }
+
+ text {
+    cursor: pointer;
+    font-family: 'FontAwesome';
+    pointer-events: all;
+ }
+
+.label:hover:after {
+    /* font-family: 'FontAwesome'; */
+    content: 'hello';
+ }
+
+.ellipsis {
+    font-family: 'FontAwesome';
+    text-anchor: middle;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+}
+
+.svg-tooltip {
+    pointer-events: none;
+}
+.tooltip {
+    padding: 10px;
+    color: #4A22FF;
+}
+.lead {
+    font-style: italic;
+}
+p {
+    margin: 5px 0px;
+}
+polygon {
+    pointer-events: none;
+}
   
   .label {
-    font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /* font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif; */
     text-anchor: middle;
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
   }
@@ -50,6 +92,5 @@ nav li {
   .label,
   .node--root,
   .node--leaf {
-    pointer-events: none;
+    pointer-events: visibleFill;
   }
-

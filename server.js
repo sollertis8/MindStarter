@@ -7,6 +7,7 @@ const passport = require('passport');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser')
 const d3 = require("d3");
+// const innersvg = require("innersvg-polyfill");
 // require('./public/js/index');
 
 // const passportConfig = require('./config/passport')
