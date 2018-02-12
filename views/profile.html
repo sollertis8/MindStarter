@@ -49,12 +49,12 @@
     </nav>
     <br>
 
-    <form class="project-form js-project-form" action="/user/:userId/project" method="post">
+    <form onsubmit="return false;" class="project-form js-project-form" id="project-form" action="/user/:userId/project" method="post">
         <fieldset>
             <legend>New Project</legend>
             <label for "project_name">Project Name</label>
             <input class="project js-project"type="text" name="project_name" id="project_name" placeholder="Enter a Project Name">
-            <label for "starter_word">Starter Word</label>
+            <label for "starter_word">Word</label>
             <input class="idea js-idea" type="text" name="idea_word" id="idea_word" placeholder="Enter a Starting Word">
             <label for "relationship_type">Relationship</label>
             <select class="relationship js-relationship" name="relationship_type">
@@ -80,10 +80,48 @@
                 <option value="9">9</option>
                 <option value="10">10</option>
             </select>
-            <input type="submit" value="Save">
+            <input id="save" type="submit" value="Save"/>
+            <!-- <button id="update" type="submit" value="Update">Update</button> -->
         </fieldset>
     </form>
 
+
+    <form onsubmit="return false;" class="update-project js-update-project" id="update-project" action="/user/:userId/project" method="post">
+        <fieldset>
+            <legend>New Project</legend>
+            <label for "project_name">Project Name</label>
+            <input class="project js-project"type="text" name="project_name" id="project_name" placeholder="Enter a Project Name">
+            <label for "starter_word">Word</label>
+            <input class="idea js-idea" type="text" name="idea_word" id="idea_word" placeholder="Enter a Starting Word">
+            <label for "relationship_type">Relationship</label>
+            <select class="relationship js-relationship" name="relationship_type">
+                
+                <option value="ml">Means Like</option>
+                <option value="sel_hom">Sounds Like</option>
+                <option value="sp">Spelled Like</option>
+                <option value="rel_syn">Synonym</option>
+                <option value="rel_ant">Antonym</option>
+                <option value="rel_rhy">Rhymes With</option>
+
+            </select>
+            <label for "depth">Depth</label>
+            <select class="depth js-depth" name="depth">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option Value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <button id="update" type="submit" value="Update">Update</button>
+        </fieldset>
+    </form>
+
+    <h1><div class="project-title js-project-title"></div></h1>
     <div class="project-response js-project-response"></div>
    
     <p><svg width="960" height="960"> <div class="node--leaf"></i></div></svg></p>

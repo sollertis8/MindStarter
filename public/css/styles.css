@@ -38,6 +38,11 @@ nav li {
     stroke-width: 1.5px;
   }
 
+  .node:active {
+    stroke: #000;
+    stroke-width: 1.5px;
+  }
+
   .node:hover::before {
     display: none;
     /* font-family: 'Font Awesome 5 Light';  */
@@ -49,6 +54,10 @@ nav li {
     
   }
 
+.project-title {
+    text-align: center;
+}
+
  text {
     cursor: pointer;
     font-family: 'FontAwesome';
@@ -57,7 +66,7 @@ nav li {
 
 .label:hover:after {
     /* font-family: 'FontAwesome'; */
-    content: 'hello';
+    /* content: 'hello'; */
  }
 
 .ellipsis {
