@@ -64,6 +64,7 @@ nav li {
     pointer-events: all;
  }
 
+<<<<<<< HEAD
  .relationship {
      fill: gray;
      font-size: 14px;
@@ -74,6 +75,14 @@ nav li {
 .label:hover:after {
     /* font-family: 'FontAwesome'; */
     /* content: 'hello'; */
+=======
+ .relationships {
+    font-size: 14px;
+    fill: gray !important;
+    text-anchor: middle; 
+    baseline-shift: -80px !important;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+>>>>>>> 5c28eae3ad5cdad79a2b02520114bc8aa84c177a
  }
 
 .ellipsis {

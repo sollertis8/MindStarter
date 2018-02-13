@@ -11,8 +11,8 @@ window.FontAwesomeConfig = {
 };
 let relationship = ""
 let idea_word = "";
+let relationship = "";
 let projectJson = {
-    "name": idea_word,
     "children": []
 };
 
@@ -130,27 +130,6 @@ function renderProject() {
         nodes = pack(root).descendants(),
         view;
 
-    var rectangle = svg.append('rect')
-        .attr({
-            'width': width * 0.8,
-            'height': height * 0.8,
-            'x': width * 0.1,
-            'y': height * 0.1,
-            'fill': '#F8F8F8'
-        });
-    var foWidth = 100;
-    var foHeight = 100;
-    var anchor = {
-        'w': width / 3,
-        'h': height / 3
-    };
-    var t = 50,
-        k = 15;
-    var tip = {
-        'w': (3 / 4 * t),
-        'h': k
-    };
-
     var circle = window.g.selectAll("circle")
         .data(nodes)
         .enter().append("circle")
@@ -168,10 +147,9 @@ function renderProject() {
             return d.children ? color(d.depth) : null;
         })
         .on("click", function (d) {
-
             if (focus !== d) zoom(d), d3.event.stopPropagation();
             $('.js-idea').val(this.__data__.data.name);
-        })
+        });
     var text = window.g.selectAll("text")
         .data(nodes)
         .enter().append("text")
@@ -184,7 +162,16 @@ function renderProject() {
         })
         .text(function (d) {
             return d.data.name;
+        });
+
+        var relationship = window.g.selectAll("relationship")
+        .data(nodes)
+        .enter().append("text")
+        .attr("class", "relationships")
+        .style("fill-opacity", function (d) {
+            return d.parent === root ? 1 : 0;
         })
+<<<<<<< HEAD
 
 
     var relationship = window.g.selectAll("relationship")
@@ -194,14 +181,21 @@ function renderProject() {
         .style("fill-opacity", function (d) {
             return d.parent === root ? 1 : 0;
         })
+=======
+>>>>>>> 5c28eae3ad5cdad79a2b02520114bc8aa84c177a
         .style("display", function (d) {
             return d.parent === root ? "none" : "inline";
         })
         .text(function (d) {
             return d.data.relationship;
+<<<<<<< HEAD
         })
 
     var node = window.g.selectAll("circle,text");
+=======
+        })  
+    var node = window.g.selectAll("circle,text,relationship");
+>>>>>>> 5c28eae3ad5cdad79a2b02520114bc8aa84c177a
 
     svg
         .style("background", color(-1))
@@ -242,6 +236,24 @@ function renderProject() {
             .on("end", function (d) {
                 if (d.parent !== focus) this.style.display = "none";
             });
+
+            // transition.selectAll("relationship")
+            // .filter(function (d) {
+            //     return d.parent === focus || this.style.display === "inline";
+            // })
+            // .filter(function (d) {
+            //     return d.parent === focus || this.style.display === "inline";
+            // })
+            // .style("fill-opacity", function (d) {
+            //     return d.parent === focus ? 0 : 1;
+            // })
+            // .on("start", function (d) {
+            //     if (d.parent === focus) this.style.display = "none";
+
+            // })
+            // .on("end", function (d) {
+            //     if (d.parent === focus) this.style.display = "inline";
+            // });
     }
 
     function zoomTo(v) {
@@ -304,6 +316,7 @@ function displayNodeUpdate(response) {
             } else if (typeof projectJson.children[i].children != "undefined") {
                 // matching selected word with its node 
                 for (var l = 0; l < projectJson.children[i].children.length; l++) {
+<<<<<<< HEAD
                     if (idea_word === projectJson.children[i].children[l].name) {
                         for (var m = 0; m < response.length; m++) {
                             new_child.push({
@@ -334,6 +347,38 @@ function displayNodeUpdate(response) {
                         };
                     }
                 };
+=======
+            if (idea_word === projectJson.children[i].children[l].name) {
+                for (var m = 0; m < response.length; m++) {
+                    new_child.push({
+                        name: response[m].word,
+                        size: "250",
+                        relationship: relationship
+                    });
+                }
+                // adding new children to specific node (now 3 levels deep)
+                projectJson.children[i].children[l].children = new_child;
+                renderProject();
+                // checking if children of child nodes have any children (at 3 levels deep)
+            } else if (typeof projectJson.children[i].children[l].children != "undefined") {
+                // matching selected word with its node
+                for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
+            if (idea_word === projectJson.children[i].children[l].children[n].name) {
+                for (var o = 0; o < response.length; o++) {
+                    new_child.push({
+                        name: response[o].word,
+                        size: "125",
+                        relationship: relationship
+                    });
+                }
+                // adding new children to node now 4 levels deep
+                projectJson.children[i].children[l].children[n].children = new_child;
+                renderProject();
+            } 
+        };
+            }
+        };
+>>>>>>> 5c28eae3ad5cdad79a2b02520114bc8aa84c177a
             }
         };
     } else if (response == "") {
@@ -344,6 +389,7 @@ function displayNodeUpdate(response) {
 
 };
 
+<<<<<<< HEAD
 function getRelationship(relationship) {
     let relation = "";
     switch (relationship) {
@@ -371,6 +417,34 @@ function getRelationship(relationship) {
 
 
 
+=======
+
+function getRelationship (relationship_type){
+    let data = "";
+    switch (relationship_type) {
+        case "ml":
+            data = "means like";
+            break;
+        case "sel_hom":
+            data = "soundslike";
+            break;
+        case "sp":
+            data = "spelled like";
+            break;
+        case "rel_syn":
+            data = "synonym";
+            break;
+        case "rel_ant":
+            data = "antonym";
+            break;
+        case "rel_rhy":
+            data = "rhymes with";
+            break;
+    }
+        return data;
+}
+
+>>>>>>> 5c28eae3ad5cdad79a2b02520114bc8aa84c177a
 function watchSubmit() {
     $('.js-project-form').submit(event => {
         console.log('save button clicked');
@@ -384,6 +458,9 @@ function watchSubmit() {
         const relationship_type = relationship_target.val();
         relationship = getRelationship(relationship_type);
         const depth = depth_target.val();
+
+        projectJson.name = idea_word;
+        projectJson.relationsip = relationship;
         //  $('.result').text(JSON.stringify($('form').serializeObject()));
         getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
         console.log('save submitted');
@@ -408,6 +485,9 @@ function watchUpdate() {
             const relationship_type = relationship_target.val();
             relationship = getRelationship(relationship_type);
             const depth = depth_target.val();
+
+            projectJson.name = idea_word;
+            projectJson.relationsip = relationship;
             getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
             console.log('update submitted');
         });
