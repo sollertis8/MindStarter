@@ -64,9 +64,12 @@ nav li {
     pointer-events: all;
  }
 
-.label:hover:after {
-    /* font-family: 'FontAwesome'; */
-    /* content: 'hello'; */
+ .relationships {
+    font-size: 14px;
+    fill: gray !important;
+    text-anchor: middle; 
+    baseline-shift: -80px !important;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
  }
 
 .ellipsis {
