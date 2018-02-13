@@ -53,18 +53,19 @@ router.get('/signup', function (req, res) {
     });
 });
 
-router.get('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser, (req, res) => {
+router.get('/user/profile', jwtAuth, jsonParser, (req, res) => {
     const authToken = req.header('Authorization');
-    const auth = 'Bearer ' + authToken;
+    // const auth = 'Bearer ' + authToken;
+    const {userId} = req.params;
     console.log(auth);
     // const authToken = myHeader.Authorization;
     // get user's projects
     // Projects.find({
     //     userId: req.params.userId 
     // });
-    res.header('Authorization', auth);
-    res.cookie('access_token', authToken, {httpOnly: false}).status(301)
-    .sendFile('/profile.html', {
+    // res.header('Authorization', auth);
+    // res.cookie('access_token', authToken, {httpOnly: false}).status(301)
+    res.sendFile('/profile.html', {
                 root: ('./views')
             });
     User
@@ -84,7 +85,7 @@ router.get('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser, (req,
   
 
 // create a new project
-router.post('/user/:userId/project', (req, res) => {
+router.post('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser,(req, res) => {
     
     // const userId = req.user._id;
     
@@ -164,97 +165,6 @@ router.get('/account', jwtAuth, function (req, res) {
 //     res.sendFile('/router.js', {root: ('./projects')});
 //   });
 // module.exports = {router, Project, Project_router};
-
-// // gets relationship data from the api
-// function getDataFromApi(word, relationship, depth, callback) {
-//     const settings = {
-//         data: {
-//            ml: `${meansLike}`,
-//            sl: `${soundsLike}`,
-//            sp: `${spelledLike}`,
-//            rl_jja: `${popularNounModified}`,
-//            rl_syn: `${synonym}`,
-//            rl_ant: `${antonym}`,
-//            topics: `${topic}`,
-//            max: `${depth}`
-//         },
-//         url: 'https://api.datamuse.com/words',
-//         dataType: 'json',
-//         type:'GET',
-//         success: callback
-//     };
-//         $.ajax(settings)
-//     }
-
-//     // allows user to get autocomplete feedback
-//     function autoComplete(callback) {
-//        const settings = {
-//            url: 'https://api.datamuse.com/sug',
-//            dataType: 'json',
-//            type: 'GET',
-//            success: callback
-//        };
-//        $.ajax(settings)
-//     }
-
-//     // displays user project
-//     function displayProject() {
-
-//     }
-
-//     function getUserProject(projectName) {
-//     const words = {};
-//     const relationships = {};
-//     const relationship = "";
-//     const depth = "";
-
-//     }
-
-//     function displayUserProject() {
-
-//     }
-
-//     function generateBrainstorm() {
-
-//     }
-
-//     function createProject() {
-//         Project
-//     .findOne()
-//     .then(project => res.json({
-//         name: project.name,
-//         size: restaurant.size
-//     }))
-//     .catch(err => {
-//         console.error(err)
-//         res.status(500).json({message: 'Something went wrong'})}
-//     );
-//     }
-
-//     function loadProject() {
-//         Project
-//         .findOne()
-//         .then(project => res.json({
-//             name: project.name,
-//             id: project.id
-//         }))
-//         .catch(err => {
-//             console.error(err)
-//             res.status(500).json({message: 'Something went wrong'})}
-//         );
-//     }
-
-
-//     function circleSize() {
-//         var adjust_size = function(circle){
-//             var size = circle.height()+10;
-//             circle.width(size).height(size);
-//         };
-
-//         $.each($('.circle'), function(index, circle){
-//                 adjust_size($(circle));
-//         });
-//     }
 
 
 module.exports = router;

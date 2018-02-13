@@ -28,25 +28,26 @@ router.use(bodyParser.urlencoded({
 // The user provides a username and password to login
 router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user.serialize());
-  const userId = req.user._id;
+  // const userId = req.user._id;
   // console.log(authToken);
-  
+  // res.json({authToken})
+  // .send();
+  // .sendFile('/profile.html', options);
   // const auth = 'Bearer ' + authToken;
   //   root: ('./views'),
-  const options = {
-    root: ('./views'),
-    headers: {
-      'Authorization': 'Bearer ' + authToken
-    }
-  }
-  // req.headers.authorization = ('bearer ' + authToken); 
-   res.sendFile('/profile.html', options);
   
-  // res.json({authToken});
-  // make 301 redirect
-  // res.header('Authorization', auth);
-  // res.cookie('access_token', authToken, {httpOnly: false}).header('Authorization', auth).status(301).redirect(`/user/${userId}/project`);
-  // res.cookie('access_token', authToken, {httpOnly: false}).header('Authorization', auth).status(301).sendfile('/profile.html');
+  
+  
+  const options = {
+    root: ('./views')
+    // headers: {
+    //   'Authorization': 'Bearer ' + authToken
+    // }
+  }
+
+
+  // req.headers.authorization = ('bearer ' + authToken); 
+   res.sendFile('/project.html', options);
   
 });
 

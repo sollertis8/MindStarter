@@ -9,6 +9,7 @@ $(document).ready(function () {
 window.FontAwesomeConfig = {
     searchPseudoElements: true
 };
+let relationship = ""
 let idea_word = "";
 let projectJson = {
     "name": idea_word,
@@ -103,12 +104,14 @@ function renderProject() {
     var svg = d3.select("svg"),
         margin = 20,
         diameter = +svg.attr("width");
-        window.g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+    window.g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
-    var color = d3.scaleLinear()
-        .domain([-1, 5])
-        .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-        .interpolate(d3.interpolateHcl);
+    // var color = d3.scaleLinear()
+    //     .domain([-1, 5])
+    var color = d3.scaleSequential(d3.interpolateMagma)
+        .domain([-4, 4]);
+    // .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+    // .interpolate(d3.interpolateHcl);
 
     var pack = d3.pack()
         .size([diameter - margin, diameter - margin])
@@ -182,6 +185,22 @@ function renderProject() {
         .text(function (d) {
             return d.data.name;
         })
+
+
+    var relationship = window.g.selectAll("relationship")
+        .data(nodes)
+        .enter().append("text")
+        .attr("class", "relationship")
+        .style("fill-opacity", function (d) {
+            return d.parent === root ? 1 : 0;
+        })
+        .style("display", function (d) {
+            return d.parent === root ? "none" : "inline";
+        })
+        .text(function (d) {
+            return d.data.relationship;
+        })
+
     var node = window.g.selectAll("circle,text");
 
     svg
@@ -249,7 +268,8 @@ function displayResponseData(response) {
         for (var i = 0; i < response.length; i++) {
             projectJson.children.push({
                 name: response[i].word,
-                size: "2000"
+                size: "2000",
+                relationship: relationship
             });
         }
         renderProject();
@@ -273,7 +293,8 @@ function displayNodeUpdate(response) {
                 for (var k = 0; k < response.length; k++) {
                     new_child.push({
                         name: response[k].word,
-                        size: "500"
+                        size: "500",
+                        relationship: relationship
                     });
                 }
                 // add new children to specific child node
@@ -283,43 +304,72 @@ function displayNodeUpdate(response) {
             } else if (typeof projectJson.children[i].children != "undefined") {
                 // matching selected word with its node 
                 for (var l = 0; l < projectJson.children[i].children.length; l++) {
-            if (idea_word === projectJson.children[i].children[l].name) {
-                for (var m = 0; m < response.length; m++) {
-                    new_child.push({
-                        name: response[m].word,
-                        size: "250"
-                    });
-                }
-                // adding new children to specific node (now 3 levels deep)
-                projectJson.children[i].children[l].children = new_child;
-                renderProject();
-                // checking if children of child nodes have any children (at 3 levels deep)
-            } else if (typeof projectJson.children[i].children[l].children != "undefined") {
-                // matching selected word with its node
-                for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
-            if (idea_word === projectJson.children[i].children[l].children[n].name) {
-                for (var o = 0; o < response.length; o++) {
-                    new_child.push({
-                        name: response[o].word,
-                        size: "125"
-                    });
-                }
-                // adding new children to node now 4 levels deep
-                projectJson.children[i].children[l].children[n].children = new_child;
-                renderProject();
-            } 
-        };
-            }
-        };
+                    if (idea_word === projectJson.children[i].children[l].name) {
+                        for (var m = 0; m < response.length; m++) {
+                            new_child.push({
+                                name: response[m].word,
+                                size: "250",
+                                relationship: relationship
+                            });
+                        }
+                        // adding new children to specific node (now 3 levels deep)
+                        projectJson.children[i].children[l].children = new_child;
+                        renderProject();
+                        // checking if children of child nodes have any children (at 3 levels deep)
+                    } else if (typeof projectJson.children[i].children[l].children != "undefined") {
+                        // matching selected word with its node
+                        for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
+                            if (idea_word === projectJson.children[i].children[l].children[n].name) {
+                                for (var o = 0; o < response.length; o++) {
+                                    new_child.push({
+                                        name: response[o].word,
+                                        size: "125",
+                                        relationship: relationship
+                                    });
+                                }
+                                // adding new children to node now 4 levels deep
+                                projectJson.children[i].children[l].children[n].children = new_child;
+                                renderProject();
+                            }
+                        };
+                    }
+                };
             }
         };
     } else if (response == "") {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
-    } 
-        
-    
+    }
+
+
 };
+
+function getRelationship(relationship) {
+    let relation = "";
+    switch (relationship) {
+        case "ml":
+           relation = "means like";
+            break;
+        case "sel_hom":
+            relation = "sounds like";
+            break;
+        case "sp":
+            relation = "spelled like";
+            break;
+        case "rel_syn":
+            relation = "synonym";
+            break;
+        case "rel_ant":
+            relation = "antonym";
+            break;
+        case "rel_rhy":
+            relation = "rhymes with";
+            break;
+    }
+    return relation;
+}
+
+
 
 function watchSubmit() {
     $('.js-project-form').submit(event => {
@@ -332,6 +382,7 @@ function watchSubmit() {
         const project_name = project_name_target.val();
         idea_word = idea_target.val();
         const relationship_type = relationship_target.val();
+        relationship = getRelationship(relationship_type);
         const depth = depth_target.val();
         //  $('.result').text(JSON.stringify($('form').serializeObject()));
         getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
@@ -355,6 +406,7 @@ function watchUpdate() {
             const project_name = project_name_target.val();
             idea_word = idea_target.val();
             const relationship_type = relationship_target.val();
+            relationship = getRelationship(relationship_type);
             const depth = depth_target.val();
             getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
             console.log('update submitted');

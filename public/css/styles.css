@@ -64,6 +64,13 @@ nav li {
     pointer-events: all;
  }
 
+ .relationship {
+     fill: gray;
+     font-size: 14px;
+     text-anchor: middle;
+     baseline-shift: -80px;
+ }
+
 .label:hover:after {
     /* font-family: 'FontAwesome'; */
     /* content: 'hello'; */
