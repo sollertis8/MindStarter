@@ -94,7 +94,7 @@ Account Page - Mobile
 Account Modal - Desktop
 
 ## Technology Used
-HTML
+HTML<br/>
 CSS
 JavaScript
 jQuery
