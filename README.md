@@ -1,7 +1,7 @@
 # MindStarter
 A brainstorming app that visually maps a user's thought process as they explore word relationships through homonyms, synonyms, antonyms, related words, and words that rhyme. 
 
-## The Mindstarter App has 6 pages.
+## The Mindstarter App has 8 pages.
 
 ## Landing Page / Home Page
 The landing page is the first page the user sees when hitting the site.  Here the user can get brief information about the app, click  the "get started" button to go to the Sign-up page, Log or click the Log In button to go to the log in page.
