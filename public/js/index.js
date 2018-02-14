@@ -12,7 +12,6 @@ window.FontAwesomeConfig = {
 let relationship = ""
 let idea_word = "";
 let projectJson = {
-    "name": idea_word,
     "children": []
 };
 
@@ -130,27 +129,6 @@ function renderProject() {
         nodes = pack(root).descendants(),
         view;
 
-    var rectangle = svg.append('rect')
-        .attr({
-            'width': width * 0.8,
-            'height': height * 0.8,
-            'x': width * 0.1,
-            'y': height * 0.1,
-            'fill': '#F8F8F8'
-        });
-    var foWidth = 100;
-    var foHeight = 100;
-    var anchor = {
-        'w': width / 3,
-        'h': height / 3
-    };
-    var t = 50,
-        k = 15;
-    var tip = {
-        'w': (3 / 4 * t),
-        'h': k
-    };
-
     var circle = window.g.selectAll("circle")
         .data(nodes)
         .enter().append("circle")
@@ -168,10 +146,9 @@ function renderProject() {
             return d.children ? color(d.depth) : null;
         })
         .on("click", function (d) {
-
             if (focus !== d) zoom(d), d3.event.stopPropagation();
             $('.js-idea').val(this.__data__.data.name);
-        })
+        });
     var text = window.g.selectAll("text")
         .data(nodes)
         .enter().append("text")
@@ -184,13 +161,12 @@ function renderProject() {
         })
         .text(function (d) {
             return d.data.name;
-        })
+        });
 
-
-    var relationship = window.g.selectAll("relationship")
+        var relationship = window.g.selectAll("relationship")
         .data(nodes)
         .enter().append("text")
-        .attr("class", "relationship")
+        .attr("class", "relationships")
         .style("fill-opacity", function (d) {
             return d.parent === root ? 1 : 0;
         })
@@ -199,9 +175,9 @@ function renderProject() {
         })
         .text(function (d) {
             return d.data.relationship;
-        })
+        }) 
 
-    var node = window.g.selectAll("circle,text");
+    var node = window.g.selectAll("circle,text,relationship");
 
     svg
         .style("background", color(-1))
@@ -242,6 +218,7 @@ function renderProject() {
             .on("end", function (d) {
                 if (d.parent !== focus) this.style.display = "none";
             });
+
     }
 
     function zoomTo(v) {
@@ -304,36 +281,36 @@ function displayNodeUpdate(response) {
             } else if (typeof projectJson.children[i].children != "undefined") {
                 // matching selected word with its node 
                 for (var l = 0; l < projectJson.children[i].children.length; l++) {
-                    if (idea_word === projectJson.children[i].children[l].name) {
-                        for (var m = 0; m < response.length; m++) {
-                            new_child.push({
-                                name: response[m].word,
-                                size: "250",
-                                relationship: relationship
-                            });
-                        }
-                        // adding new children to specific node (now 3 levels deep)
-                        projectJson.children[i].children[l].children = new_child;
-                        renderProject();
-                        // checking if children of child nodes have any children (at 3 levels deep)
-                    } else if (typeof projectJson.children[i].children[l].children != "undefined") {
-                        // matching selected word with its node
-                        for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
-                            if (idea_word === projectJson.children[i].children[l].children[n].name) {
-                                for (var o = 0; o < response.length; o++) {
-                                    new_child.push({
-                                        name: response[o].word,
-                                        size: "125",
-                                        relationship: relationship
-                                    });
-                                }
-                                // adding new children to node now 4 levels deep
-                                projectJson.children[i].children[l].children[n].children = new_child;
-                                renderProject();
-                            }
-                        };
-                    }
-                };
+            if (idea_word === projectJson.children[i].children[l].name) {
+                for (var m = 0; m < response.length; m++) {
+                    new_child.push({
+                        name: response[m].word,
+                        size: "250",
+                        relationship: relationship
+                    });
+                }
+                // adding new children to specific node (now 3 levels deep)
+                projectJson.children[i].children[l].children = new_child;
+                renderProject();
+                // checking if children of child nodes have any children (at 3 levels deep)
+            } else if (typeof projectJson.children[i].children[l].children != "undefined") {
+                // matching selected word with its node
+                for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
+            if (idea_word === projectJson.children[i].children[l].children[n].name) {
+                for (var o = 0; o < response.length; o++) {
+                    new_child.push({
+                        name: response[o].word,
+                        size: "125",
+                        relationship: relationship
+                    });
+                }
+                // adding new children to node now 4 levels deep
+                projectJson.children[i].children[l].children[n].children = new_child;
+                renderProject();
+            } 
+        };
+            }
+        };
             }
         };
     } else if (response == "") {
@@ -344,32 +321,31 @@ function displayNodeUpdate(response) {
 
 };
 
-function getRelationship(relationship) {
-    let relation = "";
-    switch (relationship) {
+
+function getRelationship (relationship_type){
+    let data = "";
+    switch (relationship_type) {
         case "ml":
-           relation = "means like";
+            data = "means like";
             break;
         case "sel_hom":
-            relation = "sounds like";
+            data = "soundslike";
             break;
         case "sp":
-            relation = "spelled like";
+            data = "spelled like";
             break;
         case "rel_syn":
-            relation = "synonym";
+            data = "synonym";
             break;
         case "rel_ant":
-            relation = "antonym";
+            data = "antonym";
             break;
         case "rel_rhy":
-            relation = "rhymes with";
+            data = "rhymes with";
             break;
     }
-    return relation;
+        return data;
 }
-
-
 
 function watchSubmit() {
     $('.js-project-form').submit(event => {
@@ -384,6 +360,9 @@ function watchSubmit() {
         const relationship_type = relationship_target.val();
         relationship = getRelationship(relationship_type);
         const depth = depth_target.val();
+
+        projectJson.name = idea_word;
+        projectJson.relationsip = relationship;
         //  $('.result').text(JSON.stringify($('form').serializeObject()));
         getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
         console.log('save submitted');
@@ -408,6 +387,9 @@ function watchUpdate() {
             const relationship_type = relationship_target.val();
             relationship = getRelationship(relationship_type);
             const depth = depth_target.val();
+
+            projectJson.name = idea_word;
+            projectJson.relationsip = relationship;
             getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
             console.log('update submitted');
         });
