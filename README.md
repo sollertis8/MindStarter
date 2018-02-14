@@ -24,7 +24,7 @@ Sign Up Modal
 ## Sign In Page
 The user will sign in to the app on the Sign In page or Sign In modal with their email and password as credentials.  The user must tap/click the Sign In button with valid credentials for access.  There will also a "Forgot Password" link which will take the user to the Forgot Password Page or Modal depending on whether the user is on a mobile or desktop device, respectively.
 
-![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Sign%20In%20Page.png)
+![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Sign%20In%20Page%20-%20mobile.png)
 Sign In Page - Mobile
 
 ![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Sign%20In%20Page.png)
