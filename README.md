@@ -95,13 +95,13 @@ Account Modal - Desktop
 
 ## Technology Used
 HTML<br/>
-CSS
-JavaScript
-jQuery
-Node.js
-Mocha
-Chai
-Travis CI
-MongoDB
-Mongoose
-D3.js
+CSS<br/>
+JavaScript<br/>
+jQuery<br/>
+Node.js<br/>
+Mocha<br/>
+Chai<br/>
+Travis CI<br/>
+MongoDB<br/>
+Mongoose<br/>
+D3.js<br/>
