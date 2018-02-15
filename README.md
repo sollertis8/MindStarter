@@ -94,7 +94,7 @@ Account Page - Mobile
 Account Modal - Desktop
 
 ## Technology Used
-* ![alt text](https://www.w3schools.com/html/ "HTML") (Hypertext Markup Language) - the standard markup language for creating web pages and web applications<br/>
+* ![HTML](https://www.w3schools.com/html/) (Hypertext Markup Language) - the standard markup language for creating web pages and web applications<br/>
 * CSS (Cascading Style Sheets) - a style sheet language used for describing the presentation of a document written in a markup language<br/>
 * JavaScript - a high-level, prototype-based, multi-paradigm, and interpreted programming language <br/>
 * jQuery - an open-source, cross-platform JavaScript libray for client-side scripting of HTML<br/>
