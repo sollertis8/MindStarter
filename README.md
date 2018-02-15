@@ -94,14 +94,15 @@ Account Page - Mobile
 Account Modal - Desktop
 
 ## Technology Used
-HTML<br/>
-CSS<br/>
-JavaScript<br/>
-jQuery<br/>
-Node.js<br/>
-Mocha<br/>
-Chai<br/>
-Travis CI<br/>
-MongoDB<br/>
-Mongoose<br/>
-D3.js<br/>
+HTML (Hypertext Markup Language) - the standard markup language for creating web pages and web applications<br/>
+CSS (Cascading Style Sheets) - a style sheet language used for describing the presentation of a document written in a markup language<br/>
+JavaScript - a high-level, prototype-based, multi-paradigm, and interpreted programming language <br/>
+jQuery - an open-source, cross-platform JavaScript libray for client-side scripting of HTML<br/>
+Node.js - an open-source, cross-platform JavaScript run-time environment for executing server-side JavaScript code<br/>
+Mocha.js - a JavaScript test framework for Node.js<br/>
+Chai.js - a Test Driven Development (TDD) and Behavior Driven Development (BDD) assertion library for Node.js<br/>
+Travis CI - a hosted, distributed continuous integration service used for building and testing projects<br/>
+MongoDB - a database engine that uses a JSON-like document model<br/>
+Mongoose - a MongoDB object modeling JavaScript library for Node.js<br/>
+D3.js - a JavaScript data visualization library<br/> 
+Google Drawings - a web-based diagraming software
