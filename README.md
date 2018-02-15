@@ -59,12 +59,12 @@ New Project page - mobile
 ![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Profile%20Page.png)
 New Project Page - Desktop
 
-## Usage
+### Usage
 Mindstarter is a brainstorming app that allows the user to get and visualize relationships between words.  This can be helpful for writers, songwriters, or anyone who wants a was to visually flesh out their ideas.   
 
 The user will be able to create a new project by entering a Project Name, a Mindstarter Word (the word the user wants to get relationships for), a relationsip (the way the returned results will relate to the Mindstarter word i.e. - Means Like, Sounds Like, Spelled Like, Synonyms, Antonyms, and Rhymes with) and a depth (how many nodes the user wants returned).  
 
-## Creating a Project
+### Creating a Project
 Once the user clicks the save button, a new project is created and will be listed under the Projects bar on the right side of the screen (on the desktop version), and the number of nodes (circles) specified in the Depth dropdown will be return based on the user's word and relationship settings (both mobile and desktop).  After the initial project creation, the "Save" button becomes an "Update" button.  After clicking "Save", the results will be returned as words inside nodes (circles) on the Mindstarter canvas called the Mindsphere.
 
 ![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Project%20Page%20-%20mobile.png)
@@ -73,10 +73,10 @@ Project Page - Mobile
 ![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Profile%20Page%20Project.png)
 Project Page - Desktop
 
-## Updating a Project
+### Updating a Project
 To add a new word or words to the Mindsphere with a new search, the user can simply enter a new Mindstarter word into the "Word" field, pick the relationship and depth they want returned, and tap/click the "Update" button.  Each word will be returned inside its own circle.  Each circle will have a label under the returned word that shows the relationship the word has with the original mind starter word.
 
-## Exploring existing words
+### Exploring existing words
 If the user wants to explore an existing word in the Mindsphere, the user can click the word they want to explore (causing the mindsphere to zoom in on the selected word) which will automatically enter the word into the "Word" field.  The user can then select the relationship and depth they want returned, and tap/click the update button.  The related words will be returned as circles inside of the word explored with labels showing their relationship with the explored word.  Users can currently explore 4 levels deep (i.e. the number of circles within circles).
 
 ## Account Page
@@ -95,14 +95,14 @@ Account Modal - Desktop
 
 ## Technology Used
 * [HTML](https://www.w3schools.com/html/) (Hypertext Markup Language) - the standard markup language for creating web pages and web applications<br/>
-* CSS (Cascading Style Sheets) - a style sheet language used for describing the presentation of a document written in a markup language<br/>
-* JavaScript - a high-level, prototype-based, multi-paradigm, and interpreted programming language <br/>
-* jQuery - an open-source, cross-platform JavaScript libray for client-side scripting of HTML<br/>
-* Node.js - an open-source, cross-platform JavaScript run-time environment for executing server-side JavaScript code<br/>
-* Mocha.js - a JavaScript test framework for Node.js<br/>
-* Chai.js - a Test Driven Development (TDD) and Behavior Driven Development (BDD) assertion library for Node.js<br/>
-* Travis CI - a hosted, distributed continuous integration service used for building and testing projects<br/>
-* MongoDB - a database engine that uses a JSON-like document model<br/>
-* Mongoose - a MongoDB object modeling JavaScript library for Node.js<br/>
-* D3.js - a JavaScript data visualization library<br/> 
-* Google Drawings - a web-based diagraming software
+* [CSS](https://www.w3schools.com/css/) (Cascading Style Sheets) - a style sheet language used for describing the presentation of a document written in a markup language<br/>
+* [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - a high-level, prototype-based, multi-paradigm, and interpreted programming language <br/>
+* [jQuery](https://jquery.com/) - an open-source, cross-platform JavaScript libray for client-side scripting of HTML<br/>
+* [Node.js](https://nodejs.org/en/) - an open-source, cross-platform JavaScript run-time environment for executing server-side JavaScript code<br/>
+* [Mocha.js](https://mochajs.org/) - a JavaScript test framework for Node.js<br/>
+* [Chai.js](http://chaijs.com/) - a Test Driven Development (TDD) and Behavior Driven Development (BDD) assertion library for Node.js<br/>
+* [Travis CI](https://travis-ci.org/) - a hosted, distributed continuous integration service used for building and testing projects<br/>
+* [MongoDB](https://www.mongodb.com/) - a database engine that uses a JSON-like document model<br/>
+* [Mongoose.js](http://mongoosejs.com/) - a MongoDB object modeling JavaScript library for Node.js<br/>
+* [D3.js](https://d3js.org/) - a JavaScript data visualization library<br/> 
+* [Google Drawings](https://docs.google.com/drawings) - a web-based diagraming software
