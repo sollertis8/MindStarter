@@ -93,7 +93,7 @@ Account Page - Mobile
 ![alt text](https://github.com/sollertis8/MindStarter/blob/feature/mvp-client/images/MindStarter%20-%20Account%20Page.png)
 Account Modal - Desktop
 
-## Technology Used
+## Technologies Used
 * [HTML](https://www.w3schools.com/html/) (Hypertext Markup Language) - the standard markup language for creating web pages and web applications<br/>
 * [CSS](https://www.w3schools.com/css/) (Cascading Style Sheets) - a style sheet language used for describing the presentation of a document written in a markup language<br/>
 * [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - a high-level, prototype-based, multi-paradigm, and interpreted programming language <br/>
