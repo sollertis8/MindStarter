@@ -99,6 +99,7 @@ Account Modal - Desktop
 * [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) - a high-level, prototype-based, multi-paradigm, and interpreted programming language <br/>
 * [jQuery](https://jquery.com/) - an open-source, cross-platform JavaScript libray for client-side scripting of HTML<br/>
 * [Node.js](https://nodejs.org/en/) - an open-source, cross-platform JavaScript run-time environment for executing server-side JavaScript code<br/>
+* [Express.js](https://expressjs.com/) a Node.js web application framework<br/>
 * [Mocha.js](https://mochajs.org/) - a JavaScript test framework for Node.js<br/>
 * [Chai.js](http://chaijs.com/) - a Test Driven Development (TDD) and Behavior Driven Development (BDD) assertion library for Node.js<br/>
 * [Travis CI](https://travis-ci.org/) - a hosted, distributed continuous integration service used for building and testing projects<br/>
