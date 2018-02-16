@@ -1,9 +1,16 @@
 'use strict';
+
+// const router = express.Router();
+// var getHeaders = response.headers;
+
+
 $(document).ready(function () {
     watchSubmit();
     watchUpdate();
+    tokenSuccess();
     $('.js-update-project').hide();
     $('.js-project-title').hide();
+    $('.auth').hide();
 });
 
 window.FontAwesomeConfig = {
@@ -95,7 +102,34 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
     $.ajax(settings)
 }
 
+function tokenSuccess() {
+    window.localStorage.setItem('authToken', $('.auth').text());
+    var token = window.localStorage.getItem('authToken');
+    
+    if (token) {
+      $.ajaxSetup({
+        headers: {
+          'Authorization': 'Bearer' + token
+        }
+      });
+    }
 
+    // var client = new XMLHttpRequest();
+    // window.localStorage.authToken = "";
+//     const options = {
+//     root: ('./views'),
+//     headers: {
+//       'Authorization': 'Bearer ' + window.sessionStorage.authToken
+//     }
+//    }
+    // router.get('/user/profile, options');
+}
+
+// function watchLogin() {
+//     $('.js-login').submit(event => {
+//         tokenSuccess();
+// }
+//     )}
 function renderProject() {
     var width = 960;
     var height = 960;

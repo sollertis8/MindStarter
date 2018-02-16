@@ -3,10 +3,11 @@ const express = require('express');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-
+const fs = require('fs');
 const config = require('../config');
 const router = express.Router();
-
+const app = express();
+// const ejs = include('ejs');
 const createAuthToken = function (user) {
   return jwt.sign({
     user
@@ -18,6 +19,8 @@ const createAuthToken = function (user) {
 };
 
 
+
+
 const localAuth = passport.authenticate('local', {
   session: false
 });
@@ -27,27 +30,33 @@ router.use(bodyParser.urlencoded({
 }));
 // The user provides a username and password to login
 router.post('/login', localAuth, (req, res) => {
+  
   const authToken = createAuthToken(req.user.serialize());
+  const data = authToken;
+//  fs.readFile('/views/profile.html', data => {
+//    res.send(data);
+//  })
   // const userId = req.user._id;
   // console.log(authToken);
+
+  const options = {
+    root: ('./views')
+    // headers: {
+    //   'Authorization': authToken
+    // }
+}
+// window.localStorage.setItem('authToken', authToken);
+// res.render('profile.html', { auth: authToken.valueOf() });
+
+  res.sendFile('/profile.html', options);
   // res.json({authToken})
   // .send();
   // .sendFile('/profile.html', options);
   // const auth = 'Bearer ' + authToken;
   //   root: ('./views'),
-  
-  
-  
-  const options = {
-    root: ('./views')
-    // headers: {
-    //   'Authorization': 'Bearer ' + authToken
-    // }
-  }
-
 
   // req.headers.authorization = ('bearer ' + authToken); 
-   res.sendFile('/project.html', options);
+  // .sendFile('/project.html', options);
   
 });
 

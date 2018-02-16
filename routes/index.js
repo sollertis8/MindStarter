@@ -134,6 +134,15 @@ router.post('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser,(req,
 
 });
 
+// router.post('/login', jwtAuth, jsonParser, (req, res) => {
+//         const options = {
+//                 root: ('./views'),
+//                 headers: {
+//                   'Authorization': 'Bearer ' + authToken
+//                 }
+//             }
+//     res.sendFile('/profile.html')
+// });
 
 
 router.get('/login', (req, res) => {

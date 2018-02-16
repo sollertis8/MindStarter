@@ -28,6 +28,13 @@ app.use(morgan('common'));
 // Parse Cookies
 app.use(cookieParser());
 
+
+// templating
+// app.set('views', __dirname + '/views');
+// app.engine('html', require('ejs').renderFile);
+
+// app.set('view engine', 'ejs');
+
 // CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
