@@ -186,6 +186,12 @@ nav .logo {
     color: #b4a7d6ff;
 }
 
+nav .logo-home {
+    float: left;
+    width: auto !important;
+    color: #ff9900;
+}
+
 nav {
     font-family: comfortaa;
     width: auto;
