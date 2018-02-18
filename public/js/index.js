@@ -134,7 +134,7 @@ function renderProject() {
     var width = 960;
     var height = 960;
 
-    var svg = d3.select("svg"),
+    var svg = d3.select(".mindstarter-project"),
         margin = 20,
         diameter = +svg.attr("width");
     window.g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
@@ -291,6 +291,14 @@ function displayResponseData(response) {
 
 }
 
+
+function nodeCount(){
+    const count = "";
+    for (let i=0; i < projectJson.length; i++) {
+        count = i;
+    }
+    $('.project-item').html('');
+}
 
 function displayNodeUpdate(response) {
     // check that the api response is not empty
