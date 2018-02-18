@@ -107,5 +107,6 @@ Account Modal - Desktop
 * [MongoDB](https://www.mongodb.com/) - a database engine that uses a JSON-like document model<br/>
 * [Mongoose.js](http://mongoosejs.com/) - a MongoDB object modeling JavaScript library for Node.js<br/>
 * [D3.js](https://d3js.org/) - a JavaScript data visualization library<br/> 
+* [Datamuse API](https://datamuse.com/) - a word-finding query engine<br/> 
 * [Trello](https://www.trello.com/) - a web-based project management application<br/> 
 * [Google Drawings](https://docs.google.com/drawings) - a web-based diagraming software
