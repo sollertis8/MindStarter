@@ -103,6 +103,7 @@ Account Modal - Desktop
 * [Mocha.js](https://mochajs.org/) - a JavaScript test framework for Node.js<br/>
 * [Chai.js](http://chaijs.com/) - a Test Driven Development (TDD) and Behavior Driven Development (BDD) assertion library for Node.js<br/>
 * [Travis CI](https://travis-ci.org/) - a hosted, distributed continuous integration service used for building and testing projects<br/>
+* [Heroku](https://www.heroku.com/) - a cloud platform as a service (PaaS) used as a web application deployment model<br/>
 * [MongoDB](https://www.mongodb.com/) - a database engine that uses a JSON-like document model<br/>
 * [Mongoose.js](http://mongoosejs.com/) - a MongoDB object modeling JavaScript library for Node.js<br/>
 * [D3.js](https://d3js.org/) - a JavaScript data visualization library<br/> 
