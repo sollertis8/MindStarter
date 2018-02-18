@@ -20,36 +20,42 @@
         <![endif]-->
     <link rel="stylesheet" type="text/css" href="css/float-grid.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
-    <nav>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Comfortaa" />
+    <nav class="top-nav">
+            
+                    <ul>
+                            <a href="/" class="left">
+                                <div class="logo-home">Mindstarter</div>
+                            </a>
+                
+                    </ul>
+            
+                </nav>
+            
+                <div class="top">
+                    <h1>
+                        <div class="tagline">Mindstarter,
+                            <span class="jumpstart">jumpstart</span> your mind.</div>
+                    </h1>
+                    <div class="centerpiece">
+                        <div class="brain">
+                            <img src="/images/colorful-brain-map-vector-clipart.png" width=25% height=25%/>
+                        </div>
+                        <div class="dot">
+                            <a href="/signup" class="get-started">Get Started</a>
+                        </div>
+                    </div>
+                </div>
 
-        <ul>
-            <left>
-                <logo>Mindstarter</logo>
-            </left>
-            <right>
-                <li>
-                </li>
-                <li>
-                    <a href="/signup">Sign Up</a>
-                </li>
-                <li>
-                    <a href="/login">Log In</a>
-                </li>
-            </right>
-        </ul>
-
-    </nav>
-    <br>
-
-
+                <div class="login-form">
     <form action="/api/auth/login" class="login js-login" method="post">
         <fieldset>
-            <legend>Login:</legend>
+            <legend class="form-heading">Login:</legend>
             <label for "username">Username:</label>
             <br>
             <input type="text" name="username" id="username" value="Username">
             <br> 
-            <label for "password"Password:></label>
+            <label for "password">Password:</label>
             <br>
             <input type="password" name="password" id="password" value="Password">
             <br>
@@ -57,6 +63,7 @@
             <input type="submit" class="loginSubmit js-loginSubmit" value="Submit">
         </fieldset>
     </form>
+    </div>
 </body>
 
 </html>

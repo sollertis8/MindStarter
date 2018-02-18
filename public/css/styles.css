@@ -303,6 +303,20 @@ li .left {
     text-align: center;
 }
 
+.login-form {
+    font-family: comfortaa;
+    background-color: white;
+    border:  1px solid #e9e6ff;
+    border-radius: 15px;
+    top: 100px;
+    left: 0;
+    right: 0;
+    width: 600px;
+    height: 160px;
+    margin: 50px auto;
+    text-align: center;
+}
+
 .form-heading {
     font-family: comfortaa;
     background-color: #b4a7d6ff;
@@ -489,21 +503,6 @@ h1 {
     color: #ff9900 !important;
 }
 
-/* nav ul right {
-    /* position: relative; */
-
-/* left: 200px; */
-
-/* float: right; */
-
-/* } */
-
-/* nav ul left { */
-
-/* float: left; */
-
-/* } */
-
 .top-nav li {
     padding: 10px;
     display: inline;
@@ -594,4 +593,43 @@ polygon {
 .node--root,
 .node--leaf {
     pointer-events: visibleFill;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
