@@ -6,7 +6,7 @@
   "grunt-node-inspector": ">=0.2.0",
   "watch": "server.js",
   "scripts": {
-    "test": "DATABASE_URL=mongodb://localhost/mindstarter-test node_modules/.bin/mocha",
+    "test": "mocha --exit",
     "start": "node server.js",
     "build": "webpack --config webpack.config.js"
   },
@@ -23,6 +23,7 @@
     "file-system": "^2.2.2",
     "innersvg-polyfill": "0.0.2",
     "jsonwebtoken": "^8.1.0",
+    "materialize-css": "^0.100.2",
     "mongoose": "^4.13.9",
     "morgan": "^1.9.0",
     "nodemon": "^1.14.11",

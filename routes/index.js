@@ -157,7 +157,7 @@ router.get('/login', (req, res) => {
 // })  
 // const jwtAuth = passport.authenticate('jwt', { session: false });
 
-router.get('/account', jwtAuth, function (req, res) {
+router.get('/user/account', jwtAuth, function (req, res) {
     res.sendFile('/account.html', {
         root: ('./views'),
         headers: {
