@@ -1,9 +1,5 @@
 'use strict';
 
-// const router = express.Router();
-// var getHeaders = response.headers;
-
-
 $(document).ready(function () {
     watchSubmit();
     watchUpdate();
@@ -139,12 +135,8 @@ function renderProject() {
         diameter = +svg.attr("width");
     window.g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
 
-    // var color = d3.scaleLinear()
-    //     .domain([-1, 5])
     var color = d3.scaleSequential(d3.interpolateMagma)
         .domain([-4, 4]);
-    // .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
-    // .interpolate(d3.interpolateHcl);
 
     var pack = d3.pack()
         .size([diameter - margin, diameter - margin])
@@ -359,8 +351,6 @@ function displayNodeUpdate(response) {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
     }
-
-
 };
 
 
@@ -429,7 +419,6 @@ function watchUpdate() {
             const relationship_type = relationship_target.val();
             relationship = getRelationship(relationship_type);
             const depth = depth_target.val();
-
             projectJson.name = idea_word;
             projectJson.relationsip = relationship;
             getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
