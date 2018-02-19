@@ -33,31 +33,15 @@ router.post('/login', localAuth, (req, res) => {
   
   const authToken = createAuthToken(req.user.serialize());
   const data = authToken;
-//  fs.readFile('/views/profile.html', data => {
-//    res.send(data);
-//  })
-  // const userId = req.user._id;
-  // console.log(authToken);
 
   const options = {
-    root: ('./views')
-    // headers: {
-    //   'Authorization': authToken
-    // }
+    root: ('./views'),
+    headers: {
+      'Authorization': authToken
+    }
 }
-// window.localStorage.setItem('authToken', authToken);
-// res.render('profile.html', { auth: authToken.valueOf() });
-
   res.sendFile('/profile.html', options);
-  // res.json({authToken})
-  // .send();
-  // .sendFile('/profile.html', options);
-  // const auth = 'Bearer ' + authToken;
-  //   root: ('./views'),
 
-  // req.headers.authorization = ('bearer ' + authToken); 
-  // .sendFile('/project.html', options);
-  
 });
 
 

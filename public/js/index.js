@@ -4,6 +4,7 @@ $(document).ready(function () {
     watchSubmit();
     watchUpdate();
     tokenSuccess();
+    getAuthHeader();
     $('.js-update-project').hide();
     $('.js-project-title').hide();
     $('.auth').hide();
@@ -109,23 +110,21 @@ function tokenSuccess() {
         }
       });
     }
-
-    // var client = new XMLHttpRequest();
-    // window.localStorage.authToken = "";
-//     const options = {
-//     root: ('./views'),
-//     headers: {
-//       'Authorization': 'Bearer ' + window.sessionStorage.authToken
-//     }
-//    }
-    // router.get('/user/profile, options');
 }
+
+function getAuthHeader(){
+    var client = new XMLHttpRequest();
+    client.getResponseHeader('Authorization');
+}
+    
+   
 
 // function watchLogin() {
 //     $('.js-login').submit(event => {
 //         tokenSuccess();
 // }
 //     )}
+
 function renderProject() {
     var width = 960;
     var height = 960;
