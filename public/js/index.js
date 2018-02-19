@@ -114,7 +114,11 @@ function tokenSuccess() {
 
 function getAuthHeader(){
     var client = new XMLHttpRequest();
-    client.getResponseHeader('Authorization');
+    client.onreadystatechange = function() {
+        if(this.readyState == this.HEADERS_RECEIVED) {
+          console.log(client.getResponseHeader('Authorization'));
+        }
+    }
 }
     
    
@@ -275,6 +279,7 @@ function displayResponseData(response) {
             });
         }
         renderProject();
+        getAuthHeader();
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
