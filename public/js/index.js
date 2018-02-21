@@ -3,8 +3,8 @@
 $(document).ready(function () {
     watchSubmit();
     watchUpdate();
-    tokenSuccess();
-    getAuthHeader();
+    // getAuthToken();
+    ajaxLogin();
     $('.js-update-project').hide();
     $('.js-project-title').hide();
     $('.auth').hide();
@@ -99,35 +99,50 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
     $.ajax(settings)
 }
 
-function tokenSuccess() {
-    window.localStorage.setItem('authToken', $('.auth').text());
-    var token = window.localStorage.getItem('authToken');
+// retrieve JWT token from local storage and set auth header
+function getAuthToken() {
+    var token = window.localStorage.getItem('jwt');
     
     if (token) {
       $.ajaxSetup({
         headers: {
-          'Authorization': 'Bearer' + token
+          'Authorization': 'Bearer ' + token
         }
       });
     }
 }
 
-function getAuthHeader(){
-    var client = new XMLHttpRequest();
-    client.onreadystatechange = function() {
-        if(this.readyState == this.HEADERS_RECEIVED) {
-          console.log(client.getResponseHeader('Authorization'));
-        }
-    }
+// get authorization header and store in local storage
+function getAuthHeader(data, textStatus, request) {
+   const response = request.getResponseHeader('Authorization');
+   localStorage.setItem('jwt', response);
+   console.log(response);
 }
-    
-   
 
-// function watchLogin() {
-//     $('.js-login').submit(event => {
-//         tokenSuccess();
-// }
-//     )}
+
+// parse login
+function ajaxLogin() {
+    $('.js-login').submit(event => {
+        event.preventDefault();
+        const data = $(event.target).serialize();
+      const settings = {
+           data: data,
+           url: "/api/auth/login",
+           dataType: "html",
+           type: "POST",
+           success: 
+           function getAuthHeader(data, textStatus, request) {
+            const response = request.getResponseHeader('Authorization');
+            localStorage.setItem('jwt', response);
+            console.log(response);
+         }    
+       }
+       $.ajax(settings);
+    })
+    
+}
+
+
 
 function renderProject() {
     var width = 960;
@@ -279,7 +294,6 @@ function displayResponseData(response) {
             });
         }
         renderProject();
-        getAuthHeader();
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);

@@ -30,10 +30,8 @@ router.use(bodyParser.urlencoded({
 }));
 // The user provides a username and password to login
 router.post('/login', localAuth, (req, res) => {
-  
   const authToken = createAuthToken(req.user.serialize());
   const data = authToken;
-
   const options = {
     root: ('./views'),
     headers: {
@@ -41,7 +39,6 @@ router.post('/login', localAuth, (req, res) => {
     }
 }
   res.sendFile('/profile.html', options);
-
 });
 
 

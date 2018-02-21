@@ -32,7 +32,7 @@ router.get('/signup', function (req, res) {
     });
 });
 
-router.get('/user/profile', jwtAuth, jsonParser, (req, res) => {
+router.get('/user/:userId/profile', jwtAuth, jsonParser, (req, res) => {
     const authToken = req.header('Authorization');
     const auth = 'Bearer ' + authToken;
     const {userId} = req.params;
@@ -48,7 +48,7 @@ router.get('/user/profile', jwtAuth, jsonParser, (req, res) => {
   
 
 // create a new project
-router.post('/user/:userId/project', jwtAuth, urlencodedParser, jsonParser,(req, res) => {
+router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
     
     const userId = req.user._id;
     
