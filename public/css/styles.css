@@ -176,6 +176,10 @@ html {
     margin: 0 !important;
 }
 
+/* .main-content {
+    display: none;
+} */
+
 body {
     padding: 0 !important;
 }
@@ -203,12 +207,12 @@ nav {
     /* display: inline-block;   */
 }
 
-.new_project_icon {
+.new-project-icon {
     font-family: comfortaa;
     padding: 25px;
     width: 80px;
     height: 100px;
-    display: block;
+    display: none;
     background-color: #333344ff;
     float: right !important;
     position: fixed;
@@ -241,6 +245,7 @@ li .left {
 
 
 .left-nav {
+    display: none;
     top: 100px;
     position: fixed;
     background-color: #333344ff;
@@ -251,6 +256,7 @@ li .left {
 }
 
 .signout {
+    display: none;
     float: right;
     color: #b4a7d6ff !important;
 }
@@ -277,7 +283,7 @@ li .left {
     position: absolute;
     width: 1220px;
     height: 1000px;
-    display: block;
+    display: none;
     text-align: center;
     overflow: scroll;
 }
@@ -289,7 +295,7 @@ li .left {
     height: 1100px; 
 }
 
-.project-form {
+.new-project-form {
     font-family: comfortaa;
     background-color: white;
     border:  1px solid #e9e6ff;
@@ -303,7 +309,29 @@ li .left {
     text-align: center;
 }
 
+#loginModal {
+    display: none;
+}
+
+#signupModal {
+    display: none;
+}
+
 .login-form {
+    font-family: comfortaa;
+    background-color: white;
+    border:  1px solid #e9e6ff;
+    border-radius: 15px;
+    top: 100px;
+    left: 0;
+    right: 0;
+    width: 600px;
+    height: 160px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.signup-form {
     font-family: comfortaa;
     background-color: white;
     border:  1px solid #e9e6ff;
@@ -363,7 +391,7 @@ li .left {
     margin-right: 70px !important;
     padding: 40px;
     font-size: 17px;
-    display: block;
+    display: none;
     top: 0;
     left: 0;
     right: 0;
@@ -435,7 +463,7 @@ li .left {
     text-align: center;
     margin: auto;
     position: relative;
-    z-index: 10;
+    z-index: 1;
     display: block;
     top: -240px;
 }
@@ -597,10 +625,10 @@ polygon {
 
 
 /* The Modal (background) */
-.modal {
+.loginModal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 2; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -611,7 +639,30 @@ polygon {
 }
 
 /* Modal Content/Box */
-.modal-content {
+.loginModal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+
+.signupModal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.signupModal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;

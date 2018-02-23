@@ -1,23 +1,41 @@
 'use strict';
 
 $(document).ready(function () {
+    openLoginModal();
+    closeLoginModal();
+    openSignupModal();
+    closeSignupModal();
     watchSubmit();
     watchUpdate();
     // getAuthToken();
-    ajaxLogin();
-    $('.js-update-project').hide();
-    $('.js-project-title').hide();
-    $('.auth').hide();
- });
+    ajaxLogin(getAuthHeader);
+    // clearPage();
 
-window.FontAwesomeConfig = {
-    searchPseudoElements: true
-};
+    // renderHomePage();
+    // $('.js-update-project').hide();
+    // $('.js-project-title').hide();
+    // $('.auth').hide();
+});
+
+
 let relationship = ""
 let idea_word = "";
 let projectJson = {
     "children": []
 };
+
+
+function clearPage() {
+    $(".main-content").hide();
+
+}
+
+function renderHomePage() {
+    $(".main-content").show();
+    $('.js-top-nav').show();
+    $('.js-top').show();
+    $('.js-cards').show();
+}
 
 // gets relationship data from the api
 function getDataFromApi(relationship, word, depth, callback) {
@@ -100,46 +118,61 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
 }
 
 // retrieve JWT token from local storage and set auth header
-function getAuthToken() {
+function handleProjectAuth(callback) {
     var token = window.localStorage.getItem('jwt');
-    
+
     if (token) {
-      $.ajaxSetup({
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      });
+        $.ajaxSetup({
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            url: '/user/profile',
+            dataType: "html",
+            type: 'GET',
+            success: callback
+        });
     }
+    $.ajax()
 }
 
 // get authorization header and store in local storage
 function getAuthHeader(data, textStatus, request) {
-   const response = request.getResponseHeader('Authorization');
-   localStorage.setItem('jwt', response);
-   console.log(response);
+    const response = request.responseJSON.authToken;
+    localStorage.setItem('jwt', response);
+    handleProjectAuth(renderProjectPage);
+    
+}
+
+// display Project page
+function renderProjectPage() {
+    window.history.pushState("", "Project", "/user/project");
+    $('.loginModal').hide();
+    $('.top-nav').hide();
+    $('.js-top').hide();
+    $('.js-cards').hide();
+    $('.project-nav').css("display", "block");
+    $('.new-project-icon').css("display", "block");
+    $('.left-nav').css("display", "inline");
+    $('.mindstarter-container').css("display", "block");
+    $('.update-project').hide();
 }
 
 
 // parse login
-function ajaxLogin() {
+function ajaxLogin(callback) {
     $('.js-login').submit(event => {
         event.preventDefault();
         const data = $(event.target).serialize();
-      const settings = {
-           data: data,
-           url: "/api/auth/login",
-           dataType: "html",
-           type: "POST",
-           success: 
-           function getAuthHeader(data, textStatus, request) {
-            const response = request.getResponseHeader('Authorization');
-            localStorage.setItem('jwt', response);
-            console.log(response);
-         }    
-       }
-       $.ajax(settings);
+        const settings = {
+            data: data,
+            url: "/api/auth/login",
+            dataType: "json",
+            type: "POST",
+            success: callback,
+        }
+        $.ajax(settings);
     })
-    
+
 }
 
 
@@ -207,7 +240,7 @@ function renderProject() {
             return d.data.name;
         });
 
-        var relationship = window.g.selectAll("relationship")
+    var relationship = window.g.selectAll("relationship")
         .data(nodes)
         .enter().append("text")
         .attr("class", "relationships")
@@ -219,7 +252,7 @@ function renderProject() {
         })
         .text(function (d) {
             return d.data.relationship;
-        }) 
+        })
 
     var node = window.g.selectAll("circle,text,relationship");
 
@@ -302,9 +335,9 @@ function displayResponseData(response) {
 }
 
 
-function nodeCount(){
+function nodeCount() {
     const count = "";
-    for (let i=0; i < projectJson.length; i++) {
+    for (let i = 0; i < projectJson.length; i++) {
         count = i;
     }
     $('.project-item').html('');
@@ -333,36 +366,36 @@ function displayNodeUpdate(response) {
             } else if (typeof projectJson.children[i].children != "undefined") {
                 // matching selected word with its node 
                 for (var l = 0; l < projectJson.children[i].children.length; l++) {
-            if (idea_word === projectJson.children[i].children[l].name) {
-                for (var m = 0; m < response.length; m++) {
-                    new_child.push({
-                        name: response[m].word,
-                        size: "250",
-                        relationship: relationship
-                    });
-                }
-                // adding new children to specific node (now 3 levels deep)
-                projectJson.children[i].children[l].children = new_child;
-                renderProject();
-                // checking if children of child nodes have any children (at 3 levels deep)
-            } else if (typeof projectJson.children[i].children[l].children != "undefined") {
-                // matching selected word with its node
-                for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
-            if (idea_word === projectJson.children[i].children[l].children[n].name) {
-                for (var o = 0; o < response.length; o++) {
-                    new_child.push({
-                        name: response[o].word,
-                        size: "125",
-                        relationship: relationship
-                    });
-                }
-                // adding new children to node now 4 levels deep
-                projectJson.children[i].children[l].children[n].children = new_child;
-                renderProject();
-            } 
-        };
-            }
-        };
+                    if (idea_word === projectJson.children[i].children[l].name) {
+                        for (var m = 0; m < response.length; m++) {
+                            new_child.push({
+                                name: response[m].word,
+                                size: "250",
+                                relationship: relationship
+                            });
+                        }
+                        // adding new children to specific node (now 3 levels deep)
+                        projectJson.children[i].children[l].children = new_child;
+                        renderProject();
+                        // checking if children of child nodes have any children (at 3 levels deep)
+                    } else if (typeof projectJson.children[i].children[l].children != "undefined") {
+                        // matching selected word with its node
+                        for (var n = 0; n < projectJson.children[i].children[l].children.length; n++) {
+                            if (idea_word === projectJson.children[i].children[l].children[n].name) {
+                                for (var o = 0; o < response.length; o++) {
+                                    new_child.push({
+                                        name: response[o].word,
+                                        size: "125",
+                                        relationship: relationship
+                                    });
+                                }
+                                // adding new children to node now 4 levels deep
+                                projectJson.children[i].children[l].children[n].children = new_child;
+                                renderProject();
+                            }
+                        };
+                    }
+                };
             }
         };
     } else if (response == "") {
@@ -372,7 +405,7 @@ function displayNodeUpdate(response) {
 };
 
 
-function getRelationship (relationship_type){
+function getRelationship(relationship_type) {
     let data = "";
     switch (relationship_type) {
         case "ml":
@@ -394,13 +427,13 @@ function getRelationship (relationship_type){
             data = "rhymes with";
             break;
     }
-        return data;
+    return data;
 }
 
 function watchSubmit() {
     $('.js-project-form').submit(event => {
         console.log('save button clicked');
-        // event.preventDefault();
+        event.preventDefault();
         const project_name_target = $(event.currentTarget).find('.js-project');
         const idea_target = $(event.currentTarget).find('.js-idea');
         const relationship_target = $(event.currentTarget).find('.js-relationship');
@@ -446,29 +479,43 @@ function watchUpdate() {
 };
 
 
+    function openLoginModal() {
+        $('.js-openLogin').click(event => {
+            event.preventDefault();
+            $('.loginModal').css("display", "block");
+        });
+    };
 
-// // Get the modal
-// var modal = document.getElementById('loginModal');
+    function closeLoginModal() {
+        $().click(event => {
+           if ((event.target == $('.loginModal'))) {
+            $('.loginModal').css("display", "none");
+        } 
+        })
+        
+        $('.close').click(event => {
+            $('.loginModal').css("display", "none");
 
-// // Get the button that opens the modal
-// var btn = document.getElementById("openLogin");
+        });
+    };
 
-// // Get the <span> element that closes the modal
-// var span = document.getElementsByClassName("close")[0];
 
-// // When the user clicks on the button, open the modal 
-// btn.onclick = function() {
-//     modal.style.display = "block";
-// }
+    function openSignupModal() {
+        $('.get-started').click(event => {
+            event.preventDefault();
+            $('.signupModal').css("display", "block");
+        });
+    };
 
-// // When the user clicks on <span> (x), close the modal
-// span.onclick = function() {
-//     modal.style.display = "none";
-// }
+    function closeSignupModal() {
+        $().click(event => {
+           if ((event.target == $('.signupModal'))) {
+            $('.signupModal').css("display", "none");
+        } 
+        })
+        
+        $('.close').click(event => {
+            $('.signupModal').css("display", "none");
 
-// // When the user clicks anywhere outside of the modal, close it
-// window.onclick = function(event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//     }
-// }
+        });
+    };

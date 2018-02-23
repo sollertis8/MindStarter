@@ -20,47 +20,59 @@
         <![endif]-->
     <link rel="stylesheet" type="text/css" href="css/float-grid.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Comfortaa" />
+    <nav class="top-nav">
+            
+                    <ul>
+                            <a href="/" class="left">
+                                <div class="logo-home">Mindstarter</div>
+                            </a>
+                
+                    </ul>
+            
+                </nav>
+            
+                <div class="top">
+                    <h1>
+                        <div class="tagline">Mindstarter,
+                            <span class="jumpstart">jumpstart</span> your mind.</div>
+                    </h1>
+                    <div class="centerpiece">
+                        <div class="brain">
+                            <img src="/images/colorful-brain-map-vector-clipart.png" width=25% height=25%/>
+                        </div>
+                        <div class="dot">
+                            <a href="/signup" class="get-started">Get Started</a>
+                        </div>
+                    </div>
+                </div>
 
-    <nav>
-
-        <ul>
-            <left>
-                <logo>Mindstarter</logo>
-            </left>
-            <right>
-                <li>
-                </li>
-                <li>
-                    <a href="/signup">Sign Up</a>
-                </li>
-                <li>
-                    <a href="/login">Log In</a>
-                </li>
-            </right>
-        </ul>
-
-    </nav>
-    <form action="/api/users" method="post">
-        <fieldset>
-            <legend>Signup:</legend>
-            <label for "firstname">First Name:</label>
-            <br>
-            <input type="text" name="firstName" id="firstName" value="Firstname">
-            <label for "lastname">Last Name:</label>
-            <br>
-            <input type="text" name="lastName" id="lastName" value="Lastname">
-            <label for "username">Username:</label>
-            <br>
-            <input type="text" name="username" id="username" value="Username">
-            <br> 
-            <label for "password"Password:></label>
-            <br>
-            <input type="password" name="password" id="password" value="Password">
-            <br>
-            <br>
-            <input type="submit" value="Submit">
-        </fieldset>
-    </form>
+                <div class="signup-form">
+                        <form action="/api/users" method="post">
+                            <fieldset>
+                                <legend class="form-heading">Signup</legend>
+                                <label for "username">Username:</label>
+                                <br>
+                                <input type="text" name="username" id="username" value="Username">
+                                <br> 
+                                <label for "password">Password:</label>
+                                <br>
+                                <input type="password" name="password" id="password" value="Password">
+                                <br>
+                                <label for "confirm-password">Confirm Password:</label>
+                                <br>
+                                <input type="password" name="confirm-password" id="confirm-password" value="Password-Confirm">
+                                <br>
+                                <input type="submit" value="Submit">
+                            </fieldset>
+                        </form>
+                    
+    </div>
+    <script
+    src="http://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <script src="../../js/index.js"></script>
 </body>
 
 </html>
