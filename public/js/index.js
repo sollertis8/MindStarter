@@ -123,9 +123,9 @@ function handleProjectAuth(callback) {
 
     if (token) {
         $.ajaxSetup({
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
+            // headers: {
+            //     'Authorization': 'Bearer ' + token
+            // },
             url: '/user/profile',
             dataType: "html",
             type: 'GET',
@@ -145,7 +145,7 @@ function getAuthHeader(data, textStatus, request) {
 
 // display Project page
 function renderProjectPage() {
-    // window.history.pushState("", "Project", "/user/project");
+    window.history.pushState("", "Project", "/user/project");
     $('.loginModal').hide();
     $('.top-nav').hide();
     $('.js-top').hide();
