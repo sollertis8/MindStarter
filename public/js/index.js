@@ -145,7 +145,7 @@ function getAuthHeader(data, textStatus, request) {
 
 // display Project page
 function renderProjectPage() {
-    window.history.pushState("", "Project", "/user/project");
+    // window.history.pushState("", "Project", "/user/project");
     $('.loginModal').hide();
     $('.top-nav').hide();
     $('.js-top').hide();
@@ -482,18 +482,20 @@ function watchUpdate() {
     function openLoginModal() {
         $('.js-openLogin').click(event => {
             event.preventDefault();
+            // window.history.pushState("", "Login", "/login");
             $('.loginModal').css("display", "block");
         });
     };
 
     function closeLoginModal() {
         $().click(event => {
-           if ((event.target == $('.loginModal'))) {
+           if ((event.target == $('.loginModal'))) { 
             $('.loginModal').css("display", "none");
         } 
         })
         
         $('.close').click(event => {
+            // window.history.pushState("", "Home", "/");
             $('.loginModal').css("display", "none");
 
         });

@@ -26,6 +26,7 @@ router.get('/', function (req, res) {
     });
 });
 
+
 router.get('/signup', function (req, res) {
     res.sendFile('/signup.html', {
         root: ('./views')
