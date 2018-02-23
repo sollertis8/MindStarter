@@ -123,7 +123,7 @@ function getAuthHeader(data, textStatus, request) {
 // parse login
 function ajaxLogin() {
     $('.js-login').submit(event => {
-        event.preventDefault();
+        // event.preventDefault();
         const data = $(event.target).serialize();
       const settings = {
            data: data,
