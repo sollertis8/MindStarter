@@ -117,34 +117,48 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
     $.ajax(settings)
 }
 
-// retrieve JWT token from local storage and set auth header
-function handleProjectAuth(callback) {
-    var token = window.localStorage.getItem('jwt');
 
-    if (token) {
-        $.ajaxSetup({
-            // headers: {
-            //     'Authorization': 'Bearer ' + token
-            // },
-            url: '/user/profile',
-            dataType: "html",
-            type: 'GET',
-            success: callback
-        });
-    }
-    $.ajax()
+function handleProtectedAuth() {
+    var token = window.localStorage.getItem('jwt');
+    var auth = 'Bearer ' + token;
+    return auth;
 }
 
-// get authorization header and store in local storage
+
+function handleAccountAccess(callback) {
+    $.ajaxSetup({
+        headers: {
+            'Authorization': handleProtectedAuth
+        },
+        url: '/user/account',
+        dataType: 'html',
+        type: 'GET',
+        success: callback
+    });
+    $.ajax();
+}
+
+// retrieve JWT token from local storage and set auth header
+function handleProjectPage(callback) {
+    $.ajaxSetup({
+        url: '/user/profile',
+        datatype: 'html',
+        type: 'GET',
+        success: callback
+    })
+    $.ajax();
+}
+
+// get authorization header, store in local storage, call project page
 function getAuthHeader(data, textStatus, request) {
     const response = request.responseJSON.authToken;
     localStorage.setItem('jwt', response);
-    handleProjectAuth(renderProjectPage);
-    
+    handleProjectPage(renderProjectPage);
+
 }
 
 // display Project page
-function renderProjectPage() {
+function renderProjectPage(data, textStatus, request) {
     window.history.pushState("", "Project", "/user/project");
     $('.loginModal').hide();
     $('.top-nav').hide();
@@ -155,8 +169,25 @@ function renderProjectPage() {
     $('.left-nav').css("display", "inline");
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
+
+    for ( let i=0 ; i < data.projects.length; i++ ) {
+    $('.projects-list').html(`<div class="project-item">
+    <div class="project-right-title">${data.projects[i].name}</div>
+    <div class="project-right-icon-bg">
+        <div class="count"></div>
+    </div>
+</div>`)
+}
 }
 
+// handle node count
+function nodeCount() {
+    const count = "";
+    for (let i = 0; i < projectJson.length; i++) {
+        count = i;
+    }
+    $('.count').html(count);
+}
 
 // parse login
 function ajaxLogin(callback) {
@@ -168,14 +199,12 @@ function ajaxLogin(callback) {
             url: "/api/auth/login",
             dataType: "json",
             type: "POST",
-            success: callback,
+            success: callback
         }
         $.ajax(settings);
     })
 
 }
-
-
 
 function renderProject() {
     var width = 960;
@@ -330,18 +359,9 @@ function displayResponseData(response) {
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
-    }
+    };
 
-}
-
-
-function nodeCount() {
-    const count = "";
-    for (let i = 0; i < projectJson.length; i++) {
-        count = i;
-    }
-    $('.project-item').html('');
-}
+};
 
 function displayNodeUpdate(response) {
     // check that the api response is not empty
@@ -453,6 +473,7 @@ function watchSubmit() {
         $('.js-update-project').show();
         $('.js-project-title').html(project_name);
         $('.js-project-title').show();
+        updateProjectsList(project_name);
     });
 }
 
@@ -479,45 +500,52 @@ function watchUpdate() {
 };
 
 
-    function openLoginModal() {
-        $('.js-openLogin').click(event => {
-            event.preventDefault();
-            // window.history.pushState("", "Login", "/login");
-            $('.loginModal').css("display", "block");
-        });
-    };
+function openLoginModal() {
+    $('.js-openLogin').click(event => {
+        event.preventDefault();
+        // window.history.pushState("", "Login", "/login");
+        $('.loginModal').css("display", "block");
+    });
+};
 
-    function closeLoginModal() {
-        $().click(event => {
-           if ((event.target == $('.loginModal'))) { 
+function closeLoginModal() {
+    $().click(event => {
+        if ((event.target == $('.loginModal'))) {
             $('.loginModal').css("display", "none");
-        } 
-        })
-        
-        $('.close').click(event => {
-            // window.history.pushState("", "Home", "/");
-            $('.loginModal').css("display", "none");
+        }
+    })
 
-        });
-    };
+    $('.close').click(event => {
+        // window.history.pushState("", "Home", "/");
+        $('.loginModal').css("display", "none");
+
+    });
+};
 
 
-    function openSignupModal() {
-        $('.get-started').click(event => {
-            event.preventDefault();
-            $('.signupModal').css("display", "block");
-        });
-    };
+function openSignupModal() {
+    $('.get-started').click(event => {
+        event.preventDefault();
+        $('.signupModal').css("display", "block");
+    });
+};
 
-    function closeSignupModal() {
-        $().click(event => {
-           if ((event.target == $('.signupModal'))) {
+function closeSignupModal() {
+    $().click(event => {
+        if ((event.target == $('.signupModal'))) {
             $('.signupModal').css("display", "none");
-        } 
-        })
-        
-        $('.close').click(event => {
-            $('.signupModal').css("display", "none");
+        }
+    })
 
-        });
-    };
+    $('.close').click(event => {
+        $('.signupModal').css("display", "none");
+
+    });
+};
+
+function handleUserAccount() {
+    $('.fa-user-circle').click(event => {
+        event.preventDefault();
+
+    })
+}

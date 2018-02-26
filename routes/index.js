@@ -35,15 +35,15 @@ router.get('/signup', function (req, res) {
 
 router.get('/user/profile', (req, res) => {
     // const {userId} = req.params;
-    // console.log(auth);
-    res.sendFile('/profile.html', {
-        root: ('./views')
-    });
     // res.sendStatus(200);
     User
         .findOne({
             _id: ObjectID(req.params.userId)  
         })
+        .then(user => res.json({
+            projects: user.projects
+        }))
+
     });
   
 
@@ -62,9 +62,7 @@ router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
             console.error(message);
             return res.status(400).send(message);
         }
-    }
-
-    
+    }   
 
     const options = {
         root: ('./views'),
@@ -81,7 +79,7 @@ router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
             depth: req.body.depth
         })
         .then(
-            res.sendfile('/project.html', options).status(201).send()
+            res.status(201).send()
             
         )
         .catch(err => {
@@ -90,7 +88,6 @@ router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
                 message: 'Internal server error'
             });
         });
-
 });
 
 router.get('/login', (req, res) => {
@@ -100,12 +97,7 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/user/account', jwtAuth, function (req, res) {
-    res.sendFile('/account.html', {
-        root: ('./views'),
-        headers: {
-            userId: req.user._id
-        }
-    });
+    res.send();
 });
 
 
