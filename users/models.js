@@ -41,11 +41,11 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  projects: [{
-    type: Array,
-    required: false,
-    default: [ProjectSchema]
-  }]
+  // projects: [{
+  //   type: Array,
+  //   required: false,
+  //   default: [ProjectSchema]
+  // }]
 });
 
 UserSchema.methods.serialize = function() {
@@ -74,6 +74,5 @@ ProjectSchema.methods.serialize = function () {
 
 const collection = "users";
 const User = mongoose.model('User', UserSchema, collection);
-
 
 module.exports = {User};

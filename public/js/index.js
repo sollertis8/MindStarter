@@ -170,14 +170,14 @@ function renderProjectPage(data, textStatus, request) {
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
 
-    for ( let i=0 ; i < data.projects.length; i++ ) {
-    $('.projects-list').html(`<div class="project-item">
-    <div class="project-right-title">${data.projects[i].name}</div>
-    <div class="project-right-icon-bg">
-        <div class="count"></div>
-    </div>
-</div>`)
-}
+//     for ( let i=0 ; i < data.projects.length; i++ ) {
+//     $('.projects-list').html(`<div class="project-item">
+//     <div class="project-right-title">${data.projects[i].name}</div>
+//     <div class="project-right-icon-bg">
+//         <div class="count"></div>
+//     </div>
+// </div>`)
+// }
 }
 
 // handle node count
@@ -473,7 +473,7 @@ function watchSubmit() {
         $('.js-update-project').show();
         $('.js-project-title').html(project_name);
         $('.js-project-title').show();
-        updateProjectsList(project_name);
+        // updateProjectsList(project_name);
     });
 }
 
@@ -481,7 +481,7 @@ function watchUpdate() {
     $('#update').click(event => {
         console.log('update button clicked');
         $('.js-update-project').submit(event => {
-            // event.preventDefault();
+            event.preventDefault();
             const project_name_target = $(event.currentTarget).find('.js-project');
             const idea_target = $(event.currentTarget).find('.js-idea');
             const relationship_target = $(event.currentTarget).find('.js-relationship');

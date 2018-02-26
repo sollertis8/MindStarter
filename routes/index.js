@@ -35,14 +35,14 @@ router.get('/signup', function (req, res) {
 
 router.get('/user/profile', (req, res) => {
     // const {userId} = req.params;
-    // res.sendStatus(200);
+    res.sendStatus(200);
     User
         .findOne({
             _id: ObjectID(req.params.userId)  
         })
-        .then(user => res.json({
-            projects: user.projects
-        }))
+        // .then(user => res.json({
+        //     projects: user.projects
+        // }))
 
     });
   
