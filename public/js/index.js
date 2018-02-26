@@ -3,7 +3,8 @@
 $(document).ready(function () {
     watchSubmit();
     watchUpdate();
-    tokenSuccess();
+    // getAuthToken();
+    ajaxLogin();
     $('.js-update-project').hide();
     $('.js-project-title').hide();
     $('.auth').hide();
@@ -98,34 +99,51 @@ function formDataToJson(project_name, idea_word, relationship_type, depth, callb
     $.ajax(settings)
 }
 
-function tokenSuccess() {
-    window.localStorage.setItem('authToken', $('.auth').text());
-    var token = window.localStorage.getItem('authToken');
+// retrieve JWT token from local storage and set auth header
+function getAuthToken() {
+    var token = window.localStorage.getItem('jwt');
     
     if (token) {
       $.ajaxSetup({
         headers: {
-          'Authorization': 'Bearer' + token
+          'Authorization': 'Bearer ' + token
         }
       });
     }
-
-    // var client = new XMLHttpRequest();
-    // window.localStorage.authToken = "";
-//     const options = {
-//     root: ('./views'),
-//     headers: {
-//       'Authorization': 'Bearer ' + window.sessionStorage.authToken
-//     }
-//    }
-    // router.get('/user/profile, options');
 }
 
-// function watchLogin() {
-//     $('.js-login').submit(event => {
-//         tokenSuccess();
-// }
-//     )}
+// get authorization header and store in local storage
+function getAuthHeader(data, textStatus, request) {
+   const response = request.getResponseHeader('Authorization');
+   localStorage.setItem('jwt', response);
+   console.log(response);
+}
+
+
+// parse login
+function ajaxLogin() {
+    $('.js-login').submit(event => {
+        // event.preventDefault();
+        const data = $(event.target).serialize();
+      const settings = {
+           data: data,
+           url: "/api/auth/login",
+           dataType: "html",
+           type: "POST",
+           success: 
+           function getAuthHeader(data, textStatus, request) {
+            const response = request.getResponseHeader('Authorization');
+            localStorage.setItem('jwt', response);
+            console.log(response);
+         }    
+       }
+       $.ajax(settings);
+    })
+    
+}
+
+
+
 function renderProject() {
     var width = 960;
     var height = 960;
