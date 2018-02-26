@@ -21,10 +21,11 @@ const {
 } = require('../users/models');
 
 router.get('/', function (req, res) {
-    res.sendFile('/index.html', {
+    res.sendFile('/index1.html', {
         root: ('./views')
     });
 });
+
 
 router.get('/signup', function (req, res) {
     res.sendFile('/signup.html', {
@@ -32,14 +33,13 @@ router.get('/signup', function (req, res) {
     });
 });
 
-router.get('/user/:userId/profile', jwtAuth, jsonParser, (req, res) => {
-    const authToken = req.header('Authorization');
-    const auth = 'Bearer ' + authToken;
-    const {userId} = req.params;
-    console.log(auth);
+router.get('/user/profile', (req, res) => {
+    // const {userId} = req.params;
+    // console.log(auth);
     res.sendFile('/profile.html', {
-                root: ('./views')
-            });
+        root: ('./views')
+    });
+    // res.sendStatus(200);
     User
         .findOne({
             _id: ObjectID(req.params.userId)  
