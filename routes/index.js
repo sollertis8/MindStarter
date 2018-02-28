@@ -48,7 +48,7 @@ router.get('/user/profile', (req, res) => {
   
 
 // create a new project
-router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
+router.put('/user/:userId/project', jwtAuth, jsonParser, (req, res) => {
     
     const userId = req.user._id;
     
@@ -63,31 +63,23 @@ router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
             return res.status(400).send(message);
         }
     }   
-
-    const options = {
-        root: ('./views'),
-        headers: {
-          'Authorization': 'Bearer ' + authToken
-        }
+    if (req.params.id !== req.body.id) {
+        const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
+        console.error(message);
+        return res.status(400).send(message);
       }
-    Project
-          const pid = this.params.id
-        .create({
+      console.log(`updating user \`${req.params.id}\``);
+   
+    User
+        .update({
+            id: req.params.id,
             project_name: req.body.project_name,
             idea_word: req.body.idea_word,
             relationship_type: req.body.relationship_type,
             depth: req.body.depth
-        })
-        .then(
-            res.status(201).send()
-            
-        )
-        .catch(err => {
-            console.error(err);
-            res.status(500).json({
-                message: 'Internal server error'
-            });
         });
+    
+            res.status(204).end();
 });
 
 router.get('/login', (req, res) => {

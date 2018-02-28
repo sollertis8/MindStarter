@@ -41,11 +41,11 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  // projects: [{
-  //   type: Array,
-  //   required: false,
-  //   default: [ProjectSchema]
-  // }]
+  projects: [{
+    type: Array,
+    required: false,
+    default: [ProjectSchema]
+  }]
 });
 
 UserSchema.methods.serialize = function() {
