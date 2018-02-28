@@ -73,6 +73,7 @@ router.put('/user/:userId/project', jwtAuth, jsonParser, (req, res) => {
     User
         .update({
             id: req.params.id,
+            project_id: uuid.v4(),
             project_name: req.body.project_name,
             idea_word: req.body.idea_word,
             relationship_type: req.body.relationship_type,
