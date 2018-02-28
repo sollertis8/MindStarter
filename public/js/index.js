@@ -277,7 +277,7 @@ function renderProject() {
             return d.parent === root ? 1 : 0;
         })
         .style("display", function (d) {
-            return d.parent === root ? "none" : "inline";
+            return d.parent === root ? "inline" : "none";
         })
         .text(function (d) {
             return d.data.relationship;
