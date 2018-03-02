@@ -17,8 +17,9 @@ $(document).ready(function () {
     // $('.auth').hide();
 });
 
-
-let relationship = ""
+let user_id = "";
+let project_name = "";
+let relationship = "";
 let idea_word = "";
 let projectJson = {
     "children": []
@@ -126,11 +127,12 @@ function handleProtectedAuth() {
 
 
 function handleAccountAccess(callback) {
+    // const url = "/user/:" + username 
     $.ajaxSetup({
         headers: {
             'Authorization': handleProtectedAuth
         },
-        url: '/user/account',
+        url: '/user/:userId/account',
         dataType: 'html',
         type: 'GET',
         success: callback
@@ -138,10 +140,11 @@ function handleAccountAccess(callback) {
     $.ajax();
 }
 
-// retrieve JWT token from local storage and set auth header
+
 function handleProjectPage(callback) {
+    const url = '/user/profile';
     $.ajaxSetup({
-        url: '/user/profile',
+        url: url,
         datatype: 'html',
         type: 'GET',
         success: callback
@@ -152,6 +155,8 @@ function handleProjectPage(callback) {
 // get authorization header, store in local storage, call project page
 function getAuthHeader(data, textStatus, request) {
     const response = request.responseJSON.authToken;
+    user_id =  request.responseJSON.user_id;
+    // const id = "";
     localStorage.setItem('jwt', response);
     handleProjectPage(renderProjectPage);
 
@@ -159,7 +164,8 @@ function getAuthHeader(data, textStatus, request) {
 
 // display Project page
 function renderProjectPage(data, textStatus, request) {
-    window.history.pushState("", "Project", "/user/project");
+    const url = '/user/' + user_id + '/profile';
+    window.history.pushState("", "Project", url);
     $('.loginModal').hide();
     $('.top-nav').hide();
     $('.js-top').hide();
@@ -322,6 +328,9 @@ function renderProject() {
 
             })
             .on("end", function (d) {
+                if (! d.hasOwnProperty("children")) {
+                    this.style.display = "inline";
+                }
                 if (d.parent !== focus) this.style.display = "none";
             });
 
@@ -338,15 +347,13 @@ function renderProject() {
         });
     }
     $('.js-project-response').html(root);
-}
-
+};
 
 function clearCanvas() {
     window.g.remove();
 }
 
-
-function displayResponseData(response) {
+function displayResponseData(response, callback) {
     if (response != 0) {
         for (var i = 0; i < response.length; i++) {
             projectJson.children.push({
@@ -355,7 +362,23 @@ function displayResponseData(response) {
                 relationship: relationship
             });
         }
+        let project_data = projectJson;
+            project_data.idea_word = idea_word;
+
         renderProject();
+        // store project_data in database
+        const url = '/user/:' + user_id + '/profile';
+        $.ajaxSetup({
+            headers: {
+                'Authorization': handleProtectedAuth
+            },
+            data: project_data,
+            url: url,
+            dataType: 'json',
+            type: 'PUT',
+            success: console.log('data inserted into database')
+        });
+        $.ajax();
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
@@ -458,7 +481,7 @@ function watchSubmit() {
         const idea_target = $(event.currentTarget).find('.js-idea');
         const relationship_target = $(event.currentTarget).find('.js-relationship');
         const depth_target = $(event.currentTarget).find('.js-depth');
-        const project_name = project_name_target.val();
+        project_name = project_name_target.val();
         idea_word = idea_target.val();
         const relationship_type = relationship_target.val();
         relationship = getRelationship(relationship_type);

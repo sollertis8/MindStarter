@@ -19,7 +19,9 @@ const createAuthToken = function (user) {
 };
 
 
-
+const {
+  User
+} = require('../users/models');
 
 const localAuth = passport.authenticate('local', {
   session: false
@@ -31,6 +33,14 @@ router.use(bodyParser.urlencoded({
 // The user provides a username and password to login
 router.post('/login', localAuth, (req, res) => {
   const authToken = createAuthToken(req.user.serialize());
+const userdata = req.user.serialize();
+const username = userdata.username;
+
+
+User.findOne({username: username}).lean().exec(function(err, user) {
+  const user_id = user._id;
+  res.json({authToken, user_id});
+})
 //   const options = {
 //     root: ('./views'),
 //     headers: {
@@ -38,7 +48,7 @@ router.post('/login', localAuth, (req, res) => {
 //     }
 // }
   // res.sendFile('/profile.html', options);
-  res.json({authToken});
+  
 });
 
 

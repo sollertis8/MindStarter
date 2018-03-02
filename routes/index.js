@@ -34,25 +34,23 @@ router.get('/signup', function (req, res) {
 });
 
 router.get('/user/profile', (req, res) => {
-    // const {userId} = req.params;
-    res.sendStatus(200);
-    User
-        .findOne({
-            _id: ObjectID(req.params.userId)  
-        })
-        // .then(user => res.json({
-        //     projects: user.projects
-        // }))
+    // const {userId} = req.user.id;
 
+    res.sendStatus(200);
+    
+    // User
+    //     .findOne({
+    //         _id: ObjectID(req.params.userId)  
+    //     })
     });
   
 
 // create a new project
-router.put('/user/:userId/project', jwtAuth, jsonParser, (req, res) => {
+router.put('/user/:id/project', jwtAuth, jsonParser, (req, res) => {
     
-    const userId = req.user._id;
+    const {userId} = req.user._id;
     
-    const requiredFields = ['project_name', 'idea_word', 'relationship_type', 'depth'];
+    const requiredFields = ['project_name', 'idea_word'];
 
     for (let i = 0; i < requiredFields.length; i++) {
         const field = requiredFields[i];
@@ -70,18 +68,22 @@ router.put('/user/:userId/project', jwtAuth, jsonParser, (req, res) => {
       }
       console.log(`updating user \`${req.params.id}\``);
    
+     try { 
     User
-        .update({
-            id: req.params.id,
-            project_id: uuid.v4(),
-            project_name: req.body.project_name,
-            idea_word: req.body.idea_word,
-            relationship_type: req.body.relationship_type,
-            depth: req.body.depth
-        });
-    
+
+    .insertMany([req.body._id, req.params]);
+        // .update({
+        //     id: req.params.id,
+        //     project_name: req.body.project_name,
+        //     idea_word: req.body.idea_word
+        // })
             res.status(204).end();
+     } catch (e) {
+         print (e);
+     }
 });
+
+
 
 router.get('/login', (req, res) => {
     res.sendFile('/login.html', {

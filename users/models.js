@@ -4,33 +4,53 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
+const ChildrenSchema = mongoose.Schema({
+  name: {
+    type: String
+  },
+  size: {
+    type: String
+  },
+  relationship: {
+    type: String
+  }
+})
+
+const ProjectDataSchema = mongoose.Schema({
+  parent: {
+    type: String
+  },
+  children: {
+    type: Array,
+    default: [ChildrenSchema]
+  },
+  size: {
+    _id: false,
+    type: String
+  }
+})
+
+
 const ProjectSchema = mongoose.Schema({
-  project_id: {
+  project: {
     type: Array,
 
-    project_name: {
+    name: {
+      _id: false,
       type: String,
       required: true,
       unique: true
     },
     idea_word: {
+      _id: false,
       type: String,
       required: true,
       default: ''
     },
-    relationship_type: {
-      type: String,
-      required: true
-    },
-    depth: {
-      type: Number,
-      required: true,
-      default: '1',
-    },
-    size: {
-      type: Number,
-      required: true,
-      default: '1'
+    project_data: {
+      _id: false,
+      type: Array,
+      default: [ProjectDataSchema]
     }
   }
 })
