@@ -9,6 +9,7 @@ $(document).ready(function () {
     watchUpdate();
     // getAuthToken();
     ajaxLogin(getAuthHeader);
+    handleSignup(getAuthHeader);
     // clearPage();
 
     // renderHomePage();
@@ -209,7 +210,29 @@ function ajaxLogin(callback) {
         }
         $.ajax(settings);
     })
+}
 
+function handleSignup(callback) {
+    $('.js-signup').submit(event => {
+        event.preventDefault();
+        if ($('.js-signup-password').val() === $('.js-signup-password-confirm').val()) {
+        const data = {}
+        data.username = $('.js-signup-username').val();
+        data.password = $('.js-signup-password').val();
+
+        $.ajaxSetup ({
+                data: data,
+                url: "/api/users",
+                dataType: "json",
+                type: "POST",
+                success: callback
+            })
+            $.ajax()
+        } else {
+            $('.js-signup-message').html('passwords must match');
+        }
+    })
+    
 }
 
 function renderProject() {
@@ -366,25 +389,42 @@ function displayResponseData(response, callback) {
             project_data.idea_word = idea_word;
 
         renderProject();
+        updateDatabase(project_data, displayUpdatedResponse);
         // store project_data in database
-        const url = '/user/:' + user_id + '/profile';
-        $.ajaxSetup({
-            headers: {
-                'Authorization': handleProtectedAuth
-            },
-            data: project_data,
-            url: url,
-            dataType: 'json',
-            type: 'PUT',
-            success: console.log('data inserted into database')
-        });
-        $.ajax();
+        
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
     };
 
 };
+
+ function updateDatabase(project_data, callback) {
+     const mindstarter_project = {
+         _id: user_id,
+         project: {project_data}
+     }
+
+     const mindstarter_data = JSON.stringify(mindstarter_project);
+
+    const url = '/project/' + user_id;
+    $.ajaxSetup({
+        headers: {
+            'Authorization': handleProtectedAuth,
+        },
+        data: mindstarter_data,
+        url: url,
+        headers: {"X-HTTP-Method-Override": "PUT"},
+        dataType: 'json',
+        type: 'PUT',
+        success: callback
+    });
+    $.ajax();
+ }
+
+function displayUpdatedResponse(data, textStatus, request) {
+    console.log(`${data}`);
+}
 
 function displayNodeUpdate(response) {
     // check that the api response is not empty
@@ -544,7 +584,6 @@ function closeLoginModal() {
 
     });
 };
-
 
 function openSignupModal() {
     $('.get-started').click(event => {

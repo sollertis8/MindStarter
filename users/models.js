@@ -17,16 +17,9 @@ const ChildrenSchema = mongoose.Schema({
 })
 
 const ProjectDataSchema = mongoose.Schema({
-  parent: {
-    type: String
-  },
   children: {
     type: Array,
     default: [ChildrenSchema]
-  },
-  size: {
-    _id: false,
-    type: String
   }
 })
 
@@ -35,22 +28,35 @@ const ProjectSchema = mongoose.Schema({
   project: {
     type: Array,
 
-    name: {
-      _id: false,
-      type: String,
-      required: true,
-      unique: true
-    },
-    idea_word: {
-      _id: false,
-      type: String,
-      required: true,
-      default: ''
-    },
     project_data: {
-      _id: false,
       type: Array,
-      default: [ProjectDataSchema]
+
+
+      name: {
+        _id: false,
+        type: String,
+        required: true,
+        unique: true
+      },
+
+      relationship: {
+        _id: false,
+        type: String,
+        required: true,
+        unique: false
+      },
+
+      idea_word: {
+        _id: false,
+        type: String,
+        required: true,
+        default: ''
+      },
+      children: {
+        _id: false,
+        type: Array,
+        default: [ChildrenSchema]
+      }
     }
   }
 })

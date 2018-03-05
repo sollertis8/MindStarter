@@ -255,24 +255,25 @@
             <div class="signupModal-content">
                 <span class="close">&times;</span>
                 <div class="signup-form">
-                    <form action="/api/users" method="post">
+                    <form class="signup js-signup" action="/api/users" method="post">
                         <fieldset>
                             <legend class="form-heading">Signup</legend>
                             <label for "username">Username:</label>
                             <br>
-                            <input type="text" name="username" value="Username">
+                            <input type="text" class="username js-signup-username" name="username" value="Username">
                             <br>
                             <label for "password">Password:</label>
                             <br>
-                            <input type="password" name="password" value="Password">
+                            <input type="password" name="password" class="password js-signup-password" value="Password">
                             <br>
                             <label for "confirm-password">Confirm Password:</label>
                             <br>
-                            <input type="password" name="confirm-password" value="Password-Confirm">
+                            <input type="password" name="confirm-password" class="password-confirm js-signup-password-confirm" value="Password-Confirm">
                             <br>
                             <input type="submit" value="Submit">
                         </fieldset>
                     </form>
+                    <div class="signup-message js-signup-message"></div>
                 </div>
             </div>
         </div>
