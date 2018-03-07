@@ -85,6 +85,7 @@ function getDataFromApi(relationship, word, depth, callback) {
         data: data,
         url: 'https://api.datamuse.com/words',
         dataType: 'json',
+        contentType: 'application/json',
         type: 'GET',
         success: callback
     };
@@ -129,7 +130,7 @@ function handleProtectedAuth() {
 
 function handleAccountAccess(callback) {
     // const url = "/user/:" + username 
-    $.ajaxSetup({
+    const settings = {
         headers: {
             'Authorization': handleProtectedAuth
         },
@@ -137,26 +138,26 @@ function handleAccountAccess(callback) {
         dataType: 'html',
         type: 'GET',
         success: callback
-    });
-    $.ajax();
+    };
+    $.ajax(settings);
 }
 
 
 function handleProjectPage(callback) {
     const url = '/user/profile';
-    $.ajaxSetup({
+    const settings = {
         url: url,
         datatype: 'html',
         type: 'GET',
         success: callback
-    })
-    $.ajax();
+    }
+    $.ajax(settings);
 }
 
 // get authorization header, store in local storage, call project page
 function getAuthHeader(data, textStatus, request) {
     const response = request.responseJSON.authToken;
-    user_id =  request.responseJSON.user_id;
+    user_id = request.responseJSON.user_id;
     // const id = "";
     localStorage.setItem('jwt', response);
     handleProjectPage(renderProjectPage);
@@ -177,14 +178,14 @@ function renderProjectPage(data, textStatus, request) {
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
 
-//     for ( let i=0 ; i < data.projects.length; i++ ) {
-//     $('.projects-list').html(`<div class="project-item">
-//     <div class="project-right-title">${data.projects[i].name}</div>
-//     <div class="project-right-icon-bg">
-//         <div class="count"></div>
-//     </div>
-// </div>`)
-// }
+    //     for ( let i=0 ; i < data.projects.length; i++ ) {
+    //     $('.projects-list').html(`<div class="project-item">
+    //     <div class="project-right-title">${data.projects[i].name}</div>
+    //     <div class="project-right-icon-bg">
+    //         <div class="count"></div>
+    //     </div>
+    // </div>`)
+    // }
 }
 
 // handle node count
@@ -216,23 +217,23 @@ function handleSignup(callback) {
     $('.js-signup').submit(event => {
         event.preventDefault();
         if ($('.js-signup-password').val() === $('.js-signup-password-confirm').val()) {
-        const data = {}
-        data.username = $('.js-signup-username').val();
-        data.password = $('.js-signup-password').val();
+            const data = {}
+            data.username = $('.js-signup-username').val();
+            data.password = $('.js-signup-password').val();
 
-        $.ajaxSetup ({
+            const settings = {
                 data: data,
                 url: "/api/users",
                 dataType: "json",
                 type: "POST",
                 success: callback
-            })
-            $.ajax()
+            }
+            $.ajax(settings)
         } else {
             $('.js-signup-message').html('passwords must match');
         }
     })
-    
+
 }
 
 function renderProject() {
@@ -340,9 +341,6 @@ function renderProject() {
             .filter(function (d) {
                 return d.parent === focus || this.style.display === "inline";
             })
-            .filter(function (d) {
-                return d.parent === focus || this.style.display === "inline";
-            })
             .style("fill-opacity", function (d) {
                 return d.parent === focus ? 1 : 0;
             })
@@ -351,9 +349,9 @@ function renderProject() {
 
             })
             .on("end", function (d) {
-                if (! d.hasOwnProperty("children")) {
-                    this.style.display = "inline";
-                }
+                // if (!d.hasOwnProperty("children")) {
+                //     this.style.display = "inline";
+                // }
                 if (d.parent !== focus) this.style.display = "none";
             });
 
@@ -386,12 +384,12 @@ function displayResponseData(response, callback) {
             });
         }
         let project_data = projectJson;
-            project_data.idea_word = idea_word;
+        project_data.idea_word = idea_word;
 
         renderProject();
         updateDatabase(project_data, displayUpdatedResponse);
         // store project_data in database
-        
+
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
@@ -399,28 +397,33 @@ function displayResponseData(response, callback) {
 
 };
 
- function updateDatabase(project_data, callback) {
-     const mindstarter_project = {
-         _id: user_id,
-         project: {project_data}
-     }
+function updateDatabase(project_data, callback) {
+    const mindstarter_project = {
+        id: user_id,
+        project: [{
+            project_data
+        }]
+    }
 
-     const mindstarter_data = JSON.stringify(mindstarter_project);
+    const mindstarter_data = JSON.stringify(mindstarter_project);
 
     const url = '/project/' + user_id;
-    $.ajaxSetup({
+    const settings = {
         headers: {
             'Authorization': handleProtectedAuth,
         },
         data: mindstarter_data,
         url: url,
-        headers: {"X-HTTP-Method-Override": "PUT"},
+        headers: {
+            "X-HTTP-Method-Override": "PUT"
+        },
         dataType: 'json',
+        contentType: "application/json",
         type: 'PUT',
         success: callback
-    });
-    $.ajax();
- }
+    };
+    $.ajax(settings);
+}
 
 function displayUpdatedResponse(data, textStatus, request) {
     console.log(`${data}`);
@@ -528,7 +531,7 @@ function watchSubmit() {
         const depth = depth_target.val();
 
         projectJson.name = idea_word;
-        projectJson.relationsip = relationship;
+        projectJson.relationship = relationship;
         //  $('.result').text(JSON.stringify($('form').serializeObject()));
         getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
         console.log('save submitted');
@@ -555,7 +558,7 @@ function watchUpdate() {
             relationship = getRelationship(relationship_type);
             const depth = depth_target.val();
             projectJson.name = idea_word;
-            projectJson.relationsip = relationship;
+            projectJson.relationship = relationship;
             getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
             console.log('update submitted');
         });

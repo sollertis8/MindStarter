@@ -309,6 +309,21 @@ li .left {
     text-align: center;
 }
 
+.update-project {
+    font-family: comfortaa;
+    background-color: white;
+    border:  1px solid #e9e6ff;
+    border-radius: 15px;
+    top: 100px;
+    left: 0;
+    right: 0;
+    width: 600px;
+    height: 160px;
+    margin: auto;
+    text-align: center;
+}
+
+
 #loginModal {
     display: none;
 }
@@ -621,7 +636,8 @@ polygon {
 .label,
 .node--root,
 .node--leaf {
-    pointer-events: visibleFill;
+    pointer-events: none;
+    /* pointer-events: visibleFill; */
 }
 
 
