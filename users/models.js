@@ -4,31 +4,56 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const ProjectSchema = mongoose.Schema({
-  project_name: {
-      type: String,
-      required: true,
-      unique: true
-  },
-  idea_word: {
-      type: String,
-      required: true,
-      default: ''
-  },
-  relationship_type: {
-      type: String,
-      required: true
-  },
-  depth: {
-      type: Number,
-      required: true,
-      default: '1',
+const ChildrenSchema = mongoose.Schema({
+  name: {
+    type: String
   },
   size: {
-      type: Number,
-      required: true,
-      default: '1'
+    type: String
+  },
+  relationship: {
+    type: String
   }
+})
+
+const ProjectDataSchema = mongoose.Schema({
+  name: {
+    _id: false,
+    type: String,
+    required: true,
+    unique: true
+  },
+
+  idea_word: {
+    _id: false,
+    type: String,
+    required: true,
+    default: ""
+  },
+
+  relationship: {
+    _id: false,
+    type: String,
+    required: true,
+    unique: false
+  },
+
+  children: [{
+    _id: false,
+    type: Array,
+    default: [ChildrenSchema]
+  }]
+})
+
+const ProjectSchema = mongoose.Schema({
+  project: [{
+    type: Array,
+
+    project_data: {
+      type: [String],
+      default: [ProjectDataSchema]
+    }
+  }]
 })
 
 const UserSchema = mongoose.Schema({
@@ -41,38 +66,54 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  // projects: [{
-  //   type: Array,
-  //   required: false,
-  //   default: [ProjectSchema]
-  // }]
+  projects: [{
+    type: Array,
+    required: false,
+    default: [ProjectSchema]
+  }]
 });
 
-UserSchema.methods.serialize = function() {
+ChildrenSchema.methods.serialize = function () {
   return {
-    username: this.username || ''
+    name: this.name || "",
+    size: this.size || "",
+    relationship: this.relationship || ""
+  }
+}
+
+UserSchema.methods.serialize = function () {
+  return {
+    username: this.username || "",
+    projects: this.projects || ""
   };
 };
 
-UserSchema.methods.validatePassword = function(password) {
-  return bcrypt.compare(password, this.password);
-};
-
-UserSchema.statics.hashPassword = function(password) {
-  return bcrypt.hash(password, 10);
-};
+ProjectDataSchema.methods.serialize = function () {
+  return {
+    name: this.name || "",
+    idea_word: this.idea_word || "",
+    relationship: this.relationship || "",
+    children: this.children || ""
+  };
+}
 
 ProjectSchema.methods.serialize = function () {
   return {
-      project_name: this.project_name || '',
-      idea_word: this.idea_word || '',
-      relationship_type: this.relationship_type || '',
-      depth: this.depth || '',
-      size: this.size || ''
+    project: this.project || "",
+    project_data: this.project_data || "",
+
   };
 };
 
+UserSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+UserSchema.statics.hashPassword = function (password) {
+  return bcrypt.hash(password, 10);
+};
 const collection = "users";
 const User = mongoose.model('User', UserSchema, collection);
 
-module.exports = {User};
+module.exports = {
+  User
+};

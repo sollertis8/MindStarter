@@ -7,18 +7,13 @@ $(document).ready(function () {
     closeSignupModal();
     watchSubmit();
     watchUpdate();
-    // getAuthToken();
     ajaxLogin(getAuthHeader);
-    // clearPage();
-
-    // renderHomePage();
-    // $('.js-update-project').hide();
-    // $('.js-project-title').hide();
-    // $('.auth').hide();
+    handleSignup(getAuthHeader);
 });
 
-
-let relationship = ""
+let user_id = "";
+let project_name = "";
+let relationship = "";
 let idea_word = "";
 let projectJson = {
     "children": []
@@ -83,6 +78,7 @@ function getDataFromApi(relationship, word, depth, callback) {
         data: data,
         url: 'https://api.datamuse.com/words',
         dataType: 'json',
+        contentType: 'application/json',
         type: 'GET',
         success: callback
     };
@@ -126,32 +122,36 @@ function handleProtectedAuth() {
 
 
 function handleAccountAccess(callback) {
-    $.ajaxSetup({
+    // const url = "/user/:" + username 
+    const settings = {
         headers: {
             'Authorization': handleProtectedAuth
         },
-        url: '/user/account',
+        url: '/user/:userId/account',
         dataType: 'html',
         type: 'GET',
         success: callback
-    });
-    $.ajax();
+    };
+    $.ajax(settings);
 }
 
-// retrieve JWT token from local storage and set auth header
+
 function handleProjectPage(callback) {
-    $.ajaxSetup({
-        url: '/user/profile',
+    const url = '/user/profile';
+    const settings = {
+        url: url,
         datatype: 'html',
         type: 'GET',
         success: callback
-    })
-    $.ajax();
+    }
+    $.ajax(settings);
 }
 
 // get authorization header, store in local storage, call project page
 function getAuthHeader(data, textStatus, request) {
     const response = request.responseJSON.authToken;
+    user_id = request.responseJSON.user_id;
+    // const id = "";
     localStorage.setItem('jwt', response);
     handleProjectPage(renderProjectPage);
 
@@ -159,7 +159,8 @@ function getAuthHeader(data, textStatus, request) {
 
 // display Project page
 function renderProjectPage(data, textStatus, request) {
-    window.history.pushState("", "Project", "/user/project");
+    const url = '/user/' + user_id + '/profile';
+    window.history.pushState("", "Project", url);
     $('.loginModal').hide();
     $('.top-nav').hide();
     $('.js-top').hide();
@@ -170,14 +171,14 @@ function renderProjectPage(data, textStatus, request) {
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
 
-//     for ( let i=0 ; i < data.projects.length; i++ ) {
-//     $('.projects-list').html(`<div class="project-item">
-//     <div class="project-right-title">${data.projects[i].name}</div>
-//     <div class="project-right-icon-bg">
-//         <div class="count"></div>
-//     </div>
-// </div>`)
-// }
+    //     for ( let i=0 ; i < data.projects.length; i++ ) {
+    //     $('.projects-list').html(`<div class="project-item">
+    //     <div class="project-right-title">${data.projects[i].name}</div>
+    //     <div class="project-right-icon-bg">
+    //         <div class="count"></div>
+    //     </div>
+    // </div>`)
+    // }
 }
 
 // handle node count
@@ -202,6 +203,28 @@ function ajaxLogin(callback) {
             success: callback
         }
         $.ajax(settings);
+    })
+}
+
+function handleSignup(callback) {
+    $('.js-signup').submit(event => {
+        event.preventDefault();
+        if ($('.js-signup-password').val() === $('.js-signup-password-confirm').val()) {
+            const data = {}
+            data.username = $('.js-signup-username').val();
+            data.password = $('.js-signup-password').val();
+
+            const settings = {
+                data: data,
+                url: "/api/users",
+                dataType: "json",
+                type: "POST",
+                success: callback
+            }
+            $.ajax(settings)
+        } else {
+            $('.js-signup-message').html('passwords must match');
+        }
     })
 
 }
@@ -277,7 +300,7 @@ function renderProject() {
             return d.parent === root ? 1 : 0;
         })
         .style("display", function (d) {
-            return d.parent === root ? "none" : "inline";
+            return d.parent === root ? "inline" : "none";
         })
         .text(function (d) {
             return d.data.relationship;
@@ -311,9 +334,6 @@ function renderProject() {
             .filter(function (d) {
                 return d.parent === focus || this.style.display === "inline";
             })
-            .filter(function (d) {
-                return d.parent === focus || this.style.display === "inline";
-            })
             .style("fill-opacity", function (d) {
                 return d.parent === focus ? 1 : 0;
             })
@@ -322,6 +342,9 @@ function renderProject() {
 
             })
             .on("end", function (d) {
+                // if (!d.hasOwnProperty("children")) {
+                //     this.style.display = "inline";
+                // }
                 if (d.parent !== focus) this.style.display = "none";
             });
 
@@ -338,15 +361,14 @@ function renderProject() {
         });
     }
     $('.js-project-response').html(root);
-}
+};
 
 
 function clearCanvas() {
     window.g.remove();
 }
 
-
-function displayResponseData(response) {
+function displayResponseData(response, callback) {
     if (response != 0) {
         for (var i = 0; i < response.length; i++) {
             projectJson.children.push({
@@ -355,13 +377,51 @@ function displayResponseData(response) {
                 relationship: relationship
             });
         }
+        let project_data = projectJson;
+        project_data.idea_word = idea_word;
+
         renderProject();
+        updateDatabase(project_data, displayUpdatedResponse);
+        // store project_data in database
+
     } else {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
     };
 
 };
+
+function updateDatabase(project_data, callback) {
+    const mindstarter_project = {
+        id: user_id,
+        project: [{
+            project_data
+        }]
+    }
+
+    const mindstarter_data = JSON.stringify(mindstarter_project);
+
+    const url = '/project/' + user_id;
+    const settings = {
+        headers: {
+            'Authorization': handleProtectedAuth,
+        },
+        data: mindstarter_data,
+        url: url,
+        headers: {
+            "X-HTTP-Method-Override": "PUT"
+        },
+        dataType: 'json',
+        contentType: "application/json",
+        type: 'PUT',
+        success: callback
+    };
+    $.ajax(settings);
+}
+
+function displayUpdatedResponse(data, textStatus, request) {
+    console.log(`${data}`);
+}
 
 function displayNodeUpdate(response) {
     // check that the api response is not empty
@@ -458,14 +518,14 @@ function watchSubmit() {
         const idea_target = $(event.currentTarget).find('.js-idea');
         const relationship_target = $(event.currentTarget).find('.js-relationship');
         const depth_target = $(event.currentTarget).find('.js-depth');
-        const project_name = project_name_target.val();
+        project_name = project_name_target.val();
         idea_word = idea_target.val();
         const relationship_type = relationship_target.val();
         relationship = getRelationship(relationship_type);
         const depth = depth_target.val();
 
         projectJson.name = idea_word;
-        projectJson.relationsip = relationship;
+        projectJson.relationship = relationship;
         //  $('.result').text(JSON.stringify($('form').serializeObject()));
         getDataFromApi(relationship_type, idea_word, depth, displayResponseData);
         console.log('save submitted');
@@ -492,7 +552,7 @@ function watchUpdate() {
             relationship = getRelationship(relationship_type);
             const depth = depth_target.val();
             projectJson.name = idea_word;
-            projectJson.relationsip = relationship;
+            projectJson.relationship = relationship;
             getDataFromApi(relationship_type, idea_word, depth, displayNodeUpdate);
             console.log('update submitted');
         });
@@ -522,7 +582,6 @@ function closeLoginModal() {
     });
 };
 
-
 function openSignupModal() {
     $('.get-started').click(event => {
         event.preventDefault();
@@ -547,5 +606,13 @@ function handleUserAccount() {
     $('.fa-user-circle').click(event => {
         event.preventDefault();
 
+    })
+}
+
+function handleNewProject() {
+    $('.js-new-project').click(event => {
+        event.preventDefault();
+        clearCanvas();
+        getAuthHeader();
     })
 }

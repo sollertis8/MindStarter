@@ -5,7 +5,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
 const d3 = require("d3");
 // const innersvg = require("innersvg-polyfill");
 // require('./public/js/index');
@@ -13,27 +12,26 @@ const d3 = require("d3");
 // const passportConfig = require('./config/passport')
 // passportConfig(app, passport)
 
-const { router: usersRouter } = require('./users');
-const { router: authRouter, localStrategy, jwtStrategy } = require ('./auth');
+const {
+  router: usersRouter
+} = require('./users');
+const {
+  router: authRouter,
+  localStrategy,
+  jwtStrategy
+} = require('./auth');
 
 mongoose.Promise = global.Promise;
 
-const { PORT, DATABASE_URL } = require('./config');
+const {
+  PORT,
+  DATABASE_URL
+} = require('./config');
 
 const app = express();
 
 // Logging
 app.use(morgan('common'));
-
-// Parse Cookies
-app.use(cookieParser());
-
-
-// templating
-// app.set('views', __dirname + '/views');
-// app.engine('html', require('ejs').renderFile);
-
-// app.set('view engine', 'ejs');
 
 // CORS
 app.use(function (req, res, next) {
@@ -52,7 +50,9 @@ passport.use(jwtStrategy);
 app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 
-const jwtAuth = passport.authenticate('jwt', { session: false });
+const jwtAuth = passport.authenticate('jwt', {
+  session: false
+});
 
 // A protected endpoint which needs a valid JWT to access it
 app.get('/api/protected', jwtAuth, (req, res) => {
@@ -60,10 +60,6 @@ app.get('/api/protected', jwtAuth, (req, res) => {
     data: 'rosebud'
   });
 });
-
-// app.use('*', (req, res) => {
-//   return res.status(404).json({ message: 'Not Found' });
-// });
 
 const home = require('./routes/index');
 const project = require('./projects/router');
@@ -75,42 +71,48 @@ app.use(express.static('public'));
 
 let server;
 
-function runServer(databaseUrl=DATABASE_URL, port=PORT) {
+function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {
 
-    mongoose.connect(databaseUrl, {useMongoClient: true}, err => {
+    mongoose.connect(databaseUrl, {
+      useMongoClient: true
+    }, err => {
       if (err) {
         return reject(err);
       }
 
-    server = app.listen(port, () => {
-      console.log(`Mindstarter is listening on port ${port}`);
-      resolve();
-    }).on('error', err => {
-      mongoose.disconnect();
-      reject(err);
+      server = app.listen(port, () => {
+        console.log(`Mindstarter is listening on port ${port}`);
+        resolve();
+      }).on('error', err => {
+        mongoose.disconnect();
+        reject(err);
+      });
     });
   });
-});
 }
 
 function closeServer() {
   return mongoose.disconnect().then(() => {
-  return new Promise((resolve, reject) => {
-    console.log('Closing Server');
-    server.close(err => {
-      if(err) {
-        reject(err);
-        return;
-      }
-      resolve();
+    return new Promise((resolve, reject) => {
+      console.log('Closing Server');
+      server.close(err => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve();
+      });
     });
   });
-});
 }
 
 if (require.main === module) {
   runServer().catch(err => console.error(err));
 };
 
-  module.exports = { app, runServer, closeServer };
+module.exports = {
+  app,
+  runServer,
+  closeServer
+};

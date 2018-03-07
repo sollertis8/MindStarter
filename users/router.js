@@ -1,15 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const {User} = require('./models');
+const {
+  User
+} = require('./models');
 
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
-const urlencodedParser = bodyParser.urlencoded({extended: true});
+const urlencodedParser = bodyParser.urlencoded({
+  extended: true
+});
 
 // Post to register a new user
-router.post('/', urlencodedParser, jsonParser, (req, res) => {
+router.post('/', urlencodedParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
@@ -22,7 +26,7 @@ router.post('/', urlencodedParser, jsonParser, (req, res) => {
     });
   }
 
-  const stringFields = ['username', 'password', 'firstName', 'lastName'];
+  const stringFields = ['username', 'password'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );
@@ -70,35 +74,38 @@ router.post('/', urlencodedParser, jsonParser, (req, res) => {
   };
   const tooSmallField = Object.keys(sizedFields).find(
     field =>
-      'min' in sizedFields[field] &&
-            req.body[field].trim().length < sizedFields[field].min
+    'min' in sizedFields[field] &&
+    req.body[field].trim().length < sizedFields[field].min
   );
   const tooLargeField = Object.keys(sizedFields).find(
     field =>
-      'max' in sizedFields[field] &&
-            req.body[field].trim().length > sizedFields[field].max
+    'max' in sizedFields[field] &&
+    req.body[field].trim().length > sizedFields[field].max
   );
 
   if (tooSmallField || tooLargeField) {
     return res.status(422).json({
       code: 422,
       reason: 'ValidationError',
-      message: tooSmallField
-        ? `Must be at least ${sizedFields[tooSmallField]
-          .min} characters long`
-        : `Must be at most ${sizedFields[tooLargeField]
+      message: tooSmallField ?
+        `Must be at least ${sizedFields[tooSmallField]
+          .min} characters long` :
+        `Must be at most ${sizedFields[tooLargeField]
           .max} characters long`,
       location: tooSmallField || tooLargeField
     });
   }
 
-  let {username, password, firstName, lastName} = req.body;
+  let {
+    username,
+    password
+  } = req.body;
   // Username and password come in pre-trimmed, otherwise we throw an error
   // before this
-  firstName = firstName.trim();
-  lastName = lastName.trim();
 
-  return User.find({username})
+  return User.find({
+      username
+    })
     .count()
     .then(count => {
       if (count > 0) {
@@ -117,8 +124,6 @@ router.post('/', urlencodedParser, jsonParser, (req, res) => {
       return User.create({
         username,
         password: hash,
-        firstName,
-        lastName
       });
     })
     .then(user => {
@@ -130,7 +135,10 @@ router.post('/', urlencodedParser, jsonParser, (req, res) => {
       if (err.reason === 'ValidationError') {
         return res.status(err.code).json(err);
       }
-      res.status(500).json({code: 500, message: 'Internal server error'});
+      res.status(500).json({
+        code: 500,
+        message: 'Internal server error'
+      });
     });
 });
 
@@ -141,43 +149,45 @@ router.post('/', urlencodedParser, jsonParser, (req, res) => {
 router.get('/', (req, res) => {
   return User.find()
     .then(users => res.json(users.map(user => user.serialize())))
-    .catch(err => res.status(500).json({message: 'Internal server error'}));
+    .catch(err => res.status(500).json({
+      message: 'Internal server error'
+    }));
 });
 
 // change user password
 router.put('/account/:id', jsonParser, (req, res) => {
-  const requiredFields = ['old_password','new_password', 'id'];
-  for (let i=0; i<requiredFields.length; i++) {
-      const field = requiredFields[i];
-  if (!(field in req.body)) {
+  const requiredFields = ['old_password', 'new_password', 'id'];
+  for (let i = 0; i < requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
       const message = `${field}\` is required`
       console.error(message);
       return res.status(400).send(message);
-      }
+    }
   }
   if (req.params.id !== req.body.id) {
-      const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
-      console.error(message);
-      return res.status(400).send(message);
+    const message = `Request path id (${req.params.id}) and request body id (${req.body.id}) must match`;
+    console.error(message);
+    return res.status(400).send(message);
   }
   if (req.params.password !== req.body.old_password) {
-      const message =`Old password (${req.body.old_password}) does not match our records`;
-      console.error(message);
-      return res.status(400).send(message);
+    const message = `Old password (${req.body.old_password}) does not match our records`;
+    console.error(message);
+    return res.status(400).send(message);
   }
   console.log(`updating password for user\` ${req.params.id}\``);
   Project.update({
-      id: req.params.id,
-      password: req.params.password
+    id: req.params.id,
+    password: req.params.password
   });
   res.status(204).end();
 });
 
 // delete user
 router.delete('/account/:id', (req, res) => {
-      Users.delete(req.params.id);
-      console.log(`Deleted User \`${req.params.id}\``);
-      res.status(204).end();
+  Users.delete(req.params.id);
+  console.log(`Deleted User \`${req.params.id}\``);
+  res.status(204).end();
 });
 
 // get User Account dashboard
@@ -185,4 +195,6 @@ router.get('/account/:id', (req, res) => {
   res.sendFile(__dirname + '/account.html');
 });
 
-module.exports = {router};
+module.exports = {
+  router
+};

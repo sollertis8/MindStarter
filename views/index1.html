@@ -22,10 +22,10 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Comfortaa" />
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../../js/index.js"></script>
-    
+
     <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
 
     <div class="main-content">
@@ -45,7 +45,7 @@
             </ul>
         </nav>
         <div class="new-project-icon">
-            <a href="/new_project" class="new_project">+</a>
+            <a href="/new_project" class="new-project js-new-project">+</a>
         </div>
         <!-- End Top Navigation -->
 
@@ -68,22 +68,22 @@
 
         <!-- Begin Project Navigation-->
         <nav class="project-nav">
-                
-                        <ul>
-                           
-                                <a href="/" class="left">
-                                    <div class="logo">Mindstarter</div>
-                                </a>
-                           
-                                <li>
-                                    <a href="/signout" class="signout">Sign Out</a>
-                                </li>
-                                <li>
-                                        
-                                    </li>
-                        </ul>
-                
-                    </nav>
+
+            <ul>
+
+                <a href="/" class="left">
+                    <div class="logo">Mindstarter</div>
+                </a>
+
+                <li>
+                    <a href="/signout" class="signout">Sign Out</a>
+                </li>
+                <li>
+
+                </li>
+            </ul>
+
+        </nav>
         <!-- End Project Navigation -->
 
         <!-- Begin top header -->
@@ -127,7 +127,7 @@
         <div class="mindstarter-container js-mindstarter-container">
             <div class="project-container">
                 <div class="project-form">
-                    <form class="new-project-form js-project-form" action="/user/project" method="post">
+                    <form class="new-project-form js-project-form" action="/user/:userId/project" method="post">
                         <fieldset>
                             <legend class="form-heading">New Project</legend>
                             <div class="project-form-line-1">
@@ -162,17 +162,16 @@
                                 </select>
                                 <input id="save" type="submit" value="Save" />
                             </div>
-                    
+
                         </fieldset>
                     </form>
                     <!-- update project -->
-                    <form class="update-project js-update-project" id="update-project" action="/user/:userId/project"
-                        method="post">
+                    <form class="update-project js-update-project" id="update-project" action="/user/:userId/project" method="post">
                         <fieldset>
                             <legend class="form-heading">Project</legend>
                             <div class="project-form-line-1">
                                 <label for "project_name">Project Name</label>
-                                <input class="project js-project" type="text" name="project_name"  placeholder="Enter a Project Name">
+                                <input class="project js-project" type="text" name="project_name" placeholder="Enter a Project Name">
                                 <label for "starter_word">Word</label>
                                 <input class="idea js-idea" type="text" name="idea_word" placeholder="Enter a Starting Word">
                             </div>
@@ -235,7 +234,7 @@
                         <legend>Login</legend>
                         <label for "username">Username:</label>
                         <br>
-                        <input type="text" name="username" value="Username">
+                        <input type="text" name="username" class="user js-user" value="Username">
                         <br>
                         <label for "password"Password:></label>
                         <br>
@@ -255,28 +254,29 @@
             <div class="signupModal-content">
                 <span class="close">&times;</span>
                 <div class="signup-form">
-                    <form action="/api/users" method="post">
+                    <form class="signup js-signup" action="/api/users" method="post">
                         <fieldset>
                             <legend class="form-heading">Signup</legend>
                             <label for "username">Username:</label>
                             <br>
-                            <input type="text" name="username" value="Username">
+                            <input type="text" class="username js-signup-username" name="username" value="Username">
                             <br>
                             <label for "password">Password:</label>
                             <br>
-                            <input type="password" name="password" value="Password">
+                            <input type="password" name="password" class="password js-signup-password" value="Password">
                             <br>
                             <label for "confirm-password">Confirm Password:</label>
                             <br>
-                            <input type="password" name="confirm-password" value="Password-Confirm">
+                            <input type="password" name="confirm-password" class="password-confirm js-signup-password-confirm" value="Password-Confirm">
                             <br>
                             <input type="submit" value="Submit">
                         </fieldset>
                     </form>
+                    <div class="signup-message js-signup-message"></div>
                 </div>
             </div>
         </div>
-        <!-- End Signup Modal --> 
+        <!-- End Signup Modal -->
     </div>
 </body>
 

@@ -1,15 +1,14 @@
 const express = require('express');
-const router = express.Router();
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 const urlencodedParser = bodyParser.urlencoded({
     extended: true
 });
-
-const cookieParser = require('cookie-parser')
-
-const jwtAuth = passport.authenticate('jwt', { session: false });
+const router = express.Router();
+const jwtAuth = passport.authenticate('jwt', {
+    session: false
+});
 ObjectID = require('mongodb').ObjectID;
 
 const {
@@ -28,66 +27,46 @@ router.get('/', function (req, res) {
 
 
 router.get('/signup', function (req, res) {
-    res.sendFile('/signup.html', {
-        root: ('./views')
-    });
+    res.sendStatus(200);
 });
 
 router.get('/user/profile', (req, res) => {
-    // const {userId} = req.params;
     res.sendStatus(200);
-    User
-        .findOne({
-            _id: ObjectID(req.params.userId)  
-        })
-        // .then(user => res.json({
-        //     projects: user.projects
-        // }))
+});
 
-    });
-  
 
 // create a new project
-router.get('/user/:userId/project', jwtAuth, urlencodedParser, (req, res) => {
-    
-    const userId = req.user._id;
-    
-    const requiredFields = ['project_name', 'idea_word', 'relationship_type', 'depth'];
+router.put('/project/:id', jsonParser, (req, res) => {
+    // const data = JSON.stringify(req.body);
 
-    for (let i = 0; i < requiredFields.length; i++) {
-        const field = requiredFields[i];
-        if (!(field in req.body)) {
-            const message = `${field}\ is required in request body`
-    
-            console.error(message);
-            return res.status(400).send(message);
-        }
-    }   
-
-    const options = {
-        root: ('./views'),
-        headers: {
-          'Authorization': 'Bearer ' + authToken
-        }
-      }
-    Project
-          const pid = this.params.id
-        .create({
-            project_name: req.body.project_name,
-            idea_word: req.body.idea_word,
-            relationship_type: req.body.relationship_type,
-            depth: req.body.depth
-        })
-        .then(
-            res.status(201).send()
-            
-        )
-        .catch(err => {
-            console.error(err);
-            res.status(500).json({
-                message: 'Internal server error'
-            });
+    if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+        const message = (
+            `Request path id (${req.params.id}) and request body id ` +
+            `(${req.body.id}) must match`);
+        console.error(message);
+        // we return here to break out of this function
+        return res.status(400).json({
+            message: message
         });
+    }
+
+    const toUpdate = {};
+    const updateableFields = ['project', 'project_data', 'name', 'idea_word', 'relationship', 'children', 'size'];
+
+    updateableFields.forEach(field => {
+        if (field in req.body) {
+            toUpdate[field] = req.body[field];
+        }
+    });
+
+    User
+        .findByIdAndUpdate(req.params.id, {
+            $set: toUpdate
+        })
+        .then(user => res.status(204).end())
+        .catch(err => res.status(500).json({
+            message: 'Internal server error'
+        }));
 });
 
 router.get('/login', (req, res) => {
