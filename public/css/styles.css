@@ -243,7 +243,6 @@ li .left {
     background-color: #8e7cc3ff;
 }
 
-
 .left-nav {
     display: none;
     top: 100px;
@@ -261,7 +260,7 @@ li .left {
     color: #b4a7d6ff !important;
 }
 
-.new_project {
+.new-project {
     font-family: comfortaa;
     font-size: 60px;
     /* font-weight: lighter; */
@@ -289,16 +288,16 @@ li .left {
 }
 
 .project-container {
-    margin: auto; 
+    margin: auto;
     text-align: center;
-    width: auto; 
-    height: 1100px; 
+    width: auto;
+    height: 1100px;
 }
 
 .new-project-form {
     font-family: comfortaa;
     background-color: white;
-    border:  1px solid #e9e6ff;
+    border: 1px solid #e9e6ff;
     border-radius: 15px;
     top: 100px;
     left: 0;
@@ -312,7 +311,7 @@ li .left {
 .update-project {
     font-family: comfortaa;
     background-color: white;
-    border:  1px solid #e9e6ff;
+    border: 1px solid #e9e6ff;
     border-radius: 15px;
     top: 100px;
     left: 0;
@@ -322,7 +321,6 @@ li .left {
     margin: auto;
     text-align: center;
 }
-
 
 #loginModal {
     display: none;
@@ -335,7 +333,7 @@ li .left {
 .login-form {
     font-family: comfortaa;
     background-color: white;
-    border:  1px solid #e9e6ff;
+    border: 1px solid #e9e6ff;
     border-radius: 15px;
     top: 100px;
     left: 0;
@@ -349,7 +347,7 @@ li .left {
 .signup-form {
     font-family: comfortaa;
     background-color: white;
-    border:  1px solid #e9e6ff;
+    border: 1px solid #e9e6ff;
     border-radius: 15px;
     top: 100px;
     left: 0;
@@ -364,7 +362,7 @@ li .left {
     font-family: comfortaa;
     background-color: #b4a7d6ff;
     color: white;
-    border:  1px solid black;
+    border: 1px solid black;
     border-radius: 15px 15px 0 0;
     padding: 12px 0;
     width: 599px;
@@ -396,8 +394,6 @@ li .left {
     /* overflow: scroll; */
 }
 
-
-
 .project-nav {
     font-family: comfortaa;
     width: auto;
@@ -426,7 +422,6 @@ li .left {
     border-bottom: #f6f9ffff 2px solid;
 }
 
-
 .project-item {
     display: block;
     font-family: comfortaa;
@@ -434,7 +429,6 @@ li .left {
     width: 148px;
     height: 50px;
     background-color: white;
-    
 }
 
 .project-right-title {
@@ -640,54 +634,76 @@ polygon {
     /* pointer-events: visibleFill; */
 }
 
-
 /* The Modal (background) */
+
 .loginModal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 2; /* Sit on top */
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 2;
+    /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
+
 .loginModal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 15% auto;
+    /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
+    /* Could be more or less, depending on screen size */
 }
 
-
 .signupModal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 2; /* Sit on top */
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 2;
+    /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
+
 .signupModal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 15% auto;
+    /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
+    /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */
+
 .close {
     color: #aaa;
     float: right;

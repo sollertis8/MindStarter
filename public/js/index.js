@@ -7,15 +7,8 @@ $(document).ready(function () {
     closeSignupModal();
     watchSubmit();
     watchUpdate();
-    // getAuthToken();
     ajaxLogin(getAuthHeader);
     handleSignup(getAuthHeader);
-    // clearPage();
-
-    // renderHomePage();
-    // $('.js-update-project').hide();
-    // $('.js-project-title').hide();
-    // $('.auth').hide();
 });
 
 let user_id = "";
@@ -370,6 +363,7 @@ function renderProject() {
     $('.js-project-response').html(root);
 };
 
+
 function clearCanvas() {
     window.g.remove();
 }
@@ -612,5 +606,13 @@ function handleUserAccount() {
     $('.fa-user-circle').click(event => {
         event.preventDefault();
 
+    })
+}
+
+function handleNewProject() {
+    $('.js-new-project').click(event => {
+        event.preventDefault();
+        clearCanvas();
+        getAuthHeader();
     })
 }

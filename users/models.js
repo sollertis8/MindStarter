@@ -37,7 +37,7 @@ const ProjectDataSchema = mongoose.Schema({
     required: true,
     unique: false
   },
-  
+
   children: [{
     _id: false,
     type: Array,
@@ -45,16 +45,15 @@ const ProjectDataSchema = mongoose.Schema({
   }]
 })
 
-
 const ProjectSchema = mongoose.Schema({
-  project: {
+  project: [{
     type: Array,
-    
+
     project_data: {
       type: [String],
       default: [ProjectDataSchema]
     }
-  }
+  }]
 })
 
 const UserSchema = mongoose.Schema({
@@ -67,12 +66,20 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  projects: {
+  projects: [{
     type: Array,
     required: false,
     default: [ProjectSchema]
-  }
+  }]
 });
+
+ChildrenSchema.methods.serialize = function () {
+  return {
+    name: this.name || "",
+    size: this.size || "",
+    relationship: this.relationship || ""
+  }
+}
 
 UserSchema.methods.serialize = function () {
   return {
@@ -81,40 +88,29 @@ UserSchema.methods.serialize = function () {
   };
 };
 
-UserSchema.methods.validatePassword = function (password) {
-  return bcrypt.compare(password, this.password);
-};
-
-UserSchema.statics.hashPassword = function (password) {
-  return bcrypt.hash(password, 10);
-};
+ProjectDataSchema.methods.serialize = function () {
+  return {
+    name: this.name || "",
+    idea_word: this.idea_word || "",
+    relationship: this.relationship || "",
+    children: this.children || ""
+  };
+}
 
 ProjectSchema.methods.serialize = function () {
   return {
     project: this.project || "",
     project_data: this.project_data || "",
-    
+
   };
 };
 
-ProjectDataSchema.methods.serialize = function () {
-    return {
-      name: this.name || "",
-      idea_word: this.idea_word || "",
-      relationship: this.relationship || "",
-      children: this.children || ""
-  };
-}
-
-ChildrenSchema.methods.serialize = function () {
-  return {
-    name: this.name || "",
-    size: this.size || "",
-    relationship: this.relationship || "" 
-  }
-}
-
-
+UserSchema.methods.validatePassword = function (password) {
+  return bcrypt.compare(password, this.password);
+};
+UserSchema.statics.hashPassword = function (password) {
+  return bcrypt.hash(password, 10);
+};
 const collection = "users";
 const User = mongoose.model('User', UserSchema, collection);
 
