@@ -9,6 +9,7 @@ $(document).ready(function () {
     watchUpdate();
     ajaxLogin(getAuthHeader);
     handleSignup(getAuthHeader);
+    createNewProject();
 });
 
 let user_id = "";
@@ -125,7 +126,7 @@ function handleAccountAccess(callback) {
     // const url = "/user/:" + username 
     const settings = {
         headers: {
-            'Authorization': handleProtectedAuth
+            'Authorization': handleProtectedAuth()
         },
         url: '/user/:userId/account',
         dataType: 'html',
@@ -135,10 +136,20 @@ function handleAccountAccess(callback) {
     $.ajax(settings);
 }
 
+function createNewProject() {
+    $('.js-new-project').click(event => {
+        event.preventDefault();
+        // clearCanvas();
+        handleProjectPage(renderProjectPage);
+    })
+}
 
 function handleProjectPage(callback) {
     const url = '/user/profile';
     const settings = {
+        headers: {
+            'Authorization': handleProtectedAuth()
+        },
         url: url,
         datatype: 'html',
         type: 'GET',
@@ -159,6 +170,9 @@ function getAuthHeader(data, textStatus, request) {
 
 // display Project page
 function renderProjectPage(data, textStatus, request) {
+    // $('.js-project-response').html('');
+    // $('.mindstarter-project').html('');
+    // $('.js-project-title').html('');
     const url = '/user/' + user_id + '/profile';
     window.history.pushState("", "Project", url);
     $('.loginModal').hide();
@@ -606,13 +620,5 @@ function handleUserAccount() {
     $('.fa-user-circle').click(event => {
         event.preventDefault();
 
-    })
-}
-
-function handleNewProject() {
-    $('.js-new-project').click(event => {
-        event.preventDefault();
-        clearCanvas();
-        getAuthHeader();
     })
 }

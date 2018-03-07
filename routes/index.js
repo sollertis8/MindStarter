@@ -30,7 +30,7 @@ router.get('/signup', function (req, res) {
     res.sendStatus(200);
 });
 
-router.get('/user/profile', (req, res) => {
+router.get('/user/profile', jwtAuth, (req, res) => {
     res.sendStatus(200);
 });
 
@@ -63,7 +63,10 @@ router.put('/project/:id', jsonParser, (req, res) => {
         .findByIdAndUpdate(req.params.id, {
             $set: toUpdate
         })
-        .then(user => res.status(204).end())
+        // .then(user => res.status(204).end())
+        .then(function(user) { 
+            console.log("RES: ", res);
+         })
         .catch(err => res.status(500).json({
             message: 'Internal server error'
         }));
