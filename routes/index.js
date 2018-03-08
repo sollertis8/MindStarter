@@ -52,21 +52,19 @@ router.put('/project/:id', jsonParser, (req, res) => {
 
     const toUpdate = {};
     const updateableFields = ['project', 'project_data', 'name', 'idea_word', 'relationship', 'children', 'size'];
-
+    console.log("REQ",req.body)
     updateableFields.forEach(field => {
         if (field in req.body) {
             toUpdate[field] = req.body[field];
         }
     });
-
+            console.log(req.params.id)
     User
         .findByIdAndUpdate(req.params.id, {
             $set: toUpdate
         })
-        // .then(user => res.status(204).end())
-        .then(function(user) { 
-            console.log("RES: ", res);
-         })
+        .then(user => res.json(user))
+        
         .catch(err => res.status(500).json({
             message: 'Internal server error'
         }));

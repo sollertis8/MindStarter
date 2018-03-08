@@ -46,14 +46,10 @@ const ProjectDataSchema = mongoose.Schema({
 })
 
 const ProjectSchema = mongoose.Schema({
-  project: [{
-    type: Array,
-
-    project_data: {
-      type: [String],
+    project_data: [{
+      type: Array,
       default: [ProjectDataSchema]
-    }
-  }]
+    }]
 })
 
 const UserSchema = mongoose.Schema({
@@ -66,7 +62,7 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  projects: [{
+  project: [{
     type: Array,
     required: false,
     default: [ProjectSchema]

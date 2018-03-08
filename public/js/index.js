@@ -8,7 +8,7 @@ $(document).ready(function () {
     watchSubmit();
     watchUpdate();
     ajaxLogin(getAuthHeader);
-    handleSignup(getAuthHeader);
+    handleSignup(handleCreateAccountSuccess);
     createNewProject();
 });
 
@@ -243,6 +243,13 @@ function handleSignup(callback) {
 
 }
 
+
+function handleCreateAccountSuccess() {
+    $('.signupModal').css("display", "none");
+    $('.loginModal').css("display", "block");
+    $('.js-login-title').html('<b>Success!  Please sign in to continue.')
+}
+
 function renderProject() {
     var width = 960;
     var height = 960;
@@ -408,9 +415,9 @@ function displayResponseData(response, callback) {
 function updateDatabase(project_data, callback) {
     const mindstarter_project = {
         id: user_id,
-        project: [{
+        project: {
             project_data
-        }]
+        }
     }
 
     const mindstarter_data = JSON.stringify(mindstarter_project);
