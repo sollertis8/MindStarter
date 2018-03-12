@@ -13,6 +13,7 @@ $(document).ready(function () {
 });
 
 let user_id = "";
+let project_id = "";
 let project_name = "";
 let relationship = "";
 let idea_word = "";
@@ -97,22 +98,22 @@ function autoComplete(callback) {
     $.ajax(settings)
 }
 
-function formDataToJson(project_name, idea_word, relationship_type, depth, callback) {
-    const settings = {
-        data: {
-            project_name: `${project_name}`,
-            idea_word: `${idea_word}`,
-            relationship_type: `${relationship_type}`,
-            depth: `${depth}`
-        },
-        url: 'http://localhost:8080/project',
-        dataType: 'json',
-        contentType: 'application/json',
-        type: 'POST',
-        success: callback
-    };
-    $.ajax(settings)
-}
+// function formDataToJson(project_name, idea_word, relationship_type, depth, callback) {
+//     const settings = {
+//         data: {
+//             project_name: `${project_name}`,
+//             idea_word: `${idea_word}`,
+//             relationship_type: `${relationship_type}`,
+//             depth: `${depth}`
+//         },
+//         url: 'http://localhost:8080/project',
+//         dataType: 'json',
+//         contentType: 'application/json',
+//         type: 'POST',
+//         success: callback
+//     };
+//     $.ajax(settings)
+// }
 
 
 function handleProtectedAuth() {
@@ -146,11 +147,16 @@ function createNewProject() {
 
 function handleProjectPage(callback) {
     const url = '/user/profile';
+    const data = {
+        id: user_id
+    }
+    const json_data = JSON.stringify(data);
     const settings = {
         headers: {
             'Authorization': handleProtectedAuth()
         },
         url: url,
+        data: json_data,
         datatype: 'html',
         type: 'GET',
         success: callback
@@ -185,14 +191,24 @@ function renderProjectPage(data, textStatus, request) {
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
 
-    //     for ( let i=0 ; i < data.projects.length; i++ ) {
-    //     $('.projects-list').html(`<div class="project-item">
-    //     <div class="project-right-title">${data.projects[i].name}</div>
-    //     <div class="project-right-icon-bg">
-    //         <div class="count"></div>
-    //     </div>
-    // </div>`)
-    // }
+        for ( let i=0 ; i < data.length; i++ ) {
+            if(data[i].project[i].project_name == $('.js-project-title')){
+                $('.projects-list').html(`<div class="item-project item-${[i]} project-selected">
+        <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[i].project_name}">${data[i].project[i].project_name}</a></div>
+        <div class="project-right-count">
+            <div class="count"></div>
+        </div>
+    </div>`)
+            } else {
+                $('.projects-list').html(`<div class="item-project item-${[i]}">
+                <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[i].project_name}">${data[i].project[i].project_name}</a></div>
+                <div class="project-right-count">
+                    <div class="count"></div>
+                </div>
+            </div>`)
+            }
+        
+    }
 }
 
 // handle node count
@@ -400,9 +416,10 @@ function displayResponseData(response, callback) {
         }
         let project_data = projectJson;
         project_data.idea_word = idea_word;
+        project_data.user_id = user_id;
 
         renderProject();
-        updateDatabase(project_data, displayUpdatedResponse);
+        createProject(project_data, displayProjectResponse);
         // store project_data in database
 
     } else {
@@ -412,20 +429,24 @@ function displayResponseData(response, callback) {
 
 };
 
-function updateDatabase(project_data, callback) {
+function handleProjectUpdate() {
+    
+}
+
+function updateProject(project_data, callback) {
     const mindstarter_project = {
-        id: user_id,
-        project: {
+        id: project_id,
+        project: 
+        {
+            project_name: project_name,
             project_data
         }
     }
-
     const mindstarter_data = JSON.stringify(mindstarter_project);
-
-    const url = '/project/' + user_id;
+    const url = '/project/' + project_id;
     const settings = {
         headers: {
-            'Authorization': handleProtectedAuth,
+            'Authorization': handleProtectedAuth(),
         },
         data: mindstarter_data,
         url: url,
@@ -440,8 +461,40 @@ function updateDatabase(project_data, callback) {
     $.ajax(settings);
 }
 
+function createProject(project_data, callback) {
+    const mindstarter_project = {
+        project:  
+        {
+            project_name: project_name,
+            project_data
+        }
+    }
+    const mindstarter_data = JSON.stringify(mindstarter_project);
+    const url = '/project'
+    const settings = {
+        headers: {
+            'Authorization': handleProtectedAuth()
+        },
+        data: mindstarter_data,
+        url: url,
+        dataType: 'json',
+        contentType: "application/json",
+        type: 'POST',
+        success: callback
+    };
+    $.ajax(settings);
+}
+
+function displayProjectResponse(data, textStatus, request) {
+    // console.log(data);
+    project_id = data[0]._id;
+    // console.log(project_id);
+}
+
 function displayUpdatedResponse(data, textStatus, request) {
-    console.log(`${data}`);
+    // console.log(data);
+    project_id = data._id;
+    // console.log(project_id);
 }
 
 function displayNodeUpdate(response) {
@@ -499,6 +552,10 @@ function displayNodeUpdate(response) {
                 };
             }
         };
+        let project_data = projectJson;
+        project_data.idea_word = idea_word;
+        project_data.user_id = user_id;
+        updateProject(project_data, displayUpdatedResponse);
     } else if (response == "") {
         const no_results = "Sorry, there were no results for this combination.  Try a different relationship type.";
         $('.js-project-response').html(no_results);
@@ -567,7 +624,7 @@ function watchUpdate() {
             const idea_target = $(event.currentTarget).find('.js-idea');
             const relationship_target = $(event.currentTarget).find('.js-relationship');
             const depth_target = $(event.currentTarget).find('.js-depth');
-            const project_name = project_name_target.val();
+            const project_name = $('.js-project-title');
             idea_word = idea_target.val();
             const relationship_type = relationship_target.val();
             relationship = getRelationship(relationship_type);

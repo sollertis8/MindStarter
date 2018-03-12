@@ -415,6 +415,20 @@ li .left {
     width: 150px;
     height: auto;
     position: fixed;
+    top: 150px;
+    right: 0px;
+    display: block;
+    border-left: #333344ff 2px solid;
+    border-bottom: #f6f9ffff 2px solid;
+}
+
+
+
+.right-title {
+    font-family: comfortaa;
+    width: 150px;
+    height: auto;
+    position: fixed;
     top: 100px;
     right: 0px;
     display: block;
@@ -422,7 +436,8 @@ li .left {
     border-bottom: #f6f9ffff 2px solid;
 }
 
-.project-item {
+
+.item-project {
     display: block;
     font-family: comfortaa;
     color: #8e7cc3ff;
@@ -430,6 +445,17 @@ li .left {
     height: 50px;
     background-color: white;
 }
+
+
+.item-project .project-selected {
+    display: block;
+    font-family: comfortaa;
+    color: white;
+    width: 148px;
+    height: 50px;
+    background-color: #8e7cc3ff;
+}
+
 
 .project-right-title {
     font-family: comfortaa;
@@ -442,7 +468,26 @@ li .left {
     background-color: white;
 }
 
+.project-right-name {
+    font-family: comfortaa;
+    padding: 15px 5px;
+    text-align: center;
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    color: #8e7cc3ff;
+    background-color: white;
+}
+
 .project-right-icon-bg {
+    display: block;
+    float: right;
+    width: 48px;
+    height: 50px;
+    background-color: #f6f9ffff;
+}
+
+.project-right-count {
     display: block;
     float: right;
     width: 48px;

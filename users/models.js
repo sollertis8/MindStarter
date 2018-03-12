@@ -4,53 +4,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const ChildrenSchema = mongoose.Schema({
-  name: {
-    type: String
-  },
-  size: {
-    type: String
-  },
-  relationship: {
-    type: String
-  }
-})
 
-const ProjectDataSchema = mongoose.Schema({
-  name: {
-    _id: false,
-    type: String,
-    required: true,
-    unique: true
-  },
-
-  idea_word: {
-    _id: false,
-    type: String,
-    required: true,
-    default: ""
-  },
-
-  relationship: {
-    _id: false,
-    type: String,
-    required: true,
-    unique: false
-  },
-
-  children: [{
-    _id: false,
-    type: Array,
-    default: [ChildrenSchema]
-  }]
-})
-
-const ProjectSchema = mongoose.Schema({
-    project_data: [{
-      type: Array,
-      default: [ProjectDataSchema]
-    }]
-})
 
 const UserSchema = mongoose.Schema({
   username: {
@@ -61,21 +15,10 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  project: [{
-    type: Array,
-    required: false,
-    default: [ProjectSchema]
-  }]
+  }
 });
 
-ChildrenSchema.methods.serialize = function () {
-  return {
-    name: this.name || "",
-    size: this.size || "",
-    relationship: this.relationship || ""
-  }
-}
+
 
 UserSchema.methods.serialize = function () {
   return {
@@ -84,22 +27,7 @@ UserSchema.methods.serialize = function () {
   };
 };
 
-ProjectDataSchema.methods.serialize = function () {
-  return {
-    name: this.name || "",
-    idea_word: this.idea_word || "",
-    relationship: this.relationship || "",
-    children: this.children || ""
-  };
-}
 
-ProjectSchema.methods.serialize = function () {
-  return {
-    project: this.project || "",
-    project_data: this.project_data || "",
-
-  };
-};
 
 UserSchema.methods.validatePassword = function (password) {
   return bcrypt.compare(password, this.password);

@@ -30,15 +30,44 @@ router.get('/signup', function (req, res) {
     res.sendStatus(200);
 });
 
-router.get('/user/profile', jwtAuth, (req, res) => {
-    res.sendStatus(200);
+// get user project page and projects
+router.get('/user/profile', jsonParser, jwtAuth, (req, res) => {
+    const data = {};
+    console.log(req.params);
+    const user_id = req.params.id;
+
+    // for(i=0; i<Project.length; i++){
+    //     if (Project[i].project.user_id == user_id){
+    //         data.push(Project[i].project);
+    //         console.log(Project[i].project)
+    //     } 
+    // } 
+
+    Project.find({
+        user_id: user_id
+    }, (err, projects) => {
+        if (err) {
+            console.log(err);
+        }
+
+        console.log(projects);
+        //    data.push(projects);
+        //    console.log(project);
+
+        if (projects != null) {
+            // console.log(data)
+
+            res.json(projects);
+        } else {
+            res.sendStatus(200);
+        }
+    })
 });
 
 
-// create a new project
+// update a project
 router.put('/project/:id', jsonParser, (req, res) => {
-    // const data = JSON.stringify(req.body);
-
+    console.log(req.body);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         const message = (
             `Request path id (${req.params.id}) and request body id ` +
@@ -52,23 +81,46 @@ router.put('/project/:id', jsonParser, (req, res) => {
 
     const toUpdate = {};
     const updateableFields = ['project', 'project_data', 'name', 'idea_word', 'relationship', 'children', 'size'];
-    console.log("REQ",req.body)
+    console.log("REQ", req.body)
     updateableFields.forEach(field => {
         if (field in req.body) {
             toUpdate[field] = req.body[field];
         }
     });
-            console.log(req.params.id)
-    User
+    console.log(req.params.id)
+    Project
         .findByIdAndUpdate(req.params.id, {
             $set: toUpdate
         })
-        .then(user => res.json(user))
-        
+        .then(project => res.json(project))
+
+        .catch(err => res.status(500).json({
+            message: err
+        }));
+});
+
+
+// create a new project
+router.post('/project', jsonParser, (req, res) => {
+    const requiredFields = ['project'];
+    for (let i = 0; i < requiredFields.length; i++) {
+        const field = requiredFields[i];
+        if (!(field in req.body)) {
+            const message = `Missing \`${field}\` in request body`
+            console.error(message);
+            return res.status(400).send(message);
+        }
+    }
+    console.log("REQ", req.body)
+
+    Project
+        .insertMany([req.body])
+        .then(project => res.status(201).json(project))
         .catch(err => res.status(500).json({
             message: 'Internal server error'
         }));
 });
+
 
 router.get('/login', (req, res) => {
     res.sendFile('/login.html', {

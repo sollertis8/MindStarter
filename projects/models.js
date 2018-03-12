@@ -3,42 +3,94 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-const ProjectSchema = mongoose.Schema({
-    project_name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    idea_word: {
-        type: String,
-        required: true,
-        default: ''
-    },
-    relationship_type: {
-        type: String,
-        required: true
-    },
-    depth: {
-        type: Number,
-        required: true,
-        default: '1',
+const ChildrenSchema = mongoose.Schema({
+    name: {
+      type: String
     },
     size: {
-        type: Number,
-        required: true,
-        default: '1'
+      type: String
+    },
+    relationship: {
+      type: String
     }
-})
+  })
+  
+  const ProjectDataSchema = mongoose.Schema({
+    user_id: {
+        type: String,
+        required: true,
+        unique: false
+    },
 
-ProjectSchema.methods.serialize = function () {
+    name: {
+      _id: false,
+      type: String,
+      required: true,
+      unique: true
+    },
+  
+    idea_word: {
+      _id: false,
+      type: String,
+      required: true,
+      default: ""
+    },
+  
+    relationship: {
+      _id: false,
+      type: String,
+      required: true,
+      unique: false
+    },
+  
+    children: [{
+      _id: false,
+      type: Array,
+      default: [ChildrenSchema]
+    }]
+  })
+  
+  const ProjectSchema = mongoose.Schema({
+        project: {
+            type: Array,
+        project_name: {
+            type: String
+        },
+        
+      project_data: [{
+        type: Array,
+        default: [ProjectDataSchema]
+      }]
+    }
+  })
+
+
+  ChildrenSchema.methods.serialize = function () {
     return {
-        project_name: this.project_name || '',
-        idea_word: this.idea_word || '',
-        relationship_type: this.relationship_type || '',
-        depth: this.depth || '',
-        size: this.size || ''
+      name: this.name || "",
+      size: this.size || "",
+      relationship: this.relationship || ""
+    }
+  }
+
+  ProjectDataSchema.methods.serialize = function () {
+    return {
+      user_id: this.user_id || "",
+      name: this.name || "",
+      idea_word: this.idea_word || "",
+      relationship: this.relationship || "",
+      children: this.children || ""
     };
-};
+  }
+  
+  ProjectSchema.methods.serialize = function () {
+    return {
+      project: this.project || "",
+      project_data: this.project_data || "",
+  
+    };
+  };
+
 const collection = "projects";
 const Project = mongoose.model('Project', ProjectSchema, collection);
 
