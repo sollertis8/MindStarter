@@ -53,6 +53,7 @@ const ChildrenSchema = mongoose.Schema({
   const ProjectSchema = mongoose.Schema({
         project: {
             type: Array,
+            unique: true,
         project_name: {
             type: String
         },

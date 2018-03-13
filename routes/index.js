@@ -66,7 +66,7 @@ router.get('/user/profile', jsonParser, jwtAuth, (req, res) => {
 
 
 // update a project
-router.put('/project/:id', jsonParser, (req, res) => {
+router.put('/project/:id', jsonParser, jwtAuth, (req, res) => {
     console.log(req.body);
     if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
         const message = (
@@ -117,7 +117,7 @@ router.post('/project', jsonParser, (req, res) => {
         .insertMany([req.body])
         .then(project => res.status(201).json(project))
         .catch(err => res.status(500).json({
-            message: 'Internal server error'
+            message: err
         }));
 });
 

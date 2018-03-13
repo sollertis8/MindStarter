@@ -447,12 +447,10 @@ function updateProject(project_data, callback) {
     const settings = {
         headers: {
             'Authorization': handleProtectedAuth(),
+            "X-HTTP-Method-Override": "PUT"
         },
         data: mindstarter_data,
         url: url,
-        headers: {
-            "X-HTTP-Method-Override": "PUT"
-        },
         dataType: 'json',
         contentType: "application/json",
         type: 'PUT',
