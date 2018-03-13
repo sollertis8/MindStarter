@@ -32,17 +32,8 @@ router.get('/signup', function (req, res) {
 
 // get user project page and projects
 router.get('/user/profile', jsonParser, jwtAuth, (req, res) => {
-    const data = {};
     console.log(req.params);
     const user_id = req.params.id;
-
-    // for(i=0; i<Project.length; i++){
-    //     if (Project[i].project.user_id == user_id){
-    //         data.push(Project[i].project);
-    //         console.log(Project[i].project)
-    //     } 
-    // } 
-
     Project.find({
         user_id: user_id
     }, (err, projects) => {

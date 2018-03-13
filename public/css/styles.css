@@ -523,6 +523,29 @@ li .left {
     top: -240px;
 }
 
+.count-circle {
+    height: 2em;
+    width: 2em;
+    background-color: #b4a7d6ff;
+    border-radius: 50%;
+    text-align: center;
+    margin: auto;
+    position: relative;
+    z-index: 1;
+    display: block;
+    top: 10px;
+}
+
+.count {
+    font-family: comfortaa;
+    font-size: 16px;
+    position: relative;
+    text-align: center;
+    color: white;
+    z-index: 5;
+    bottom: 12px;
+}
+
 .centerpiece {
     padding: 40px;
     height: 300px;

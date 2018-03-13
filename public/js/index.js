@@ -98,24 +98,6 @@ function autoComplete(callback) {
     $.ajax(settings)
 }
 
-// function formDataToJson(project_name, idea_word, relationship_type, depth, callback) {
-//     const settings = {
-//         data: {
-//             project_name: `${project_name}`,
-//             idea_word: `${idea_word}`,
-//             relationship_type: `${relationship_type}`,
-//             depth: `${depth}`
-//         },
-//         url: 'http://localhost:8080/project',
-//         dataType: 'json',
-//         contentType: 'application/json',
-//         type: 'POST',
-//         success: callback
-//     };
-//     $.ajax(settings)
-// }
-
-
 function handleProtectedAuth() {
     var token = window.localStorage.getItem('jwt');
     var auth = 'Bearer ' + token;
@@ -145,7 +127,21 @@ function createNewProject() {
     })
 }
 
+function handleProfileRefresh() {
+    //check for navigation time API support
+    if (window.performance) {
+        console.info("window.performance work's fine on this browser");
+    }
+    if (performance.navigation.type == 1) {
+        console.info("This page is reloaded");
+        handleProjectPage(renderProjectPage);
+    } else {
+        console.info("This page is not reloaded");
+    }
+}
+
 function handleProjectPage(callback) {
+
     const url = '/user/profile';
     const data = {
         id: user_id
@@ -176,9 +172,7 @@ function getAuthHeader(data, textStatus, request) {
 
 // display Project page
 function renderProjectPage(data, textStatus, request) {
-    // $('.js-project-response').html('');
-    // $('.mindstarter-project').html('');
-    // $('.js-project-title').html('');
+    let p = "";
     const url = '/user/' + user_id + '/profile';
     window.history.pushState("", "Project", url);
     $('.loginModal').hide();
@@ -191,33 +185,38 @@ function renderProjectPage(data, textStatus, request) {
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
 
-        for ( let i=0 ; i < data.length; i++ ) {
-            if(data[i].project[i].project_name == $('.js-project-title')){
-                $('.projects-list').html(`<div class="item-project item-${[i]} project-selected">
-        <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[i].project_name}">${data[i].project[i].project_name}</a></div>
+    for (let i = 0, j = 0; i < data.length; i++) {
+        if (data[i].project[j].project_name == $('.js-project-title')) {
+            for (let m = 0; m <= data[i].project[j].project_data.children.length; m++) {
+                p = m;
+            }
+            $('.projects-list').append(`<div class="item-project id=${[i]} project-selected">
+        <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[j].project_name}">${data[i].project[j].project_name}</a></div>
         <div class="project-right-count">
-            <div class="count"></div>
+        <div class="count-circle"></div>
+            <div class="count">${p}</div>
         </div>
     </div>`)
-            } else {
-                $('.projects-list').html(`<div class="item-project item-${[i]}">
-                <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[i].project_name}">${data[i].project[i].project_name}</a></div>
+        } else {
+            for (let m = 0; m <= data[i].project[j].project_data.children.length; m++) {
+                p = m;
+            }
+            $('.projects-list').append(`<div class="item-project id=${[i]}">
+                <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[j].project_name}">${data[i].project[j].project_name}</a></div>
                 <div class="project-right-count">
-                    <div class="count"></div>
+                    <div class="count-circle"></div>
+                    <div class="count">${p}</div>
                 </div>
             </div>`)
-            }
-        
+        }
+
     }
 }
 
 // handle node count
-function nodeCount() {
-    const count = "";
-    for (let i = 0; i < projectJson.length; i++) {
-        count = i;
-    }
-    $('.count').html(count);
+function nodeCount(data) {
+    for (let k = 0, l = 0, m = 0; i < data[i].project[j].project_data.children.length; m++) {}
+    return i;
 }
 
 // parse login
@@ -430,14 +429,13 @@ function displayResponseData(response, callback) {
 };
 
 function handleProjectUpdate() {
-    
+
 }
 
 function updateProject(project_data, callback) {
     const mindstarter_project = {
         id: project_id,
-        project: 
-        {
+        project: {
             project_name: project_name,
             project_data
         }
@@ -461,8 +459,7 @@ function updateProject(project_data, callback) {
 
 function createProject(project_data, callback) {
     const mindstarter_project = {
-        project:  
-        {
+        project: {
             project_name: project_name,
             project_data
         }
