@@ -10,6 +10,7 @@ $(document).ready(function () {
     ajaxLogin(getAuthHeader);
     handleSignup(handleCreateAccountSuccess);
     createNewProject();
+    handleProjectOptions();
 });
 
 let user_id = "";
@@ -153,7 +154,7 @@ function handleProjectPage(callback) {
         },
         url: url,
         data: json_data,
-        datatype: 'html',
+        datatype: 'json',
         type: 'GET',
         success: callback
     }
@@ -185,33 +186,43 @@ function renderProjectPage(data, textStatus, request) {
     $('.mindstarter-container').css("display", "block");
     $('.update-project').hide();
 
-    for (let i = 0, j = 0; i < data.length; i++) {
+    for (let i = 0, j = 0, k = 0; i < data.length; i++) {
         if (data[i].project[j].project_name == $('.js-project-title')) {
-            for (let m = 0; m <= data[i].project[j].project_data.children.length; m++) {
-                p = m;
+
+            let count1 = Object.keys(data[i].project[j].project_data.children).length
+            let count2 = 0
+            if ("children" in data[i].project[j].project_data.children[k]) {
+                count2 = Object.keys(data[i].project[j].project_data.children[k].children).length
             }
+            let counts = count1 + count2;
+
             $('.projects-list').append(`<div class="item-project id=${[i]} project-selected">
-        <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[j].project_name}">${data[i].project[j].project_name}</a></div>
+        <div class="project-right-name:active"><a href="/options" class="listed-project" type="button" value="${data[i].project[j].project_name}">${data[i].project[j].project_name}</a></div>
         <div class="project-right-count">
         <div class="count-circle"></div>
-            <div class="count">${p}</div>
+            <div class="count">${counts}</div>
         </div>
     </div>`)
         } else {
-            for (let m = 0; m <= data[i].project[j].project_data.children.length; m++) {
-                p = m;
+
+            let count1 = Object.keys(data[i].project[j].project_data.children).length
+            let count2 = 0
+            if ("children" in data[i].project[j].project_data.children[k]) {
+                count2 = Object.keys(data[i].project[j].project_data.children[k].children).length
             }
+            let counts = count1 + count2;
             $('.projects-list').append(`<div class="item-project id=${[i]}">
-                <div class="project-right-name"><a href="#" id="update" type="submit" value="${data[i].project[j].project_name}">${data[i].project[j].project_name}</a></div>
+                <div class="project-right-name"><a href="/options" class="listed-project" type="button" value="${data[i].project[j].project_name}">${data[i].project[j].project_name}</a></div>
                 <div class="project-right-count">
                     <div class="count-circle"></div>
-                    <div class="count">${p}</div>
+                    <div class="count">${counts}</div>
                 </div>
             </div>`)
         }
 
     }
 }
+
 
 // handle node count
 function nodeCount(data) {
@@ -232,6 +243,28 @@ function ajaxLogin(callback) {
             success: callback
         }
         $.ajax(settings);
+    })
+}
+
+function handleProjectNavButton() {
+    $('.circle-notch', '.project-icon').click(event => {
+        event.preventDefault();
+        handleProjectPage(renderProjectPage);
+    })
+}
+
+function handleProjectOptions() {
+    $(document).on('click', '.listed-project', function (e) {
+        e.preventDefault();
+        const dropdowns = $('.dropdown-content');
+        $('.dropdown-content').css("display", "block");
+        $('.project-options-dropdown').show();
+        for (let i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     })
 }
 
@@ -428,9 +461,6 @@ function displayResponseData(response, callback) {
 
 };
 
-function handleProjectUpdate() {
-
-}
 
 function updateProject(project_data, callback) {
     const mindstarter_project = {

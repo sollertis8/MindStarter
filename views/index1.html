@@ -25,8 +25,8 @@
         crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="../../js/index.js"></script>
-    
-    <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
+
+    <script src="../../js/svg-with-js/js/fontawesome-all.js"></script>
 
     <div class="main-content">
         <!-- Begin Top navigation -->
@@ -54,7 +54,7 @@
             <ul>
                 <li class="nav-icon project-icon">
                     <a href="/user/profile">
-                        <i class="fas fa-circle-notch fa-lg" href="/user/profile"></i>
+                        <i class="fas fa-circle-notch fa-lg circle-notch"></i>
                     </a>
                 </li>
                 <li class="nav-icon account-icon">
@@ -212,73 +212,83 @@
                     <svg class="mindstarter-project" width="960" height="960"></svg>
                 </div>
             </div>
-            <div class="right-title"><div class="project-right-title">Projects</div>
-                    <div class="project-right-icon-bg">
-                        <div class="count"></div>
-                    </div></div>
+            <div class="right-title">
+                <div class="project-right-title">Projects</div>
+                <div class="project-right-icon-bg">
+                    <div class="count"></div>
+                </div>
+            </div>
             <div class="projects-list">
                 <div class="project-item">
-                            </div>
                 </div>
             </div>
         </div>
-        <!-- end project page template-->
+    </div>
+    <!-- end project page template-->
 
-        <!-- Begin Login Modal -->
-        <div class="loginModal">
+    <!-- Begin Login Modal -->
+    <div class="loginModal">
 
-            <!-- Modal Content -->
-            <div class="loginModal-content">
-                <span class="close">&times;</span>
-                <form action="/api/auth/login" class="login js-login" method="post">
+        <!-- Modal Content -->
+        <div class="loginModal-content">
+            <span class="close">&times;</span>
+            <form action="/api/auth/login" class="login js-login" method="post">
+                <fieldset>
+                    <legend class="login-title js-login-title">Login</legend>
+                    <label for "username">Username:</label>
+                    <br>
+                    <input type="text" name="username" class="user js-user" value="Username">
+                    <br>
+                    <label for "password"Password:></label>
+                    <br>
+                    <input type="password" name="password" value="Password">
+                    <br>
+                    <br>
+                    <input type="submit" class="loginSubmit js-loginSubmit" value="Submit">
+                </fieldset>
+            </form>
+        </div>
+        <div class="create-account-success js-create-account-success"></div>
+    </div>
+    <!-- End Login Modal -->
+
+    <!-- Begin Signup Modal -->
+    <div class="signupModal">
+        <!-- Modal Content -->
+        <div class="signupModal-content">
+            <span class="close">&times;</span>
+            <div class="signup-form">
+                <form class="signup js-signup" action="/api/users" method="post">
                     <fieldset>
-                        <legend class="login-title js-login-title">Login</legend>
+                        <legend class="form-heading">Signup</legend>
                         <label for "username">Username:</label>
                         <br>
-                        <input type="text" name="username" class="user js-user" value="Username">
+                        <input type="text" class="username js-signup-username" name="username" value="Username">
                         <br>
-                        <label for "password"Password:></label>
+                        <label for "password">Password:</label>
                         <br>
-                        <input type="password" name="password" value="Password">
+                        <input type="password" name="password" class="password js-signup-password" value="Password">
                         <br>
+                        <label for "confirm-password">Confirm Password:</label>
                         <br>
-                        <input type="submit" class="loginSubmit js-loginSubmit" value="Submit">
+                        <input type="password" name="confirm-password" class="password-confirm js-signup-password-confirm" value="Password-Confirm">
+                        <br>
+                        <input type="submit" value="Submit">
                     </fieldset>
                 </form>
-            </div>
-            <div class="create-account-success js-create-account-success"></div>
-        </div>
-        <!-- End Login Modal -->
-
-        <!-- Begin Signup Modal -->
-        <div class="signupModal">
-            <!-- Modal Content -->
-            <div class="signupModal-content">
-                <span class="close">&times;</span>
-                <div class="signup-form">
-                    <form class="signup js-signup" action="/api/users" method="post">
-                        <fieldset>
-                            <legend class="form-heading">Signup</legend>
-                            <label for "username">Username:</label>
-                            <br>
-                            <input type="text" class="username js-signup-username" name="username" value="Username">
-                            <br>
-                            <label for "password">Password:</label>
-                            <br>
-                            <input type="password" name="password" class="password js-signup-password" value="Password">
-                            <br>
-                            <label for "confirm-password">Confirm Password:</label>
-                            <br>
-                            <input type="password" name="confirm-password" class="password-confirm js-signup-password-confirm" value="Password-Confirm">
-                            <br>
-                            <input type="submit" value="Submit">
-                        </fieldset>
-                    </form>
-                    <div class="signup-message js-signup-message"></div>
-                </div>
+                <div class="signup-message js-signup-message"></div>
             </div>
         </div>
-        <!-- End Signup Modal -->
+    </div>
+    <!-- End Signup Modal -->
+    <!-- Begin Project Options Dropdown -->
+    <div class="project-options-dropdown">
+        <div id="myDropdown" class="dropdown-content">
+            <a href="#" class="load-project">Load Project</a>
+            <a href="#" class="delete-project=">Delete Project</a>
+        </div>
+    </div>
+    <!-- End Project Options Dropdown -->
     </div>
 </body>
 
